@@ -1,0 +1,11 @@
+{
+    "name": "eggheads.solutions/cakephp-common",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "EggheadsSolutions\\CakephpCommon\\": "src/"
+        }
+    },
+    "require": {}
+}

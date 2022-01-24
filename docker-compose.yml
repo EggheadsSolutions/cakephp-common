@@ -1,0 +1,9 @@
+
+version: '3'
+
+services:
+    php:
+        build: ./dev/php
+        image: eggheads-php8
+        volumes:
+            - .:/var/www/
