@@ -1,0 +1,60 @@
+name: CI
+
+# Controls when the action will run.
+on: [ pull_request ]
+
+jobs:
+    php-standart-check:
+        name: PHP Coding Standard
+        runs-on: ubuntu-latest
+        env:
+            extensions: bcmath, iconv, ctype, gd, mbstring, mysqli, pdo, pdo_mysql, sockets, zip, soap, intl, fileinfo, json, libxml, openssl, pcntl, posix, simplexml, zend-opcache, runkit7, igbinary, redis
+            key: cache-eggheads-v1
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Setup cache environment
+                id: extcache
+                uses: shivammathur/cache-extensions@v1
+                with:
+                    php-version: '8.0'
+                    extensions: ${{ env.extensions }}
+                    key: ${{ env.key }}
+
+            -   name: Cache extensions
+                uses: actions/cache@v2
+                with:
+                    path: ${{ steps.extcache.outputs.dir }}
+                    key: ${{ steps.extcache.outputs.key }}
+                    restore-keys: ${{ steps.extcache.outputs.key }}
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.0'
+                    extensions: ${{ env.extensions }}
+
+            -   name: Cache Composer packages
+                id: composer-cache
+                uses: actions/cache@v2
+                with:
+                    path: vendor
+                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-
+
+            -   name: Install dependencies
+                run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+            -   name: Download Converter
+                run: wget https://github.com/staabm/annotate-pull-request-from-checkstyle/releases/latest/download/cs2pr && chmod 0755 cs2pr
+
+            -   name: PHP CodeSniffer
+                run: vendor/bin/phpcs -p src/ tests/ --report=checkstyle -q | ./cs2pr
+
+            -   name: PHP Mess Detector
+                run: vendor/bin/phpmd src/,tests/ github phpmd-ruleset.xml
+
+            -   name: PHP Static Analysis Tool
+                run: vendor/bin/phpstan --configuration=phpstan.neon analyse --error-format=checkstyle --no-progress | ./cs2pr
