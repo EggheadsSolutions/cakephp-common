@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EggheadsSolutions\CakephpCommon\Event\Sentry;
+namespace Eggheads\CakephpCommon\Event\Sentry;
 
 use Cake\Error\Debugger;
 use Cake\Event\Event;
