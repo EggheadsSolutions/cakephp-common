@@ -52,7 +52,10 @@ class SentryErrorContext implements EventListenerInterface
         if ($exception) {
             $tags['status'] = $exception->getCode();
 
-            if ($exception instanceof ContextExceptionInterface) {
+            //Проверка на метод, а не интерфейс, сделана специально, чтобы не создавать новый проект для 2-х файлов
+            //Тк сейчас в "eggheads.solutions/cakephp-clickhouse" будет свое исключение с данным методом
+            //А делать зависимость от common - не правильно
+            if (method_exists($exception, 'getContext')) {
                 $extra['_context'] = $exception->getContext();
             }
         }
