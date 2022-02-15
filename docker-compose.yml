@@ -4,6 +4,8 @@ version: '3'
 services:
     php:
         build: ./dev/php
-        image: eggheads-php8
+        image: eggheads-template-php
         volumes:
             - .:/var/www/
+        environment:
+            XDEBUG_CONFIG: remote_host=host.docker.internal
