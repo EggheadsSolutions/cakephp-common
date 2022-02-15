@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\ValueObject;
+namespace Eggheads\CakephpCommon\Test\TestCase\ValueObject;
 
 class ValueObjectFixtureSecond extends ValueObjectFixture
 {
     /**
      * @var bool
      */
-    public $boolProperty;
+    public bool $boolProperty;
 
     /**
      * @var int[]
      */
-    public $intArray;
+    public array $intArray;
 }

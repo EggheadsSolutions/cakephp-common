@@ -17,7 +17,7 @@ require ROOT . DS . 'vendor' . DS . 'autoload.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
-require __DIR__.'/../src/config/bootstrap.php';
+require __DIR__.'/../config/bootstrap.php';
 
 
 // You can remove this if you are confident you have intl installed.
@@ -28,16 +28,12 @@ if (!extension_loaded('intl')) {
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Core\Plugin;
-use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Log\Log;
 use Cake\Mailer\TransportFactory;
-use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Security;
-use ArtSkills\Mailer\Email;
-use ArtSkills\Error\ConsoleErrorHandler;
-use ArtSkills\Error\ErrorHandler;
+use Cake\Error\ConsoleErrorHandler;
+use Cake\Error\ErrorHandler;
 
 /**
  * Read configuration file and inject configuration into various
@@ -126,6 +122,6 @@ if (!Configure::read('App.fullBaseUrl')) {
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
 TransportFactory::setConfig(Configure::consume('EmailTransport'));
-Email::setConfig(Configure::consume('Email'));
+//Email::setConfig(Configure::consume('Email'));
 Log::setConfig(Configure::consume('Log'));
 Security::setSalt(Configure::consume('Security.salt'));

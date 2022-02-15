@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Traits;
+namespace Eggheads\CakephpCommon\Test\TestCase\Traits;
 
-use ArtSkills\Traits\ConverterTrait;
+use Eggheads\CakephpCommon\Traits\ConverterTrait;
 
 class ConverterFixture
 {

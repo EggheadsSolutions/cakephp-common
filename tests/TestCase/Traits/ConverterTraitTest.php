@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Traits;
+namespace Eggheads\CakephpCommon\Test\TestCase\Traits;
 
-use ArtSkills\Error\InternalException;
-use ArtSkills\Error\UserException;
-use ArtSkills\Lib\Arrays;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Error\InternalException;
+use Eggheads\CakephpCommon\Error\UserException;
+use Eggheads\CakephpCommon\Lib\Arrays;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class ConverterTraitTest extends AppTestCase

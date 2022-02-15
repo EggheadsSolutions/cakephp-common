@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\TestSuite\HttpClientMock;
+namespace Eggheads\CakephpCommon\Test\TestCase\TestSuite\HttpClientMock;
 
-use ArtSkills\Http\Client;
-use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\HttpClientMock\HttpClientAdapter;
-use ArtSkills\TestSuite\HttpClientMock\HttpClientMocker;
-use ArtSkills\TestSuite\HttpClientMock\HttpClientMockerEntity;
+use Cake\Http\Client\Message;
+use Eggheads\CakephpCommon\Http\Client;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientAdapter;
+use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMocker;
+use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMockerEntity;
 use Cake\Http\Client\Request;
 use Cake\Http\Client\Response;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -15,7 +16,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 class HttpClientMockerTest extends AppTestCase
 {
     /** @inheritdoc */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         HttpClientMocker::clean();
@@ -25,7 +26,7 @@ class HttpClientMockerTest extends AppTestCase
     public function testMock(): void
     {
         $url = 'http://www.artskills.ru';
-        $method = Request::METHOD_POST;
+        $method = Message::METHOD_POST;
         $post = ['foo' => 'bar'];
         $returnArray = [
             'arr' => 1,
@@ -84,7 +85,7 @@ class HttpClientMockerTest extends AppTestCase
         $this->expectExceptionMessage("GET http://www.artskills.ru is already mocked");
         $this->expectException(ExpectationFailedException::class);
         $url = 'http://www.artskills.ru';
-        $method = Request::METHOD_GET;
+        $method = Message::METHOD_GET;
 
         HttpClientMocker::mock($url, $method)->noCalls();
         HttpClientMocker::mock($url, $method);
@@ -95,8 +96,8 @@ class HttpClientMockerTest extends AppTestCase
     {
         $url = 'http://www.artskills.ru';
 
-        HttpClientMocker::mock($url, Request::METHOD_POST)->noCalls();
-        HttpClientMocker::mock($url, Request::METHOD_GET)->noCalls();
+        HttpClientMocker::mock($url, Message::METHOD_POST)->noCalls();
+        HttpClientMocker::mock($url, Message::METHOD_GET)->noCalls();
         self::assertTrue(true, 'Не кинулся ексепшн');
     }
 
@@ -107,7 +108,7 @@ class HttpClientMockerTest extends AppTestCase
     public function testStatusCode(): void
     {
         $url = 'http://www.artskills.ru';
-        $mock = HttpClientMocker::mock($url, Request::METHOD_GET);
+        $mock = HttpClientMocker::mock($url, Message::METHOD_GET);
         $client = new Client();
 
         $responseBody = 'test body';

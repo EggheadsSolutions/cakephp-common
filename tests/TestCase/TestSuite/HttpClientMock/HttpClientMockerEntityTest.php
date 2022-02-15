@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\TestSuite\HttpClientMock;
+namespace Eggheads\CakephpCommon\Test\TestCase\TestSuite\HttpClientMock;
 
-use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\HttpClientMock\HttpClientMockerEntity;
+use Cake\Http\Client\Message;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMockerEntity;
 use Cake\Http\Client\Request;
 use \PHPUnit\Framework\ExpectationFailedException;
 
@@ -21,7 +22,7 @@ class HttpClientMockerEntityTest extends AppTestCase
         $testUrl = self::DEFAULT_TEST_URL;
         $testData = self::DEFAULT_POST_DATA;
         $correctTestData = ['bar' => 'babar', 'foo' => 'barr'];
-        $testMethod = Request::METHOD_POST;
+        $testMethod = Message::METHOD_POST;
         $returnVal = 'test';
 
         $mock = new HttpClientMockerEntity($testUrl, $testMethod);
@@ -29,8 +30,7 @@ class HttpClientMockerEntityTest extends AppTestCase
             ->expectBody($testData)
             ->willReturnString($returnVal);
 
-        $request = new Request($testUrl, $testMethod);
-        $request->body($correctTestData);
+        $request = new Request($testUrl, $testMethod, data: $correctTestData);
 
         self::assertTrue($mock->check($testUrl, $testMethod));
         self::assertEquals($returnVal, $mock->doAction($request));
@@ -44,7 +44,7 @@ class HttpClientMockerEntityTest extends AppTestCase
     public function testAnyAndReturnAction(): void
     {
         $testUrl = self::DEFAULT_TEST_URL;
-        $testMethod = Request::METHOD_GET;
+        $testMethod = Message::METHOD_GET;
         $returnVal = 'test';
 
         $mock = new HttpClientMockerEntity($testUrl, $testMethod);
@@ -103,11 +103,11 @@ class HttpClientMockerEntityTest extends AppTestCase
     public function testCheck(): void
     {
         $testUrl = self::DEFAULT_TEST_URL;
-        $testMethod = Request::METHOD_GET;
+        $testMethod = Message::METHOD_GET;
 
         $mock = $this->_makeMock($testMethod, $testUrl);
         self::assertFalse($mock->check('blabla', $testMethod));
-        self::assertFalse($mock->check($testUrl, Request::METHOD_DELETE));
+        self::assertFalse($mock->check($testUrl, Message::METHOD_DELETE));
         self::assertTrue($mock->check($testUrl, $testMethod));
     }
 
@@ -259,7 +259,7 @@ class HttpClientMockerEntityTest extends AppTestCase
      */
     private function _makeGetRequest(string $url = self::DEFAULT_TEST_URL): Request
     {
-        return $this->_makeRequest(Request::METHOD_GET, $url);
+        return $this->_makeRequest(Message::METHOD_GET, $url);
     }
 
     /**
@@ -271,9 +271,9 @@ class HttpClientMockerEntityTest extends AppTestCase
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    private function _makePostRequest($data = self::DEFAULT_POST_DATA, string $url = self::DEFAULT_TEST_URL): Request
+    private function _makePostRequest(array|string $data = self::DEFAULT_POST_DATA, string $url = self::DEFAULT_TEST_URL): Request
     {
-        return $this->_makeRequest(Request::METHOD_POST, $url, $data);
+        return $this->_makeRequest(Message::METHOD_POST, $url, $data);
     }
 
     /**
@@ -286,11 +286,13 @@ class HttpClientMockerEntityTest extends AppTestCase
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    private function _makeRequest(string $method, string $url = self::DEFAULT_TEST_URL, $data = self::DEFAULT_POST_DATA): Request
+    private function _makeRequest(string $method, string $url = self::DEFAULT_TEST_URL, array|string $data = self::DEFAULT_POST_DATA): Request
     {
-        $request = new Request($url, $method);
-        if ($method === Request::METHOD_POST) {
-            $request->body($data);
+
+        if ($method === Message::METHOD_POST) {
+            $request = new Request($url, $method, [], $data);
+        } else {
+            $request = new Request($url, $method);
         }
         return $request;
     }
@@ -303,7 +305,7 @@ class HttpClientMockerEntityTest extends AppTestCase
      */
     private function _makeGetMock(string $url = self::DEFAULT_TEST_URL): HttpClientMockerEntity
     {
-        return $this->_makeMock(Request::METHOD_GET, $url);
+        return $this->_makeMock(Message::METHOD_GET, $url);
     }
 
     /**
@@ -315,9 +317,9 @@ class HttpClientMockerEntityTest extends AppTestCase
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    private function _makePostMock($data = self::DEFAULT_POST_DATA, $url = self::DEFAULT_TEST_URL): HttpClientMockerEntity
+    private function _makePostMock(array|string|null $data = self::DEFAULT_POST_DATA, string $url = self::DEFAULT_TEST_URL): HttpClientMockerEntity
     {
-        return $this->_makeMock(Request::METHOD_POST, $url, $data);
+        return $this->_makeMock(Message::METHOD_POST, $url, $data);
     }
 
     /**
@@ -333,7 +335,7 @@ class HttpClientMockerEntityTest extends AppTestCase
     private function _makeMock(string $method, string $url = self::DEFAULT_TEST_URL, $data = self::DEFAULT_POST_DATA): HttpClientMockerEntity
     {
         $mock = new HttpClientMockerEntity($url, $method);
-        if ($method === Request::METHOD_POST) {
+        if ($method === Message::METHOD_POST) {
             $mock->expectBody($data);
         }
         return $mock;

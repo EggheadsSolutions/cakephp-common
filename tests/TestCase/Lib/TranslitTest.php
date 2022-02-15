@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Lib;
+namespace Eggheads\CakephpCommon\Test\TestCase\Lib;
 
-use ArtSkills\Lib\Translit;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Lib\Translit;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 
 class TranslitTest extends AppTestCase
 {

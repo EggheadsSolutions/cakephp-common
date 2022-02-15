@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Lib;
+namespace Eggheads\CakephpCommon\Test\TestCase\Lib;
 
-use ArtSkills\Lib\Strings;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Lib\Strings;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 
 class StringsTest extends AppTestCase
 {

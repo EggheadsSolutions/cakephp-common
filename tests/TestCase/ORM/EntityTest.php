@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\ORM;
+namespace Eggheads\CakephpCommon\Test\TestCase\ORM;
 
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use TestApp\Model\Table\TestTableOneTable;
 use TestApp\Model\Table\TestTableTwoTable;
 
@@ -13,9 +13,8 @@ use TestApp\Model\Table\TestTableTwoTable;
  */
 class EntityTest extends AppTestCase
 {
-
     /** @inheritdoc */
-    public $fixtures = [
+    public array $fixtures = [
         'app.test_table_one',
         'app.test_table_two',
     ];

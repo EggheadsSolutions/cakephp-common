@@ -6,17 +6,18 @@ if (!defined('TEST_MODE')) {
 }
 require_once __DIR__ . '/bootstrap.php';
 
-use ArtSkills\Lib\AppCache;
-use ArtSkills\Lib\DB;
-use ArtSkills\Lib\Env;
-use ArtSkills\TestSuite\HttpClientMock\HttpClientAdapter;
+use Eggheads\CakephpCommon\Lib\AppCache;
+use Eggheads\CakephpCommon\Lib\DB;
+use Eggheads\CakephpCommon\Lib\Env;
+use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientAdapter;
 
 Env::setHttpClientAdapter(HttpClientAdapter::class);
 
 $testConnection = DB::getConnection(DB::CONNECTION_TEST);
 $dbName = $testConnection->config()['database'];
-$existingTables = DB::customQuery("SELECT `table_name` FROM `information_schema`.`tables` WHERE `table_schema` = '" . $dbName . "'", DB::CONNECTION_TEST)
-    ->fetchAll();
+/*$existingTables = DB::customQuery("SELECT `table_name` FROM `information_schema`.`tables` WHERE `table_schema` = '" . $dbName . "'", DB::CONNECTION_TEST)
+    ->fetchAll();*/ // for mySql
+$existingTables = DB::customQuery("SELECT name FROM sqlite_master WHERE type='table'")->fetchAll(); // sorR SQLITE
 if (!empty($existingTables)) {
     $existingTables = '`' . implode('`, `', array_column($existingTables, 0)) . '`';
     DB::customQuery('DROP TABLE ' . $existingTables, DB::CONNECTION_TEST)->closeCursor();

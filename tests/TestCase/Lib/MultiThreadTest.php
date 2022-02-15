@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Lib;
+namespace Eggheads\CakephpCommon\Test\TestCase\Lib;
 
-use ArtSkills\Lib\Env;
-use ArtSkills\Lib\MultiThreads;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Lib\Env;
+use Eggheads\CakephpCommon\Lib\MultiThreads;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 
 class MultiThreadTest extends AppTestCase
 {
@@ -14,7 +14,7 @@ class MultiThreadTest extends AppTestCase
     {
         $mt = MultiThreads::getInstance();
 
-        $maxThreads = (int)Env::getThreadsLimit();
+        $maxThreads = Env::getThreadsLimit();
         $maxTests = 10;
         for ($i = 0; $i < $maxTests; $i++) {
             $mt->run(function () {

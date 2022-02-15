@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use ArtSkills\Error\InternalException;
+use Eggheads\CakephpCommon\Error\InternalException;
 
 /**
  * Функция для удобства создания вложенных ассоциаций. Соединяет аргументы через точку

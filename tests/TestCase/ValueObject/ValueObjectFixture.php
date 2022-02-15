@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\ValueObject;
+namespace Eggheads\CakephpCommon\Test\TestCase\ValueObject;
 
-use ArtSkills\Lib\Strings;
-use ArtSkills\ValueObject\ValueObject;
-use Cake\I18n\Date;
-use Cake\I18n\Time;
-use Cake\Utility\String as CakeString;
+use Eggheads\CakephpCommon\ValueObject\ValueObject;
+use Eggheads\CakephpCommon\I18n\FrozenTime;
+use Eggheads\CakephpCommon\I18n\FrozenDate;
+use Cake\Utility\Text as CakeString;
 
 /**
  * @method $this setField1(mixed $value)
@@ -36,19 +35,20 @@ class ValueObjectFixture extends ValueObject
      *
      * @var string
      */
-    public $field1 = 'asd';
+    public string $field1 = 'asd';
 
     /** @var string */
-    public $field2 = 'qwe';
-    /** @var Strings */
-    public $field3;
+    public string $field2 = 'qwe';
 
-    /** @var CakeString */
-    public $field4; // @phpstan-ignore-line
+    /** @var string */
+    public string $field3;
 
-    /** @var Time */
-    public $timeField;
+    /** @var ?CakeString */
+    public ?CakeString $field4 = null;
 
-    /** @var Date */
-    public $dateField;
+    /** @var ?FrozenTime */
+    public ?FrozenTime $timeField = null;
+
+    /** @var ?FrozenDate */
+    public ?FrozenDate $dateField = null;
 }

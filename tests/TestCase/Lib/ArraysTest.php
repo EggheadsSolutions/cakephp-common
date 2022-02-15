@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Lib;
+namespace Eggheads\CakephpCommon\Test\TestCase\Lib;
 
-use ArtSkills\Lib\Arrays;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Error\InternalException;
+use Eggheads\CakephpCommon\Lib\Arrays;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use stdClass;
 
 class ArraysTest extends AppTestCase
@@ -114,7 +115,7 @@ class ArraysTest extends AppTestCase
     /**
      * инициализация значения
      *
-     * @throws \ArtSkills\Error\InternalException
+     * @throws InternalException
      */
     public function testInitPath(): void
     {
@@ -155,7 +156,7 @@ class ArraysTest extends AppTestCase
     /**
      * на пути есть немассив
      *
-     * @throws \ArtSkills\Error\InternalException
+     * @throws InternalException
      */
     public function testInitPathFail(): void
     {

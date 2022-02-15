@@ -24,6 +24,10 @@ return [
         ],
     ],
 
+    'Security' => [
+        'salt' => 'test_security_salt',
+    ],
+
     'Cache' => [
         'default' => [
             'className' => 'File',

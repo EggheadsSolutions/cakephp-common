@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TestApp\Controller;
 
-use ArtSkills\ValueObject\ValueObject;
+use Eggheads\CakephpCommon\ValueObject\ValueObject;
 
 class TestValueObject extends ValueObject
 {

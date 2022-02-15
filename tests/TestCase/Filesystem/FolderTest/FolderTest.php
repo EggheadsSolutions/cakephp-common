@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Filesystem\FolderTest;
+namespace Eggheads\CakephpCommon\Test\TestCase\Filesystem\FolderTest;
 
-use ArtSkills\Filesystem\Folder;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Filesystem\Folder;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 
 class FolderTest extends AppTestCase
 {
@@ -23,15 +23,15 @@ class FolderTest extends AppTestCase
         file_put_contents($pdfFile, 'This is PDF file');
         Folder::createIfNotExists(__DIR__ . '/nonDelete');
         file_put_contents($pdfInFolderFile, 'This is PDF file');
-        sleep(2);
+        sleep(4);
         file_put_contents($pdfNewFile, 'This is PDF file');
 
-        Folder::cleanupDirByLifetime(__DIR__, ['.*\.pdf'], 1, ['nonDelete/']);
+        Folder::cleanupDirByLifetime(__DIR__, ['.*\.pdf'], 3, ['nonDelete/']);
 
-        self::assertFileExists($csvFile, 'Файл был удалён, но такого не должно было случится');
-        self::assertFileExists($pdfNewFile, 'Файл был удалён, но такого не должно было случится');
-        self::assertFileExists($pdfInFolderFile, 'Файл был удалён, хотя стоит запрет на удаление из директории');
-        self::assertFileNotExists($pdfFile, 'А этот файл должен был исчезнуть');
+        self::assertFileExists($csvFile, 'Файл temp.csv был удалён, но такого не должно было случится');
+        self::assertFileExists($pdfNewFile, 'Файл tempNew.pdf был удалён, но такого не должно было случится');
+        self::assertFileExists($pdfInFolderFile, 'Файл /nonDelete/tempNew.pdf был удалён, хотя стоит запрет на удаление из директории');
+        self::assertFileDoesNotExist($pdfFile, 'Файл temp.pdf должен был исчезнуть');
         self::assertFileExists(__FILE__, 'Тест удалил себя!!!');
 
         if (file_exists($pdfInFolderFile)) {

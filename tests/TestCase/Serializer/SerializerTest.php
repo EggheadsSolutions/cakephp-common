@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Lib\SerializerTest;
+namespace Eggheads\CakephpCommon\Test\TestCase\Serializer;
 
-use ArtSkills\Error\InternalException;
-use ArtSkills\Error\UserException;
-use ArtSkills\Lib\Arrays;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Error\InternalException;
+use Eggheads\CakephpCommon\Error\UserException;
+use Eggheads\CakephpCommon\Lib\Arrays;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 

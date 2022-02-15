@@ -1,11 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Filesystem\FileTest;
+namespace Eggheads\CakephpCommon\Test\TestCase\Filesystem\FileTest;
 
-use ArtSkills\Filesystem\File;
-use ArtSkills\Filesystem\Folder;
-use ArtSkills\TestSuite\AppTestCase;
+use Eggheads\CakephpCommon\Error\InternalException;
+use Eggheads\CakephpCommon\Filesystem\File;
+use Eggheads\CakephpCommon\Filesystem\Folder;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
+use Exception;
 
 class FileTest extends AppTestCase
 {
@@ -13,6 +15,8 @@ class FileTest extends AppTestCase
     /**
      * Тест зиповки
      * @SuppressWarnings(PHPMD.FunctionRule)
+     *
+     * @throws InternalException
      */
     public function testZip(): void
     {
@@ -39,6 +43,8 @@ class FileTest extends AppTestCase
 
     /**
      * Тест распаковки
+     *
+     * @throws Exception
      */
     public function testUnzip(): void
     {

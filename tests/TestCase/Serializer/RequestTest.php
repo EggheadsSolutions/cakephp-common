@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\TestCase\Lib\SerializerTest;
+namespace Eggheads\CakephpCommon\Test\TestCase\Serializer;
 
-use ArtSkills\Controller\Request\AbstractRequest;
+use Eggheads\CakephpCommon\Controller\Request\AbstractRequest;
 use Cake\Validation\Validator;
 
 class RequestTest extends AbstractRequest
@@ -21,7 +21,7 @@ class RequestTest extends AbstractRequest
     public array $objects = [];
 
     /** @inheritDoc */
-    public function addValidation(Validator $validator): Validator
+    public function addValidation(Validator|array $validator): Validator
     {
         $validator->requirePresence('fieldInt', true, 'Не указан fieldInt');
         return $validator;

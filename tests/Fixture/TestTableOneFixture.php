@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\Test\Fixture;
+namespace Eggheads\CakephpCommon\Test\Fixture;
 
-use ArtSkills\TestSuite\Fixture\TestFixture;
+use Eggheads\CakephpCommon\TestSuite\Fixture\TestFixture;
 
 class TestTableOneFixture extends TestFixture
 {
