@@ -9,7 +9,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Eggheads\\CakephpCommon\\Test\\": "tests/"
+      "Eggheads\\CakephpCommon\\Test\\": "tests/",
+      "TestApp\\": "test-app/"
     }
   },
   "repositories": [

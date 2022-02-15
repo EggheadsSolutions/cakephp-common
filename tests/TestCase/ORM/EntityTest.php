@@ -14,9 +14,9 @@ use TestApp\Model\Table\TestTableTwoTable;
 class EntityTest extends AppTestCase
 {
     /** @inheritdoc */
-    public array $fixtures = [
-        'app.test_table_one',
-        'app.test_table_two',
+    protected $fixtures = [
+        'app.testTableOne',
+        'app.testTableTwo',
     ];
 
     /** проверка на изменение значения поля */

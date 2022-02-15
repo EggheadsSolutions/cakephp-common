@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Eggheads\CakephpCommon\Test\Fixture;
+namespace TestApp\Test\Fixture;
 
 use Eggheads\CakephpCommon\TestSuite\Fixture\TestFixture;
 

@@ -5,7 +5,23 @@ services:
     php:
         build: ./dev/php
         image: eggheads-template-php
+        links:
+            - mysql
         volumes:
             - .:/var/www/
         environment:
             XDEBUG_CONFIG: remote_host=host.docker.internal
+    mysql:
+        image: mysql:8
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./dev/mysql:/var/lib/mysql
+        # задаем пароль для root пользователя
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+        entrypoint:
+            sh -c "
+            echo 'CREATE DATABASE IF NOT EXISTS app; CREATE DATABASE IF NOT EXISTS app_test;' > /docker-entrypoint-initdb.d/init.sql;
+            /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+            "

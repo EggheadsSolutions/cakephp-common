@@ -94,9 +94,6 @@ class TestFixture extends \Cake\TestSuite\Fixture\TestFixture
      */
     private function _getCreateQuery(): void
     {
-        $connectionName = $this->getTableLocator()->get($this->table)::defaultConnectionName();
-        $this->import['connection'] = $connectionName;
-
         if (!empty($this->table)) {
             $this->import['table'] = $this->table;
         } else {
@@ -104,6 +101,9 @@ class TestFixture extends \Cake\TestSuite\Fixture\TestFixture
             $table = Inflector::underscore(Strings::replacePostfix($class, 'Fixture'));
             $this->import['table'] = $table;
         }
+
+        $connectionName = $this->getTableLocator()->get($this->import['table'])::defaultConnectionName();
+        $this->import['connection'] = $connectionName;
 
         // false - чтобы вместо default не подставлялся test
         $structureConnection = DB::getConnection($this->import['connection'], false);
@@ -113,6 +113,7 @@ class TestFixture extends \Cake\TestSuite\Fixture\TestFixture
             $structureConnection->connect();
         }
         $createData = $structureConnection->query('SHOW CREATE TABLE ' . $this->import['table'])->fetch();
+
         // $createData всегда не пустой. Если таблицы нет, то запрос SHOW CREATE TABLE кинет исключение
         $this->_createTableSqlQuery = $createData[1]; //0 - название таблицы, 1 - запрос CREATE TABLE
     }
