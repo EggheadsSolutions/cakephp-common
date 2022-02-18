@@ -2,3 +2,10 @@
 .idea
 /dev/php/xdebug.log
 composer.lock
+.composer/
+dev/mysql/
+logs/
+tmp/
+.phpunit.result.cache
+/phpunit.xml
+.phpcs-cache

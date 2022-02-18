@@ -7,3 +7,5 @@ services:
         image: eggheads-php8
         volumes:
             - .:/var/www/
+        environment:
+            XDEBUG_CONFIG: remote_host=host.docker.internal

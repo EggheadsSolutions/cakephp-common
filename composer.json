@@ -7,31 +7,57 @@
       "Eggheads\\CakephpCommon\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Eggheads\\CakephpCommon\\Test\\": "tests/",
+      "TestApp\\": "test-app/"
+    }
+  },
   "repositories": [
     {
       "type": "vcs",
-      "url": "git://github.com/vovantune/eggheads-code-style"
+      "url": "git://github.com/EggheadsSolutions/eggheads-code-style"
+    },
+    {
+      "type": "vcs",
+      "url": "git://github.com/EggheadsSolutions/runkit-test-mocks"
     }
   ],
   "require": {
     "php": ">=8.0",
+    "ext-pcntl": "*",
     "cakephp/cakephp": "^4.3",
-    "connehito/cake-sentry": "^4.0",
-    "sentry/sentry": "^3.3",
-    "symfony/http-client": "^6.0"
+    "cakephp/migrations": "^3.2",
+    "symfony/http-client": "^6.0",
+    "symfony/property-access": "^4",
+    "symfony/property-info": "^4",
+    "symfony/serializer": "^4",
+    "eggheads/mocks": "^1.0.0",
+    "ext-simplexml": "*"
   },
   "require-dev": {
-    "eggheads/eggheads-code-style": "^2.0"
+  	"cakephp/bake": "^2.6",
+    "cakephp/repl": "^0.1",
+    "cakephp/cakephp-codesniffer": "^4.5",
+  	"phpunit/phpunit": "~8.5.0 || ^9.3",
+    "eggheads/eggheads-code-style": "^2.1"
   },
   "scripts": {
     "check": [
       "@cs-check",
       "@phpmd-check",
-      "@phpstan-check"
+      "@phpstan-check",
+      "@test"
     ],
     "cs-check": "phpcs --colors -p src/ tests/",
     "cs-fix": "phpcbf --colors -p src/ tests/",
     "phpmd-check": "vendor/bin/phpmd src/,tests/ text phpmd-ruleset.xml",
-    "phpstan-check": "vendor/bin/phpstan --configuration=phpstan.neon"
+    "phpstan-check": "vendor/bin/phpstan --configuration=phpstan.neon",
+    "test": "phpunit --colors=always"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
