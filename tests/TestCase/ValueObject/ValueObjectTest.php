@@ -5,13 +5,9 @@ namespace Eggheads\CakephpCommon\Test\TestCase\ValueObject;
 
 use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
-use Eggheads\Mocks\ConstantMocker;
-use Eggheads\CakephpCommon\ValueObject\ValueObject;
 use Eggheads\CakephpCommon\I18n\FrozenDate;
 use Eggheads\CakephpCommon\I18n\FrozenTime;
 use Exception;
-use TestApp\Lib\DateTest;
-use TestApp\Lib\TimeTest;
 
 class ValueObjectTest extends AppTestCase
 {

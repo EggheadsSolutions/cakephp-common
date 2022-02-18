@@ -70,8 +70,8 @@ class Arrays
      * Проставить массиву ключи на основе их значений
      * Возможно, вместо этой функции вам нужен array_flip()
      *
-     * @param string[]|int[] $values
-     * @return array<string|int, string|int>
+     * @param array[]|int[] $values
+     * @return array
      */
     public static function keysFromValues(array $values): array
     {

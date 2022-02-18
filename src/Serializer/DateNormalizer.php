@@ -49,13 +49,10 @@ class DateNormalizer extends DateTimeNormalizer
             throw new NotNormalizableValueException('The data is either an empty string or null, you should pass a string that can be parsed with the passed format or a valid DateTime string.');
         }
 
-        /** @phpstan-ignore-next-line */
-        switch ($type) {
-            case FrozenTime::class:
-                return FrozenTime::parse($data);
-            case FrozenDate::class:
-                return FrozenDate::parse($data);
+        if ($type === FrozenTime::class) {
+            return FrozenTime::parse($data);
         }
+        return FrozenDate::parse($data);
     }
 
     /**

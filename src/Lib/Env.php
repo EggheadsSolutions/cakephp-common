@@ -12,8 +12,6 @@ use Throwable;
 /**
  * @method static string getServerName()
  * @method static string getServerProtocol()
- * @method static string getSentryDsn()
- * @method static string getSentryOptions()
  * @method static string getHttpClientAdapter()
  * @method static string getDebugEmail()
  * @method static string getTestServerName()
@@ -24,7 +22,6 @@ use Throwable;
  * @method static string getDownloadPath()
  * @method static string getRedisServer()
  * @method static string getRedisPassword()
- * @method static bool hasSentryDsn()
  * @method static bool hasHttpClientAdapter()
  * @method static bool hasBaseFixtureClass()
  * @method static bool hasFixtureFolder()

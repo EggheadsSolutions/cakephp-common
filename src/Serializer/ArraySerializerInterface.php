@@ -10,9 +10,9 @@ interface ArraySerializerInterface
      *
      * @param array $data
      * @param array $context
-     * @return ArraySerializerInterface
+     * @return ArraySerializerInterface|ArraySerializerInterface[]
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
-    public static function createFromArray(array $data, array $context = []): static;
+    public static function createFromArray(array $data, array $context = []): static|array;
 }

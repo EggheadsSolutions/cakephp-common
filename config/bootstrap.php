@@ -5,7 +5,7 @@ if (!defined('TEST_FIXTURE')) {
     /**
      * Папка с файлами фикстур БД
      */
-    define('TEST_FIXTURE', TESTS . 'Fixture' . DS . 'Data' . DS);
+    define('TEST_FIXTURE', TESTS . 'Fixture' . DS . 'Data' . DS); // @phpstan-ignore-line
 }
 
 if (!defined('AS_COMMON')) {

@@ -7,7 +7,6 @@ use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Serializer\SerializerFactory;
 use Cake\Validation\Validator;
-use Eggheads\CakephpCommon\Test\TestCase\Traits\ConverterFixture;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -22,11 +21,11 @@ trait ConverterTrait
      * @param string $json
      * @param array $context
      * @param bool $isConvertCamelCaseKeyToSnakeCase
-     * @return self
+     * @return static
      * @throws InternalException|UserException
      * @phpstan-ignore-next-line
      */
-    public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): self
+    public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): static
     {
         try {
             /** @var static $dto */
@@ -53,12 +52,12 @@ trait ConverterTrait
      * @param array $data
      * @param array $context
      * @param bool $isConvertCamelCaseKeyToSnakeCase
-     * @return ConverterFixture|ConverterTrait
+     * @return static
      * @throws InternalException
      * @throws UserException
      * @phpstan-ignore-next-line
      */
-    public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): self
+    public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): static
     {
         try {
             /** @var static $dto */

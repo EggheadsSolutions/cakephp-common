@@ -14,9 +14,10 @@ abstract class AbstractJsonField implements ArraySerializerInterface
 {
     /**
      * @inheritDoc
+     * @deprecated Проверить использование, удалить при внедрении
      * @throws ExceptionInterface
      */
-    public static function createFromArray(array $data, array $context = []): static
+    public static function createFromArray(array $data, array $context = []): static|array
     {
         $type = static::class . (!empty($data[0]) ? '[]' : '');
 

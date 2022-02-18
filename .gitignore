@@ -7,3 +7,5 @@ dev/mysql/
 logs/
 tmp/
 .phpunit.result.cache
+/phpunit.xml
+.phpcs-cache
