@@ -29,18 +29,21 @@
     "cakephp/cakephp": "^4.3",
     "cakephp/migrations": "^3.2",
     "symfony/http-client": "^6.0",
-    "symfony/property-access": "^4",
-    "symfony/property-info": "^4",
-    "symfony/serializer": "^4",
+    "symfony/property-access": "^6.0",
+    "symfony/property-info": "^6.0",
+    "symfony/serializer": "^6.0",
     "eggheads/mocks": "^1.0.0",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "phpdocumentor/reflection-docblock": "^5.3"
   },
   "require-dev": {
-  	"cakephp/bake": "^2.6",
+    "cakephp/bake": "^2.6",
     "cakephp/repl": "^0.1",
     "cakephp/cakephp-codesniffer": "^4.5",
-  	"phpunit/phpunit": "~8.5.0 || ^9.3",
-    "eggheads/eggheads-code-style": "^2.1"
+    "phpunit/phpunit": "^9.5",
+    "eggheads/eggheads-code-style": "^2.1",
+    "cakephp/debug_kit": "^4.7",
+    "mheap/phpunit-github-actions-printer": "^1.5"
   },
   "scripts": {
     "check": [
