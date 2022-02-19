@@ -1,4 +1,8 @@
 <?php
+
+use Cake\Cache\Engine\FileEngine;
+use Cake\Log\Engine\FileLog;
+
 return [
     'serverProtocol' => 'http',
     'serverName' => 'common.artskills.ru',
@@ -30,13 +34,13 @@ return [
 
     'Cache' => [
         'default' => [
-            'className' => 'File',
+            'className' => FileEngine::class,
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
         '_cake_core_' => [
-            'className' => 'File',
+            'className' => FileEngine::class,
             'prefix' => 'myapp_cake_core_',
             'path' => CACHE . 'persistent/',
             'serialize' => true,
@@ -45,7 +49,7 @@ return [
         ],
 
         '_cake_model_' => [
-            'className' => 'File',
+            'className' => FileEngine::class,
             'prefix' => 'myapp_cake_model_',
             'path' => CACHE . 'models/',
             'serialize' => true,
@@ -54,7 +58,7 @@ return [
         ],
 
         'short' => [
-            'className' => 'File',
+            'className' => FileEngine::class,
             'prefix' => 'short_',
             'path' => CACHE . 'models/',
             'serialize' => true,
@@ -100,21 +104,21 @@ return [
 
     'Log' => [
         'debug' => [
-            'className' => 'ArtSkills.File',
+            'className' => FileLog::class,
             'path' => LOGS,
             'file' => 'debug',
             'levels' => ['notice', 'info', 'debug'],
             'url' => env('LOG_DEBUG_URL', null),
         ],
         'error' => [
-            'className' => 'ArtSkills.File',
+            'className' => FileLog::class,
             'path' => LOGS,
             'file' => 'error',
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
             'url' => env('LOG_ERROR_URL', null),
         ],
         'sentry' => [
-            'className' => 'ArtSkills.Sentry',
+            'className' => FileLog::class,
             'levels' => [],
         ],
     ],
