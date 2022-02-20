@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\TestSuite;
 
+use Cake\TestSuite\Fixture\FixtureStrategyInterface;
+use Cake\TestSuite\Fixture\TransactionStrategy;
 use Cake\TestSuite\TestCase;
 use Eggheads\CakephpCommon\Error\InternalException;
 use ReflectionException;
@@ -13,6 +15,12 @@ use ReflectionException;
 abstract class AppTestCase extends TestCase
 {
     use TestCaseTrait;
+
+    /** @inerhitDoc */
+    protected function getFixtureStrategy(): FixtureStrategyInterface
+    {
+        return new TransactionStrategy();
+    }
 
     /**
      * @inheritdoc

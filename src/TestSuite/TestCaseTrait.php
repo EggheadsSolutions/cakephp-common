@@ -50,7 +50,6 @@ trait TestCaseTrait
     {
         $this->_clearCache();
         PermanentMocksCollection::init();
-        $this->_loadFixtureModels();
 
         HttpClientAdapter::enableDebug();
         $this->_setUpLocal();
@@ -116,7 +115,7 @@ trait TestCaseTrait
     /**
      * loadModel на все таблицы фикстур
      */
-    protected function _loadFixtureModels(): void
+    protected function setupFixtures(): void
     {
         if (empty($this->fixtures)) {
             return;

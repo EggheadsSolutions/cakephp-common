@@ -44,7 +44,8 @@
     "eggheads/eggheads-code-style": "^2.1",
     "cakephp/debug_kit": "^4.7",
     "mheap/phpunit-github-actions-printer": "^1.5",
-    "vierge-noire/cakephp-fixture-factories": "^2.5"
+    "vierge-noire/cakephp-fixture-factories": "^2.5",
+    "ext-pdo": "*"
   },
   "scripts": {
     "check": [
