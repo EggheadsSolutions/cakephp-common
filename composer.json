@@ -33,7 +33,8 @@
     "symfony/property-info": "^4",
     "symfony/serializer": "^4",
     "eggheads/mocks": "^1.0.0",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "connehito/cake-sentry": "^4.0"
   },
   "require-dev": {
   	"cakephp/bake": "^2.6",

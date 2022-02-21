@@ -25,10 +25,11 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
      *
      * @param \Psr\Http\Message\RequestInterface $request
      * @param \Throwable $exception
+     * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     // phpcs:ignore
-    protected function logException(RequestInterface $request, Throwable $exception)
+    protected function logException(RequestInterface $request, Throwable $exception): void
     {
         $this->_exception = $exception;
 
@@ -74,6 +75,7 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
 
     /**
      * @inheritDoc
+     * @phpstan-ignore-next-line
      */
     public function getContext(): array
     {

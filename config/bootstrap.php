@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * Configure paths required to find CakePHP + general filepath
+ * constants
+ */
+require_once __DIR__ . '/../test-app-conf/paths.php';
+
 if (!defined('TEST_FIXTURE')) {
     /**
      * Папка с файлами фикстур БД

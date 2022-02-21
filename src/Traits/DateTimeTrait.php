@@ -87,6 +87,7 @@ trait DateTimeTrait
      * @inheritDoc
      * @return array|string
      * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
     public function format($format): array|string
     {

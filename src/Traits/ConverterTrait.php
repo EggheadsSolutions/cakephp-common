@@ -130,9 +130,8 @@ trait ConverterTrait
      */
     protected function _validate(): void
     {
-        //@phpstan-ignore-next-line
         if (method_exists(self::class, 'addValidation')) {
-            $errors = $this->addValidation(new Validator())->validate($this->toArray());
+            $errors = $this->addValidation(new Validator())->validate($this->toArray()); // @phpstan-ignore-line
         }
 
         if (isset($errors) && $errors) {

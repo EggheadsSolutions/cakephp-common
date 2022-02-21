@@ -24,6 +24,7 @@ class UserException extends Exception
 
     /**
      * @inheritDoc
+     * @phpstan-ignore-next-line
      */
     public function __construct($message = '', $code = 0, $previous = null)
     {

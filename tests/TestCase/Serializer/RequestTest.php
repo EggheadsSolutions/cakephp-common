@@ -34,6 +34,7 @@ class RequestTest
      * @param Validator|array $validator Валидатор
      * @return Validator
      * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
     public function addValidation(Validator|array $validator): Validator
     {

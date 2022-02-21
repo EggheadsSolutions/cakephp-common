@@ -129,7 +129,7 @@ class Strings
      */
     public static function lastPart(string $delimiter, string $string): string
     {
-        $tmp = explode($delimiter, $string);
+        $tmp = explode($delimiter, $string); // @phpstan-ignore-line
         return array_pop($tmp);
     }
 

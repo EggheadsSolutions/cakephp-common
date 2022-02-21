@@ -44,7 +44,7 @@ trait TestCaseTrait
      * Инициализация тестового окружения
      *
      * @return void
-     * @throws \Eggheads\CakephpCommon\TestSuite\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     protected function _setUp(): void
     {
@@ -60,12 +60,11 @@ trait TestCaseTrait
      * Чистка тестового окружения
      *
      * @return void
-     * @throws \Eggheads\CakephpCommon\TestSuite\ReflectionException|\Eggheads\CakephpCommon\TestSuite\AssertionFailedError|\Eggheads\CakephpCommon\TestSuite\Exception
      * @throws \ReflectionException
      */
     protected function _tearDown(): void
     {
-        /** @var \Eggheads\CakephpCommon\TestSuite\TestCaseTrait $this */
+        /** @var static $this */
         ConstantMocker::restore();
         PropertyAccess::restoreStaticAll();
         FrozenTime::setTestNow(null); // сбрасываем тестовое время
@@ -159,7 +158,7 @@ trait TestCaseTrait
             $time = new FrozenTime($time);
         }
         if ($clearMicroseconds) {
-            $time->setTime($time->hour, $time->minute, $time->second, 0);
+            $time = $time->copy()->setTime($time->hour, $time->minute, $time->second, 0);
         }
         FrozenTime::setTestNow($time);
         return $time;
@@ -172,10 +171,6 @@ trait TestCaseTrait
      * @param array $expected Ожидаемые данные
      * @param array $actual Актуальные данные
      * @param string $message Сообщение
-     * @param float $delta  Дельта
-     * @param int $maxDepth Максимальная глубина
-     * @param bool $canonicalize Флаг канонизировать
-     * @param bool $ignoreCase Флаг игнорировать регистр
      * @return void
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
@@ -183,14 +178,10 @@ trait TestCaseTrait
     public function assertArraySubsetEquals(
         array  $expected,
         array  $actual,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10,
-        bool   $canonicalize = false,
-        bool   $ignoreCase = false
+        string $message = ''
     ): void {
         $actual = array_intersect_key($actual, $expected);
-        self::assertEquals($expected, $actual, $message, $delta, $maxDepth, $canonicalize, $ignoreCase);
+        self::assertEquals($expected, $actual, $message);
     }
 
     /**
@@ -199,8 +190,6 @@ trait TestCaseTrait
      * @param array $expectedSubset Ожидаемое подмножество
      * @param Entity $entity Сущность
      * @param string $message Сообщение
-     * @param float $delta Дельта
-     * @param int $maxDepth Максимальная глубина
      * @return void
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
@@ -208,11 +197,9 @@ trait TestCaseTrait
     public function assertEntitySubset(
         array  $expectedSubset,
         Entity $entity,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10
+        string $message = ''
     ): void {
-        $this->assertArraySubsetEquals($expectedSubset, $entity->toArray(), $message, $delta, $maxDepth);
+        $this->assertArraySubsetEquals($expectedSubset, $entity->toArray(), $message);
     }
 
     /**
@@ -221,18 +208,14 @@ trait TestCaseTrait
      * @param Entity $expectedEntity Ожидаемая сущность
      * @param Entity $actualEntity Актуальная сущность
      * @param string $message Сообщение
-     * @param float $delta Дельта
-     * @param int $maxDepth Максимальная глубина
      * @return void
      */
     public function assertEntityEqualsEntity(
         Entity $expectedEntity,
         Entity $actualEntity,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10
+        string $message = ''
     ): void {
-        self::assertEquals($expectedEntity->toArray(), $actualEntity->toArray(), $message, $delta, $maxDepth);
+        self::assertEquals($expectedEntity->toArray(), $actualEntity->toArray(), $message);
     }
 
     /**
@@ -241,8 +224,6 @@ trait TestCaseTrait
      * @param array $expectedArray Ожидаемый массив
      * @param Entity $actualEntity Актуальная сущность
      * @param string $message Сообщение
-     * @param float $delta Дельта
-     * @param int $maxDepth Максимальная глубина
      * @return void
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
@@ -250,11 +231,9 @@ trait TestCaseTrait
     public function assertEntityEqualsArray(
         array  $expectedArray,
         Entity $actualEntity,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10
+        string $message = ''
     ): void {
-        self::assertEquals($expectedArray, $actualEntity->toArray(), $message, $delta, $maxDepth);
+        self::assertEquals($expectedArray, $actualEntity->toArray(), $message);
     }
 
     /**
@@ -263,25 +242,17 @@ trait TestCaseTrait
      * @param string $expectedString Ожидаемая строка
      * @param string $actualFile Актуальный файл
      * @param string $message Сообщение
-     * @param bool $canonicalize Флаг канонизировать
-     * @param bool $ignoreCase Флаг игнорировать регистр
      */
     public function assertFileEqualsString(
         string $expectedString,
         string $actualFile,
-        string $message = '',
-        bool   $canonicalize = false,
-        bool   $ignoreCase = false
+        string $message = ''
     ): void {
         self::assertFileExists($actualFile, $message);
         self::assertEquals(
             $expectedString,
             file_get_contents($actualFile),
-            $message,
-            0,
-            10,
-            $canonicalize,
-            $ignoreCase
+            $message
         );
     }
 }
