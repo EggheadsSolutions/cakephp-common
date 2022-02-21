@@ -3,20 +3,17 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\Filesystem\FileTest;
 
-use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Filesystem\File;
 use Eggheads\CakephpCommon\Filesystem\Folder;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
-use Exception;
 
 class FileTest extends AppTestCase
 {
-
     /**
      * Тест зиповки
-     * @SuppressWarnings(PHPMD.FunctionRule)
      *
-     * @throws InternalException
+     * @SuppressWarnings(PHPMD.FunctionRule)
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public function testZip(): void
     {
@@ -44,7 +41,7 @@ class FileTest extends AppTestCase
     /**
      * Тест распаковки
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testUnzip(): void
     {

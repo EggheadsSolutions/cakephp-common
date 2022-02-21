@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\Lib;
 
 use Eggheads\CakephpCommon\Error\InternalException;
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 use Eggheads\CakephpCommon\ValueObject\ValueObject;
 use stdClass;
 
 class Arrays
 {
-    use Library;
+    use LibraryTrait;
 
     /**
      * json_encode с JSON_UNESCAPED_UNICODE по умолчанию

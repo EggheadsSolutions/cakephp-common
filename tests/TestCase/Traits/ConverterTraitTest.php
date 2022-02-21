@@ -3,20 +3,17 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\Traits;
 
-use Eggheads\CakephpCommon\Error\InternalException;
-use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class ConverterTraitTest extends AppTestCase
 {
     /**
      * Создание объекта из json, массива, конвертация в массив
      *
-     * @throws InternalException
-     * @throws UserException
-     * @throws ExceptionInterface
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function test(): void
     {

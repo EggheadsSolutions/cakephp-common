@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Lib;
 
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 
 class Translit
 {
-    use Library;
+    use LibraryTrait;
 
     /**
      * Переводим строку в транслит

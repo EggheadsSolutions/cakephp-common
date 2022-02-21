@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\ValueObject;
 
 use ArrayAccess;
+use Cake\Error\Debugger;
+use Cake\Log\Log;
 use Eggheads\CakephpCommon\Error\InternalException;
+use Eggheads\CakephpCommon\I18n\FrozenDate;
+use Eggheads\CakephpCommon\I18n\FrozenTime;
 use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\Lib\Env;
 use Eggheads\CakephpCommon\Lib\Strings;
 use Eggheads\CakephpCommon\ORM\Entity;
-use Cake\Error\Debugger;
-use Eggheads\CakephpCommon\I18n\FrozenDate;
-use Eggheads\CakephpCommon\I18n\FrozenTime;
-use Cake\Log\Log;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
@@ -29,21 +29,21 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
      *
      * @var string[]
      */
-    const EXCLUDE_EXPORT_PROPS = [];
+    public const EXCLUDE_EXPORT_PROPS = [];
 
     /**
      * Поля с типом Time
      *
      * @var string[]
      */
-    const TIME_FIELDS = [];
+    public const TIME_FIELDS = [];
 
     /**
      * Поля с типом Date
      *
      * @var string[]
      */
-    const DATE_FIELDS = [];
+    public const DATE_FIELDS = [];
 
     /**
      * Список экспортируемых свойств
@@ -62,8 +62,8 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
     /**
      * constructor.
      *
-     * @param Entity|array<string, mixed> $fillValues Список заполняемых свойств
-     * @throws InternalException
+     * @param \Eggheads\CakephpCommon\ORM\Entity|array<string, mixed> $fillValues Список заполняемых свойств
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function __construct(array|Entity $fillValues = [])
@@ -71,13 +71,17 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
         $this->_fillExportedFields();
 
         foreach (static::TIME_FIELDS as $fieldName) {
-            if (!empty($fillValues[$fieldName]) && (is_string($fillValues[$fieldName]) || is_int($fillValues[$fieldName]))) {
+            if (!empty($fillValues[$fieldName])
+                && (is_string($fillValues[$fieldName]) || is_int($fillValues[$fieldName]))
+            ) {
                 $fillValues[$fieldName] = FrozenTime::parse($fillValues[$fieldName]);
             }
         }
 
         foreach (static::DATE_FIELDS as $fieldName) {
-            if (!empty($fillValues[$fieldName]) && (is_string($fillValues[$fieldName]) || is_int($fillValues[$fieldName]))) {
+            if (!empty($fillValues[$fieldName])
+                && (is_string($fillValues[$fieldName]) || is_int($fillValues[$fieldName]))
+            ) {
                 $fillValues[$fieldName] = FrozenDate::parse($fillValues[$fieldName]);
             }
         }
@@ -98,7 +102,7 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
      * @return static
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
-     * @throws InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public static function create(array $fillValues = []): static
     {
@@ -108,10 +112,10 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
     /**
      * Возможность использовать цепочку вызовов ->setField1($value1)->setField2($value2)
      *
-     * @param string $name
-     * @param array<int, mixed> $arguments
+     * @param string $name Наименование
+     * @param array<int, mixed> $arguments Аргументы
      * @return $this
-     * @throws InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public function __call(string $name, array $arguments = [])
     {
@@ -131,6 +135,7 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
                 $setValue = FrozenDate::parse($setValue);
             }
             $this->{$propertyName} = $setValue;
+
             return $this;
         }
         throw new InternalException("Undefined method $name");
@@ -159,6 +164,7 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
         if (Env::isDevelopment()) {
             $options |= JSON_PRETTY_PRINT;
         }
+
         return Arrays::encode($this, $options);
     }
 
@@ -175,11 +181,14 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
         foreach ($this->_exportFieldNames as $fieldName) {
             $result[$fieldName] = $this->{$fieldName};
         }
+
         return $result;
     }
 
     /**
      * Заполняем список полей на экспорт
+     *
+     * @return void
      */
     private function _fillExportedFields(): void
     {
@@ -195,37 +204,40 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
     }
 
     /**
-     * @param string|int $offset
+     * @param string|int $offset Смещение
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
         $this->_triggerDeprecatedError($offset);
+
         return property_exists($this, $offset);
     }
 
     /**
-     * @param string|int $offset
+     * @param string|int $offset Смещение
      * @return mixed
      */
     public function offsetGet($offset): mixed
     {
         $this->_triggerDeprecatedError($offset);
+
         return $this->{$offset};
     }
 
     /**
-     * @param string|int $offset
-     * @param mixed $value
+     * @param string|int $offset Смещение
+     * @param mixed $value Значение
+     * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->_triggerDeprecatedError($offset);
         $this->{$offset} = $value;
     }
 
     /**
-     * @inheritdoc
-     * @param string|int $offset
+     * @inheritDoc
      */
     public function offsetUnset($offset)
     {
@@ -236,7 +248,8 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
     /**
      * Выводим сообщение о недопустимости обращения как к элементу массива
      *
-     * @param int|string $offset
+     * @param int|string $offset Смещение
+     * @return void
      */
     private function _triggerDeprecatedError(int|string $offset): void
     {
@@ -244,6 +257,6 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
         $file = str_replace([CAKE_CORE_INCLUDE_PATH, ROOT], '', $trace[0]['file']);
         $line = $trace[0]['line'];
 
-        Log::error("Deprecated array access to property " . static::class . "::" . $offset . " in $file($line)");
+        Log::error('Deprecated array access to property ' . static::class . '::' . $offset . " in $file($line)");
     }
 }

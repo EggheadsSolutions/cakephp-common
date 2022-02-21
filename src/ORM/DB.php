@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\ORM;
 
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 
@@ -12,7 +12,7 @@ use Cake\Datasource\ConnectionManager;
  */
 class DB
 {
-    use Library;
+    use LibraryTrait;
 
     const CONNECTION_DEFAULT = 'default';
     const CONNECTION_TEST = 'test';

@@ -27,7 +27,6 @@ class SentryErrorContext implements EventListenerInterface
     /**
      * @inerhitDoc
      */
-    #[ArrayShape(['CakeSentry.Client.beforeCapture' => "string"])]
     public function implementedEvents(): array
     {
         return [
@@ -38,7 +37,7 @@ class SentryErrorContext implements EventListenerInterface
     /**
      * Добавление данных окружения
      *
-     * @param Event $event
+     * @param \Cake\Event\Event $event
      */
     public function setContext(Event $event): void
     {

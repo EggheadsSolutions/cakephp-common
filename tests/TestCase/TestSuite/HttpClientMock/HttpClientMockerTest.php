@@ -8,14 +8,11 @@ use Eggheads\CakephpCommon\Http\Client;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientAdapter;
 use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMocker;
-use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMockerEntity;
-use Cake\Http\Client\Request;
-use Cake\Http\Client\Response;
 use PHPUnit\Framework\ExpectationFailedException;
 
 class HttpClientMockerTest extends AppTestCase
 {
-    /** @inheritdoc */
+    /** @inheritDoc */
     public function setUp(): void
     {
         parent::setUp();
@@ -69,9 +66,9 @@ class HttpClientMockerTest extends AppTestCase
 
         $sniffCollection = HttpClientMocker::getSniffList();
         self::assertCount(1, $sniffCollection);
-        /** @var Request $sniffRequest */
+        /** @var \Cake\Http\Client\Request $sniffRequest */
         $sniffRequest = $sniffCollection[0]['request'];
-        /** @var Response $sniffResponse */
+        /** @var \Cake\Http\Client\Response $sniffResponse */
         $sniffResponse = $sniffCollection[0]['response'];
         self::assertEquals($url, $sniffRequest->getUri());
         self::assertEquals($clientResponse->getStringBody(), $sniffResponse->getStringBody());
@@ -82,7 +79,7 @@ class HttpClientMockerTest extends AppTestCase
      */
     public function testMockTwice(): void
     {
-        $this->expectExceptionMessage("GET http://www.artskills.ru is already mocked");
+        $this->expectExceptionMessage('GET http://www.artskills.ru is already mocked');
         $this->expectException(ExpectationFailedException::class);
         $url = 'http://www.artskills.ru';
         $method = Message::METHOD_GET;
@@ -103,6 +100,7 @@ class HttpClientMockerTest extends AppTestCase
 
     /**
      * Мок возвращает код статуса
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function testStatusCode(): void
@@ -126,10 +124,11 @@ class HttpClientMockerTest extends AppTestCase
         $responses = ['resp1', 'resp2'];
         $codes = [200, 404];
         $mock->willReturnAction(function ($request, $mock) use ($responses, $codes) {
-            /** @var HttpClientMockerEntity $mock */
+            /** @var \Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMockerEntity $mock */
             static $i = -1; // @phpstan-ignore-line
             $i++;
             $mock->willReturnStatus($codes[$i]);
+
             return $responses[$i];
         });
 
@@ -185,7 +184,7 @@ class HttpClientMockerTest extends AppTestCase
      */
     public function testMockPostUnexpectedBody(): void
     {
-        $this->expectExceptionMessage("Expected POST body data is not equal to real data");
+        $this->expectExceptionMessage('Expected POST body data is not equal to real data');
         $this->expectException(ExpectationFailedException::class);
         $url = 'http://www.artskills.ru';
         HttpClientMocker::mockPost($url, ['foo' => 'bar'])->willReturnString('');

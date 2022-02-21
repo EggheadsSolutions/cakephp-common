@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\Error;
 
 /**
- * @method static UserException instance(string $message, int $code = 0, \Exception|null $previous = null)
+ * @method static \Eggheads\CakephpCommon\Error\UserException instance(string $message, int $code = 0, \Eggheads\CakephpCommon\Error\Exception|null $previous = null)
  */
 class UserException extends Exception
 {
-
     /**
      * Сообщение, которое будет выведено юзеру.
      * По умолчанию это то же самое, что и message, но можно задать что-то другое.
@@ -19,17 +18,12 @@ class UserException extends Exception
     protected string $_userMessage = '';
 
     /**
-     * @inheritdoc
-     * по умолчанию выключено
+     * @inheritDoc По умолчанию выключено
      */
     protected bool $_writeToLog = false;
 
-
     /**
-     * @inheritdoc
-     * @param string $message
-     * @param int $code
-     * @param ?\Exception $previous
+     * @inheritDoc
      */
     public function __construct($message = '', $code = 0, $previous = null)
     {
@@ -47,16 +41,16 @@ class UserException extends Exception
         return $this->_userMessage;
     }
 
-
     /**
      * Задать специальное сообщение для юзера
      *
-     * @param string $message
+     * @param string $message Сообщение
      * @return $this
      */
-    public function setUserMessage(string $message): self
+    public function setUserMessage(string $message): static
     {
         $this->_userMessage = (string)$message;
+
         return $this;
     }
 }

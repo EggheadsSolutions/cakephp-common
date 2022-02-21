@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Lib;
 
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 
 class Strings
 {
-    use Library;
+    use LibraryTrait;
 
     /**
      * Проверка, что строка начинается с любого префикса из списка

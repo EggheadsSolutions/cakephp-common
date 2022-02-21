@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\TestSuite;
 
-use Eggheads\CakephpCommon\Error\InternalException;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
+use Eggheads\CakephpCommon\I18n\FrozenTime;
 use Eggheads\CakephpCommon\Lib\AppCache;
 use Eggheads\CakephpCommon\Lib\Strings;
 //use Eggheads\CakephpCommon\Mailer\Transport\TestEmailTransport;
@@ -13,13 +15,6 @@ use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMocker;
 use Eggheads\Mocks\ConstantMocker;
 use Eggheads\Mocks\MethodMocker;
 use Eggheads\Mocks\PropertyAccess;
-use Eggheads\CakephpCommon\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
-use Cake\TestSuite\TestCase;
-use Cake\Utility\Inflector;
-use Exception;
-use PHPUnit\Framework\AssertionFailedError;
-use ReflectionException;
 
 /**
  * Тестовое окружение
@@ -35,7 +30,11 @@ trait TestCaseTrait
      */
     private static array $_tableRegistry = [];
 
-    /** Вызывать в реальном setUpBeforeClass */
+    /**
+     * Вызывать в реальном setUpBeforeClass
+     *
+     * @return void
+     */
     protected static function _setUpBeforeClass(): void
     {
         // noop
@@ -44,7 +43,8 @@ trait TestCaseTrait
     /**
      * Инициализация тестового окружения
      *
-     * @throws InternalException
+     * @return void
+     * @throws \Eggheads\CakephpCommon\TestSuite\InternalException
      */
     protected function _setUp(): void
     {
@@ -59,11 +59,13 @@ trait TestCaseTrait
     /**
      * Чистка тестового окружения
      *
-     * @throws ReflectionException|AssertionFailedError|Exception
+     * @return void
+     * @throws \Eggheads\CakephpCommon\TestSuite\ReflectionException|\Eggheads\CakephpCommon\TestSuite\AssertionFailedError|\Eggheads\CakephpCommon\TestSuite\Exception
+     * @throws \ReflectionException
      */
     protected function _tearDown(): void
     {
-        /** @var TestCase $this */
+        /** @var \Eggheads\CakephpCommon\TestSuite\TestCaseTrait $this */
         ConstantMocker::restore();
         PropertyAccess::restoreStaticAll();
         FrozenTime::setTestNow(null); // сбрасываем тестовое время
@@ -89,7 +91,11 @@ trait TestCaseTrait
         // noop
     }
 
-    /** Для локальных действий на tearDown */
+    /**
+     * Для локальных действий на tearDown
+     *
+     * @return void
+     */
     protected function _tearDownLocal(): void
     {
         // noop
@@ -98,7 +104,8 @@ trait TestCaseTrait
     /**
      * Отключение постоянного мока; вызывать перед parent::setUp();
      *
-     * @param string $mockClass
+     * @param string $mockClass Название класса для мока
+     * @return void
      */
     protected function _disablePermanentMock(string $mockClass): void
     {
@@ -107,6 +114,8 @@ trait TestCaseTrait
 
     /**
      * Чистка кеша
+     *
+     * @return void
      */
     protected function _clearCache(): void
     {
@@ -115,6 +124,8 @@ trait TestCaseTrait
 
     /**
      * loadModel на все таблицы фикстур
+     *
+     * @return void
      */
     protected function _loadFixtureModels(): void
     {
@@ -137,7 +148,7 @@ trait TestCaseTrait
      * Задать тестовое время
      * Чтоб можно было передавать строку
      *
-     * @param FrozenTime|string|null $time
+     * @param FrozenTime|string|null $time Время для установки как Now
      * @param bool $clearMicroseconds убрать из времени микросекунды (PHP7).
      *                                Полезно тем, что в базу микросекунды всё равно не сохранятся
      * @return FrozenTime
@@ -158,13 +169,14 @@ trait TestCaseTrait
      * Проверка совпадения части массива
      * Замена нативного assertArraySubset, который не показывает красивые диффы
      *
-     * @param array $expected
-     * @param array $actual
-     * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
-     * @param bool $canonicalize
-     * @param bool $ignoreCase
+     * @param array $expected Ожидаемые данные
+     * @param array $actual Актуальные данные
+     * @param string $message Сообщение
+     * @param float $delta  Дельта
+     * @param int $maxDepth Максимальная глубина
+     * @param bool $canonicalize Флаг канонизировать
+     * @param bool $ignoreCase Флаг игнорировать регистр
+     * @return void
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
@@ -184,11 +196,12 @@ trait TestCaseTrait
     /**
      * Проверка части полей сущности
      *
-     * @param array $expectedSubset
-     * @param Entity $entity
-     * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
+     * @param array $expectedSubset Ожидаемое подмножество
+     * @param Entity $entity Сущность
+     * @param string $message Сообщение
+     * @param float $delta Дельта
+     * @param int $maxDepth Максимальная глубина
+     * @return void
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
@@ -205,11 +218,12 @@ trait TestCaseTrait
     /**
      * Сравнение двух сущностей
      *
-     * @param Entity $expectedEntity
-     * @param Entity $actualEntity
-     * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
+     * @param Entity $expectedEntity Ожидаемая сущность
+     * @param Entity $actualEntity Актуальная сущность
+     * @param string $message Сообщение
+     * @param float $delta Дельта
+     * @param int $maxDepth Максимальная глубина
+     * @return void
      */
     public function assertEntityEqualsEntity(
         Entity $expectedEntity,
@@ -224,11 +238,12 @@ trait TestCaseTrait
     /**
      * Сравнение двух сущностей
      *
-     * @param array $expectedArray
-     * @param Entity $actualEntity
-     * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
+     * @param array $expectedArray Ожидаемый массив
+     * @param Entity $actualEntity Актуальная сущность
+     * @param string $message Сообщение
+     * @param float $delta Дельта
+     * @param int $maxDepth Максимальная глубина
+     * @return void
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
@@ -245,11 +260,11 @@ trait TestCaseTrait
     /**
      * Содержимое файла соответствует ожидаемой строке
      *
-     * @param string $expectedString
-     * @param string $actualFile
-     * @param string $message
-     * @param bool $canonicalize
-     * @param bool $ignoreCase
+     * @param string $expectedString Ожидаемая строка
+     * @param string $actualFile Актуальный файл
+     * @param string $message Сообщение
+     * @param bool $canonicalize Флаг канонизировать
+     * @param bool $ignoreCase Флаг игнорировать регистр
      */
     public function assertFileEqualsString(
         string $expectedString,

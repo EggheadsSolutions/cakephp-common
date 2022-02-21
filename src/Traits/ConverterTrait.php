@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Traits;
 
+use Cake\Validation\Validator;
 use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Serializer\SerializerFactory;
-use Cake\Validation\Validator;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -18,15 +18,18 @@ trait ConverterTrait
      * Создание объекта из json
      *
      * @SuppressWarnings(PHPMD.MethodArgs)
-     * @param string $json
-     * @param array $context
-     * @param bool $isConvertCamelCaseKeyToSnakeCase
+     * @param string $json JSON строка
+     * @param array $context Контекст
+     * @param bool $isConvertCamelCaseKeyToSnakeCase Флаг конвертации ключей CamelCase в SnakeCase
      * @return static
-     * @throws InternalException|UserException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException|\Eggheads\CakephpCommon\Error\UserException
      * @phpstan-ignore-next-line
      */
-    public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): static
-    {
+    public static function createFromJson(
+        string $json,
+        array $context = [],
+        bool $isConvertCamelCaseKeyToSnakeCase = false
+    ): static {
         try {
             /** @var static $dto */
             $dto = SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->deserialize(
@@ -49,16 +52,19 @@ trait ConverterTrait
      * Создание объекта из массива
      *
      * @SuppressWarnings(PHPMD.MethodArgs)
-     * @param array $data
-     * @param array $context
-     * @param bool $isConvertCamelCaseKeyToSnakeCase
+     * @param array $data Массив данных
+     * @param array $context Контекст
+     * @param bool $isConvertCamelCaseKeyToSnakeCase Флаг конвертации ключей CamelCase в SnakeCase
      * @return static
-     * @throws InternalException
-     * @throws UserException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
      * @phpstan-ignore-next-line
      */
-    public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): static
-    {
+    public static function createFromArray(
+        array $data,
+        array $context = [],
+        bool $isConvertCamelCaseKeyToSnakeCase = false
+    ): static {
         try {
             /** @var static $dto */
             $dto = SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->denormalize(
@@ -82,9 +88,9 @@ trait ConverterTrait
      *
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @param bool $isConvertCamelCaseKeyToSnakeCase Конвертировать CamelCase ключи в snake_case
-     * @param array $context
+     * @param array $context Контекст
      * @return array
-     * @throws ExceptionInterface
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      * @phpstan-ignore-next-line
      */
     public function toArray(bool $isConvertCamelCaseKeyToSnakeCase = false, array $context = []): array
@@ -96,14 +102,17 @@ trait ConverterTrait
      * Преобразование строки в массив объектов
      *
      * @SuppressWarnings(PHPMD.MethodArgs)
-     * @param string $json
-     * @param array $context
-     * @param bool $useCameToSnakeConverter
+     * @param string $json JSON строка
+     * @param array $context Контекст
+     * @param bool $useCameToSnakeConverter Использовать CamelCase в snake_case конвертер
      * @return static[]
      * @phpstan-ignore-next-line
      */
-    public static function createArrayFromJson(string $json, array $context = [], bool $useCameToSnakeConverter = false): array
-    {
+    public static function createArrayFromJson(
+        string $json,
+        array $context = [],
+        bool $useCameToSnakeConverter = false
+    ): array {
         return SerializerFactory::create($useCameToSnakeConverter)->deserialize(
             $json,
             static::class . '[]',
@@ -116,8 +125,8 @@ trait ConverterTrait
      * Проверим входные данные
      *
      * @return void
-     * @throws UserException
-     * @throws ExceptionInterface
+     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     protected function _validate(): void
     {
@@ -136,9 +145,9 @@ trait ConverterTrait
     /**
      * Преобразование древовидного списка ошибок в плоский список
      *
-     * @param string[] $messages
+     * @param string[] $messages Массив сообщений
      * @phpstan-ignore-next-line
-     * @param array $errors
+     * @param array $errors Массив ошибок
      * @return void
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
