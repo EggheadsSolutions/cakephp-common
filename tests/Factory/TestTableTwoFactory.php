@@ -3,16 +3,11 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\Factory;
 
-use CakephpFixtureFactories\Factory\BaseFactory;
+use Eggheads\CakephpCommon\Plugins\CakephpFixtureFactories\AbstractFixtureFactory;
 use Faker\Generator;
 
-class TestTableTwoFactory extends BaseFactory
+class TestTableTwoFactory extends AbstractFixtureFactory
 {
-    protected function getRootTableRegistryName(): string
-    {
-        return 'TestTableTwo';
-    }
-
     protected function setDefaultTemplate(): void
     {
         $this

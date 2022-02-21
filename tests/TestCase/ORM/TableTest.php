@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\ORM;
 
+use Cake\Database\Driver;
 use Eggheads\CakephpCommon\I18n\FrozenTime;
 use Eggheads\CakephpCommon\Test\Factory\TestTableOneFactory;
 use Eggheads\CakephpCommon\Test\Factory\TestTableTwoFactory;
@@ -23,12 +24,6 @@ use TestApp\Model\Table\TestTableTwoTable;
  */
 class TableTest extends AppTestCase
 {
-    /** @inheritdoc */
-    public $fixtures = [
-        'app.TestTableOne',
-        'app.TestTableTwo',
-    ];
-
     /**
      * Получение сущности разными способами
      */
@@ -189,13 +184,13 @@ class TableTest extends AppTestCase
             $firstQuery++;
         });
 
-        // MethodMocker::sniff(Driver::class, 'beginTransaction', function () {
-        //     self::assertTrue(true, 'Транзакция не началась');
-        // });
-        //
-        // MethodMocker::sniff(Driver::class, 'commitTransaction', function () {
-        //     self::assertTrue(true, 'Транзакция не закончилась');
-        // });
+        MethodMocker::sniff(Driver::class, 'beginTransaction', function () {
+            self::assertTrue(true, 'Транзакция не началась');
+        });
+
+        MethodMocker::sniff(Driver::class, 'commitTransaction', function () {
+            self::assertTrue(true, 'Транзакция не закончилась');
+        });
 
         /** @var TestTableTwo $entity1 */
         $entity1 = TestTableOneFactory::make()->persist();

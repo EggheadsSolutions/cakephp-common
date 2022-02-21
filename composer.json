@@ -34,7 +34,8 @@
     "symfony/serializer": "^6.0",
     "eggheads/mocks": "^1.0.0",
     "ext-simplexml": "*",
-    "phpdocumentor/reflection-docblock": "^5.3"
+    "phpdocumentor/reflection-docblock": "^5.3",
+    "jan-swiecki/simple-annotations": "^0.3.1"
   },
   "require-dev": {
     "cakephp/bake": "^2.6",
