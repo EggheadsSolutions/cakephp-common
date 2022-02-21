@@ -86,6 +86,7 @@ trait DateTimeTrait
      *                       месяца, l - день недели, D - краткий день недели с указанием "сегодня" и "завтра"
      * @inheritDoc
      * @return array|string
+     * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function format($format): array|string
     {

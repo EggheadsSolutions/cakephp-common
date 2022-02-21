@@ -25,6 +25,7 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
      *
      * @param \Psr\Http\Message\RequestInterface $request
      * @param \Throwable $exception
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     // phpcs:ignore
     protected function logException(RequestInterface $request, Throwable $exception)

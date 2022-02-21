@@ -33,6 +33,7 @@ class RequestTest
     /**
      * @param Validator|array $validator Валидатор
      * @return Validator
+     * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function addValidation(Validator|array $validator): Validator
     {

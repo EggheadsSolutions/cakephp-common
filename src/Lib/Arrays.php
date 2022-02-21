@@ -72,6 +72,7 @@ class Arrays
      *
      * @param array[]|int[] $values
      * @return array
+     * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public static function keysFromValues(array $values): array
     {
