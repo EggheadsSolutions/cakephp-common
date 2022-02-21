@@ -151,60 +151,6 @@ class Table extends \Cake\ORM\Table
     }
 
     /**
-     * @inheritdoc
-     * добавил опцию одноразового переопределения способа сохранения ассоциаций
-     * изменённым дочерним сущностям проставляется dirty
-     * @phpstan-ignore-next-line
-     */
-    public function save(EntityInterface $entity, $options = [])
-    {
-        $this->_setAssocDirty($entity);
-        $originalStrategies = [];
-        if (!empty($options['assocStrategies'])) {
-            foreach ($options['assocStrategies'] as $assoc => $strategy) {
-                $originalStrategies[$assoc] = $this->$assoc->getSaveStrategy();
-                $this->$assoc->setSaveStrategy($strategy);
-            }
-            unset($options['assocStrategies']);
-        }
-        $result = parent::save($entity, $options);
-        foreach ($originalStrategies as $assoc => $strategy) {
-            $this->$assoc->setSaveStrategy($strategy);
-        }
-        return $result;
-    }
-
-    /**
-     * Пройтись по ассоциациям и задать им dirty, если надо
-     *
-     * @param EntityInterface $entity
-     */
-    private function _setAssocDirty(EntityInterface $entity): void
-    {
-        $associations = $this->associations();
-        foreach ($associations as $assoc) {
-            $propertyName = $assoc->getProperty();
-            if (empty($entity->{$propertyName})) {
-                continue;
-            }
-
-            if (is_array($entity->{$propertyName})) {
-                /** @var Entity $subEntity */
-                foreach ($entity->{$propertyName} as $subEntity) {
-                    if ($subEntity->isDirty()) {
-                        $entity->setDirty($propertyName, true);
-                        break;
-                    }
-                }
-            } else {
-                if ($entity->{$propertyName}->isDirty()) {
-                    $entity->setDirty($propertyName, true);
-                }
-            }
-        }
-    }
-
-    /**
      * Создаёт много сущностей из массива и сохраняет их
      *
      * @param array<int, array> $saveData

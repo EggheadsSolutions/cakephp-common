@@ -95,52 +95,6 @@ class TableTest extends AppTestCase
     }
 
     /**
-     * Редактирование связанных сущностей
-     */
-    public function testChildEdit(): void
-    {
-        /** @var TestTableTwo $entity2 */
-        $entity2 = TestTableTwoFactory::make()->persist();
-        $testId = $entity2->TestTableOne->id;
-
-        /** @var TestTableTwo $entity2 */
-        $entity2 = TestTableTwoFactory::make()->persist();
-        $this->TestTableTwo->saveArr(['table_one_fk' => $testId], $entity2);
-
-        $assoc = 'TestTableTwo';
-        $table = TestTableOneTable::instance();
-
-        // если дочерняя сущность dirty, а родительская - нет, то дочерняя сохранится
-        $newText = 'test text ololo';
-        /** @var TestTableOne $testEntity */
-        $testEntity = $table->getEntity($testId, ['contain' => $assoc]);
-        self::assertNotEquals($newText, $testEntity->TestTableTwo[0]->col_text);
-        $testEntity->TestTableTwo[0]->col_text = $newText;
-        $table->save($testEntity);// @phpstan-ignore-line
-        $testEntity = $table->getEntity($testId, ['contain' => $assoc]);
-        self::assertEquals($newText, $testEntity->TestTableTwo[0]->col_text);// @phpstan-ignore-line
-
-        // смена способа сохранения дочерних сущностей
-        /** @var TestTableOne $testEntity */
-        $testEntity = $table->getEntity($testId, ['contain' => $assoc]);
-        self::assertEquals(HasMany::SAVE_APPEND, $table->$assoc->getSaveStrategy());// @phpstan-ignore-line
-        self::assertCount(2, $testEntity->TestTableTwo);
-        $testEntity->deleteChild($assoc, 1);
-        $table->save($testEntity);// @phpstan-ignore-line
-        // на самом деле не удалилась
-        $testEntity = $table->getEntity($testId, ['contain' => $assoc]);
-        self::assertCount(2, $testEntity->TestTableTwo);// @phpstan-ignore-line
-
-        // а теперь удалится
-        $testEntity->deleteChild($assoc, 1);
-        $table->save($testEntity, ['assocStrategies' => [$assoc => HasMany::SAVE_REPLACE]]);// @phpstan-ignore-line
-        // стратегия изменилась ровно на одно сохранение
-        self::assertEquals(HasMany::SAVE_APPEND, $table->$assoc->getSaveStrategy());// @phpstan-ignore-line
-        $testEntity = $table->getEntity($testId, ['contain' => $assoc]);
-        self::assertCount(1, $testEntity->TestTableTwo);// @phpstan-ignore-line
-    }
-
-    /**
      * exists с contain
      */
     public function testExistsContain(): void
