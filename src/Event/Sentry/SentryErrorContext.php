@@ -10,7 +10,6 @@ use Cake\Http\ServerRequestFactory;
 use Cake\Log\Log;
 use Cake\Log\LogTrait;
 use Sentry\State\Scope;
-
 use Sentry\UserDataBag;
 use function Sentry\configureScope as sentryConfigureScope;
 
@@ -38,6 +37,7 @@ class SentryErrorContext implements EventListenerInterface
      * Добавление данных окружения
      *
      * @param Event $event
+     * @phpstan-ignore-next-line
      */
     public function setContext(Event $event): void
     {
@@ -91,7 +91,7 @@ class SentryErrorContext implements EventListenerInterface
      * @param mixed $var
      * @return string
      */
-    private function _exportVar($var): string
+    private function _exportVar(mixed $var): string
     {
         return empty($var) ? 'empty' : Debugger::exportVarAsPlainText($var, self::INFO_MAX_NEST_LEVEL);
     }
@@ -156,11 +156,11 @@ class SentryErrorContext implements EventListenerInterface
      * Получить значение по ключу с проверками
      *
      * @param ?array<string|int, mixed> $array
-     * @param string|int $key
-     * @param mixed $default
+     * @param int|string $key
+     * @param mixed|null $default
      * @return mixed
      */
-    private function _arrayGet(?array $array, $key, $default = null)
+    private function _arrayGet(?array $array, int|string $key, mixed $default = null): mixed
     {
         if (is_array($array) && array_key_exists($key, $array)) {
             return $array[$key];
@@ -176,7 +176,7 @@ class SentryErrorContext implements EventListenerInterface
      * @param string|string[] $postfixes
      * @return bool
      */
-    private function _stringsEndsWith(string $string, $postfixes): bool
+    private function _stringsEndsWith(string $string, array|string $postfixes): bool
     {
         $stringLength = strlen($string);
         foreach ((array)$postfixes as $postfix) {
