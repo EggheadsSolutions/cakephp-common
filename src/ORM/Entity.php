@@ -27,7 +27,7 @@ class Entity extends \Cake\ORM\Entity
      * @return void
      * @throws InternalException
      */
-    public function deleteChild(string $childEntity, ?int $index = null)
+    public function deleteChild(string $childEntity, ?int $index = null): void
     {
         if (!array_key_exists($childEntity, $this->_fields)) {
             throw new InternalException("Unknown property $childEntity");

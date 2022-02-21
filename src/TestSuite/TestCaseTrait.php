@@ -120,6 +120,9 @@ trait TestCaseTrait
         if (empty($this->fixtures)) {
             return;
         }
+
+        parent::setupFixtures();
+
         foreach ($this->fixtures as $fixtureName) {
             $modelAlias = Inflector::camelize(Strings::lastPart('.', $fixtureName));
             if (TableRegistry::getTableLocator()->exists($modelAlias)) {
