@@ -36,6 +36,7 @@ class TestTableOneTable extends Table
 
     /**
      * @inheritDoc
+     * @phpstan-ignore-next-line
      */
     public function initialize(array $config): void
     {

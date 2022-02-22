@@ -10,7 +10,6 @@ use Eggheads\CakephpCommon\Lib\Arrays;
  * some comments blabla
  *
  * more comments blabla
- *
  * @property int $id
  * @property string $col_enum = 'val1' Колонка с enum
  * @property string $col_text Описание
