@@ -13,7 +13,7 @@ class DiscoverFactories
     /**
      * Список названий таблиц
      *
-     * @var array
+     * @var string[]
      */
     private static array $_tableNames = [];
 

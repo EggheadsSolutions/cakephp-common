@@ -138,7 +138,7 @@ abstract class AppTestCase extends TestCase
             $time = new FrozenTime($time);
         }
         if ($clearMicroseconds) {
-            $time->setTime($time->hour, $time->minute, $time->second, 0);
+            $time = $time->setTime($time->hour, $time->minute, $time->second);
         }
         FrozenTime::setTestNow($time);
         return $time;
@@ -151,24 +151,16 @@ abstract class AppTestCase extends TestCase
      * @param array $expected
      * @param array $actual
      * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
-     * @param bool $canonicalize
-     * @param bool $ignoreCase
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function assertArraySubsetEquals(
         array  $expected,
         array  $actual,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10,
-        bool   $canonicalize = false,
-        bool   $ignoreCase = false
+        string $message = ''
     ): void {
         $actual = array_intersect_key($actual, $expected);
-        self::assertEquals($expected, $actual, $message, $delta, $maxDepth, $canonicalize, $ignoreCase);
+        self::assertEquals($expected, $actual, $message);
     }
 
     /**
@@ -177,19 +169,15 @@ abstract class AppTestCase extends TestCase
      * @param array $expectedSubset
      * @param Entity $entity
      * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function assertEntitySubset(
         array  $expectedSubset,
         Entity $entity,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10
+        string $message = ''
     ): void {
-        $this->assertArraySubsetEquals($expectedSubset, $entity->toArray(), $message, $delta, $maxDepth);
+        $this->assertArraySubsetEquals($expectedSubset, $entity->toArray(), $message);
     }
 
     /**
@@ -198,17 +186,13 @@ abstract class AppTestCase extends TestCase
      * @param Entity $expectedEntity
      * @param Entity $actualEntity
      * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
      */
     public function assertEntityEqualsEntity(
         Entity $expectedEntity,
         Entity $actualEntity,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10
+        string $message = ''
     ): void {
-        self::assertEquals($expectedEntity->toArray(), $actualEntity->toArray(), $message, $delta, $maxDepth);
+        self::assertEquals($expectedEntity->toArray(), $actualEntity->toArray(), $message);
     }
 
     /**
@@ -217,19 +201,15 @@ abstract class AppTestCase extends TestCase
      * @param array $expectedArray
      * @param Entity $actualEntity
      * @param string $message
-     * @param float $delta
-     * @param int $maxDepth
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
     public function assertEntityEqualsArray(
         array  $expectedArray,
         Entity $actualEntity,
-        string $message = '',
-        float  $delta = 0.0,
-        int    $maxDepth = 10
+        string $message = ''
     ): void {
-        self::assertEquals($expectedArray, $actualEntity->toArray(), $message, $delta, $maxDepth);
+        self::assertEquals($expectedArray, $actualEntity->toArray(), $message);
     }
 
     /**
@@ -238,25 +218,13 @@ abstract class AppTestCase extends TestCase
      * @param string $expectedString
      * @param string $actualFile
      * @param string $message
-     * @param bool $canonicalize
-     * @param bool $ignoreCase
      */
     public function assertFileEqualsString(
         string $expectedString,
         string $actualFile,
-        string $message = '',
-        bool   $canonicalize = false,
-        bool   $ignoreCase = false
+        string $message = ''
     ): void {
         self::assertFileExists($actualFile, $message);
-        self::assertEquals(
-            $expectedString,
-            file_get_contents($actualFile),
-            $message,
-            0,
-            10,
-            $canonicalize,
-            $ignoreCase
-        );
+        self::assertEquals($expectedString, file_get_contents($actualFile), $message);
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\ORM;
 
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
@@ -33,7 +34,6 @@ class Table extends \Cake\ORM\Table
     /**
      * @inheritdoc
      * Прописывание правильной сущности
-     * @phpstan-ignore-next-line
      */
     public function initialize(array $config): void
     {
@@ -154,15 +154,15 @@ class Table extends \Cake\ORM\Table
      * Создаёт много сущностей из массива и сохраняет их
      *
      * @param array<int, array> $saveData
-     * @param array $options
-     * @return array|bool|ResultSet
+     * @param array<string, mixed> $options
+     * @return ResultSetInterface|EntityInterface[]|false
      * @SuppressWarnings(PHPMD.MethodArgs)
-     * @throws Exception
      * @phpstan-ignore-next-line
+     * @throws Exception
      */
-    public function saveManyArr(array $saveData, array $options = []): ResultSet|bool|array
+    public function saveManyArr(array $saveData, array $options = []): ResultSetInterface|array|bool
     {
-        return $this->saveMany($this->newEntities($saveData, $options)); // @phpstan-ignore-line
+        return $this->saveMany($this->newEntities($saveData, $options));
     }
 
     /**
@@ -229,13 +229,13 @@ class Table extends \Cake\ORM\Table
      * Добавил возможность более коротких опций
      * @phpstan-ignore-next-line
      */
-    public function findList(\Cake\ORM\Query $query, array $options): Query
+    public function findList(\Cake\ORM\Query $query, array $options): \Cake\ORM\Query
     {
         if ((count($options) === 1) && empty($options['valueField'])) {
             $newOptions = [];
             foreach ($options as $keyField => $valueField) {
                 $selectFields = [$valueField];
-                if (is_int($keyField)) {
+                if (is_int($keyField)) { // @phpstan-ignore-line
                     $keyField = $valueField;
                 } else {
                     $selectFields[] = $keyField;
@@ -271,7 +271,6 @@ class Table extends \Cake\ORM\Table
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function belongsTo($associated, array $options = []): BelongsTo
     {
@@ -282,10 +281,9 @@ class Table extends \Cake\ORM\Table
      * Обработать опции создания ассоциаций
      *
      * @param string $assocName
-     * @param array $options
-     * @return array
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
      * @SuppressWarnings(PHPMD.MethodArgs)
-     * @phpstan-ignore-next-line
      */
     private function _assocOptions(string $assocName, array $options): array
     {
@@ -297,7 +295,6 @@ class Table extends \Cake\ORM\Table
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function hasOne($associated, array $options = []): HasOne
     {
@@ -306,7 +303,6 @@ class Table extends \Cake\ORM\Table
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function hasMany($associated, array $options = []): HasMany
     {
@@ -315,7 +311,6 @@ class Table extends \Cake\ORM\Table
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function belongsToMany($associated, array $options = []): BelongsToMany
     {

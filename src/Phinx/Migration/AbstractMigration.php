@@ -13,7 +13,7 @@ abstract class AbstractMigration extends \Migrations\AbstractMigration
      * @param string $tableName
      * @param array<string, mixed> $options
      */
-    public function table($tableName, $options = [])
+    public function table($tableName, $options = []): \Migrations\Table|Table
     {
         return new Table($tableName, $options, $this->getAdapter());
     }
