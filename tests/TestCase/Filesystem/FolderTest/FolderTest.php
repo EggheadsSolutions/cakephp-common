@@ -8,7 +8,6 @@ use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 
 class FolderTest extends AppTestCase
 {
-
     /**
      * Проверка чистилки файлов
      */

@@ -3,7 +3,7 @@
  * Configure paths required to find CakePHP + general filepath
  * constants
  */
-require __DIR__ . '/paths.php';
+require_once __DIR__ . '/paths.php';
 
 // Use composer to load the autoloader.
 require ROOT . DS . 'vendor' . DS . 'autoload.php';

@@ -7,6 +7,7 @@ use Cake\Http\Client\Message;
 use Cake\Http\Client\Request;
 use Cake\Http\Client\Response;
 use PHPUnit\Framework\ExpectationFailedException;
+use Psr\Http\Message\RequestInterface;
 
 class HttpClientMocker
 {
@@ -124,17 +125,17 @@ class HttpClientMocker
     /**
      * Проверяем на мок и возвращаем результат
      *
-     * @param Request $request
+     * @param RequestInterface|Request $request
      * @return null|array{response: string, status: int}
      */
-    public static function getMockedData(Request $request): ?array
+    public static function getMockedData(RequestInterface|Request $request): ?array
     {
         foreach (self::$_mockCallList as $mock) {
             $url = (string)$request->getUri();
             $method = $request->getMethod();
 
             if ($mock->check($url, $method)) {
-                $response = $mock->doAction($request);
+                $response = $mock->doAction($request); // @phpstan-ignore-line
                 // doAction вызывается до getReturnStatusCode, потому что в нём статус может измениться
                 $statusCode = $mock->getReturnStatusCode();
                 return ['response' => $response, 'status' => $statusCode];

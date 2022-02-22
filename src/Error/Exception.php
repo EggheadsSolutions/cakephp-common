@@ -42,9 +42,9 @@ class Exception extends \Exception
     /**
      * Создание эксепшна в статическом стиле
      *
-     * @param string $message
-     * @param int $code
-     * @param \Exception|null $previous
+     * @param string $message Сообщение
+     * @param int $code Код ошибки
+     * @param \Exception|null $previous Предыдущее исключение
      * @return static
      */
     public static function instance(string $message = '', int $code = 0, ?\Exception $previous = null): Exception
@@ -56,70 +56,76 @@ class Exception extends \Exception
     /**
      * Писать ли об ошибке в лог
      *
-     * @param bool $writeToLog
-     * @return $this
+     * @param bool $writeToLog Флаг записи в лог
+     * @return static
      */
-    public function setWriteToLog(bool $writeToLog): Exception
+    public function setWriteToLog(bool $writeToLog): static
     {
         $this->_writeToLog = $writeToLog;
+
         return $this;
     }
 
     /**
      * Задать scope для логирования ошибок
      *
-     * @param string|string[]|null $scope
-     * @return $this
+     * @param string|string[]|null $scope Scope
+     * @return static
      */
-    public function setLogScope(array|string|null $scope): Exception
+    public function setLogScope(array|string|null $scope): static
     {
         if ($scope === null) {
             unset($this->_logContext[self::KEY_SCOPE]);
+
             return $this;
         }
         $this->_logContext[self::KEY_SCOPE] = (array)$scope;
+
         return $this->setWriteToLog(true);
     }
 
     /**
      * Задать доп. инфу для логирования
      *
-     * @param mixed $info
-     * @return $this
+     * @param mixed $info Доп. информация
+     * @return static
      */
-    public function setLogAddInfo(mixed $info): Exception
+    public function setLogAddInfo(mixed $info): static
     {
         if ($info === null) {
             unset($this->_logContext[self::KEY_ADD_INFO]);
+
             return $this;
         }
         $this->_logContext[self::KEY_ADD_INFO] = $info;
+
         return $this->setWriteToLog(true);
     }
 
     /**
      * Задать контекст для логов.
      *
-     * @param array $context
-     * @param bool $fullOverwrite
-     * @return $this
+     * @param array $context Контекст
+     * @param bool $fullOverwrite Флаг полной перезаписи контекста
+     * @return static
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    public function setLogContext(array $context, bool $fullOverwrite = false): Exception
+    public function setLogContext(array $context, bool $fullOverwrite = false): static
     {
         if ($fullOverwrite) {
             $this->_logContext = $context;
         } else {
             $this->_logContext = $context + $this->_logContext;
         }
+
         return $this->setWriteToLog(true);
     }
 
     /**
      * Рекурсивно подготавливает данные для метода getContext
      *
-     * @param mixed $val
+     * @param mixed $val Контекст или часть контекста
      * @return mixed
      */
     private function _getContextObj(mixed $val): mixed
@@ -130,8 +136,10 @@ class Exception extends \Exception
                 $stringKey = (string)$key;
                 $obj->$stringKey = $this->_getContextObj($value);
             }
+
             return $obj;
         }
+
         return $val;
     }
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\TestSuite;
 
 use Eggheads\Mocks\PropertyAccess;
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 use ReflectionException;
 
 class SingletonCollection
 {
-    use Library;
+    use LibraryTrait;
 
     /** @var string[] Массив одиночек */
     private static array $_collection = [];

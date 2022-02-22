@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\Lib;
 
-use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use stdClass;
 
 class ArraysTest extends AppTestCase
 {
-
     /** decode JSON */
     public function testDecode(): void
     {
@@ -115,7 +113,7 @@ class ArraysTest extends AppTestCase
     /**
      * инициализация значения
      *
-     * @throws InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public function testInitPath(): void
     {
@@ -156,11 +154,11 @@ class ArraysTest extends AppTestCase
     /**
      * на пути есть немассив
      *
-     * @throws InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public function testInitPathFail(): void
     {
-        $this->expectExceptionMessage("По ключу nest2 находится не массив");
+        $this->expectExceptionMessage('По ключу nest2 находится не массив');
         $this->expectException(\Exception::class);
         $keyNestedFirst = 'nest1';
         $keyNestedSecond = 'nest2';
@@ -201,7 +199,6 @@ class ArraysTest extends AppTestCase
 
         self::assertFalse(Arrays::equals($arr, $keyNotExists, $value));
         self::assertFalse(Arrays::equalsAny($arr, $keyNotExists, [$value]));
-
 
         self::assertFalse(Arrays::equals($arr, $keyNumString, $number));
         self::assertTrue(Arrays::equals($arr, $keyNumString, $number, false));

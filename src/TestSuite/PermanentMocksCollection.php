@@ -6,9 +6,7 @@ namespace Eggheads\CakephpCommon\TestSuite;
 use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Filesystem\Folder;
 use Eggheads\CakephpCommon\Lib\Env;
-use Eggheads\CakephpCommon\Lib\Misc;
-use Eggheads\CakephpCommon\TestSuite\PermanentMocks\MockFileLog;
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 use PHPUnit\Framework\Warning;
 
 /**
@@ -16,7 +14,7 @@ use PHPUnit\Framework\Warning;
  */
 class PermanentMocksCollection
 {
-    use Library;
+    use LibraryTrait;
 
     /**
      * Набор постоянных моков

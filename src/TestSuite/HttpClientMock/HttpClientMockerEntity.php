@@ -54,7 +54,7 @@ class HttpClientMockerEntity
      *
      * @var null|array|string
      */
-    private string|array|null $_body = null; // @phpstan-ignore-line
+    private string|array|null $_body = null; // @phpstan-ignore-line @codingStandardsIgnoreLine
 
     /**
      * Возвращаемый результат

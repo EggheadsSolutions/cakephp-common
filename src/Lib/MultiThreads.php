@@ -4,7 +4,7 @@ declare(ticks=1);
 
 namespace Eggheads\CakephpCommon\Lib;
 
-use Eggheads\CakephpCommon\Traits\Singleton;
+use Eggheads\CakephpCommon\Traits\SingletonTrait;
 use Cake\Cache\Cache;
 use Cake\Log\Log;
 
@@ -37,7 +37,7 @@ use Cake\Log\Log;
  */
 class MultiThreads
 {
-    use Singleton;
+    use SingletonTrait;
 
     /**
      * @var array<int, bool>

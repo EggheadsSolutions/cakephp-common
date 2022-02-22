@@ -56,7 +56,6 @@ class HttpClientAdapter extends Stream
                 'Server: nginx/1.2.1',
             ], $mockData['response']);
         } else {
-            /** @var Response[] $result */
             $result = parent::_send($request);
 
             if (self::$_debugRequests) {

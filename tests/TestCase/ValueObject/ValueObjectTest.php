@@ -3,19 +3,17 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\ValueObject;
 
-use Eggheads\CakephpCommon\Error\InternalException;
-use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use Eggheads\CakephpCommon\I18n\FrozenDate;
 use Eggheads\CakephpCommon\I18n\FrozenTime;
+use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use Exception;
 
 class ValueObjectTest extends AppTestCase
 {
-
     /**
      * Цепочка вызовов и превращение в массив
      *
-     * @throws InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public function test(): void
     {
@@ -78,7 +76,7 @@ class ValueObjectTest extends AppTestCase
      */
     public function testBadProperty(): void
     {
-        $this->expectExceptionMessage("Undefined property field5");
+        $this->expectExceptionMessage('Undefined property field5');
         $this->expectException(Exception::class);
         $obj = new ValueObjectFixture();
         $obj->setField5(); // @phpstan-ignore-line
@@ -89,7 +87,7 @@ class ValueObjectTest extends AppTestCase
      */
     public function testBadParams(): void
     {
-        $this->expectExceptionMessage("Invalid argument count when calling setField3");
+        $this->expectExceptionMessage('Invalid argument count when calling setField3');
         $this->expectException(Exception::class);
         $obj = new ValueObjectFixture();
         $obj->setField3('asd', 'qwe'); // @phpstan-ignore-line
@@ -98,7 +96,7 @@ class ValueObjectTest extends AppTestCase
     /**
      * Инициализация с несуществующим свойством
      *
-     * @throws InternalException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
      */
     public function testBadInit(): void
     {

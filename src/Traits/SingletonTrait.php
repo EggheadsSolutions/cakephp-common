@@ -9,7 +9,7 @@ use Eggheads\CakephpCommon\TestSuite\SingletonCollection;
  * Трейт-одиночка.
  * strict_types специально не объявлено, ибо не работает с ним
  */
-trait Singleton
+trait SingletonTrait
 {
     /**
      * Объект-одиночка
@@ -27,6 +27,8 @@ trait Singleton
 
     /**
      * Защищаем от создания через клонирование
+     *
+     * @return void
      */
     private function __clone()
     {
@@ -34,6 +36,8 @@ trait Singleton
 
     /**
      * Защищаем от создания через unserialize
+     *
+     * @return void
      */
     public function __wakeup()
     {

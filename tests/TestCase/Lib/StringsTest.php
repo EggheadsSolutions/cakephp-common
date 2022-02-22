@@ -8,7 +8,6 @@ use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 
 class StringsTest extends AppTestCase
 {
-
     /** проверка префикса */
     public function testStartsWith(): void
     {

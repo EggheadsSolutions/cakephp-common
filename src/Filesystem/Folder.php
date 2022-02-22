@@ -65,7 +65,6 @@ class Folder extends \Cake\Filesystem\Folder
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function copy(string $to, array $options = []): bool
     {
@@ -76,7 +75,6 @@ class Folder extends \Cake\Filesystem\Folder
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function move(string $to, array $options = []): bool
     {

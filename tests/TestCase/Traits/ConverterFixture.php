@@ -9,12 +9,18 @@ class ConverterFixture
 {
     use ConverterTrait;
 
-    /** @var int Числовое поле */
+    /**
+     * @var int Числовое поле
+     */
     public int $intField;
 
-    /** @var string Строковое поле */
+    /**
+     * @var string Строковое поле
+     */
     public string $stringField;
 
-    /** @var bool Булевое поле */
+    /**
+     * @var bool Булевое поле
+     */
     public bool $boolField;
 }

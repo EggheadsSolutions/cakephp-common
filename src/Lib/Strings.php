@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Lib;
 
-use Eggheads\CakephpCommon\Traits\Library;
+use Eggheads\CakephpCommon\Traits\LibraryTrait;
 
 class Strings
 {
-    use Library;
+    use LibraryTrait;
 
     /**
      * Проверка, что строка начинается с любого префикса из списка
@@ -129,7 +129,7 @@ class Strings
      */
     public static function lastPart(string $delimiter, string $string): string
     {
-        $tmp = explode($delimiter, $string);
+        $tmp = explode($delimiter, $string); // @phpstan-ignore-line
         return array_pop($tmp);
     }
 

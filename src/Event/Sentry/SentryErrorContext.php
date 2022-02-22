@@ -9,7 +9,6 @@ use Cake\Event\EventListenerInterface;
 use Cake\Http\ServerRequestFactory;
 use Cake\Log\Log;
 use Cake\Log\LogTrait;
-use JetBrains\PhpStorm\ArrayShape;
 use Sentry\State\Scope;
 use Sentry\UserDataBag;
 use function Sentry\configureScope as sentryConfigureScope;
@@ -27,7 +26,6 @@ class SentryErrorContext implements EventListenerInterface
     /**
      * @inerhitDoc
      */
-    #[ArrayShape(['CakeSentry.Client.beforeCapture' => "string"])]
     public function implementedEvents(): array
     {
         return [
@@ -39,6 +37,7 @@ class SentryErrorContext implements EventListenerInterface
      * Добавление данных окружения
      *
      * @param Event $event
+     * @phpstan-ignore-next-line
      */
     public function setContext(Event $event): void
     {

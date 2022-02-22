@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\Serializer;
 
-use Eggheads\CakephpCommon\Error\InternalException;
-use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 class SerializerTest extends AppTestCase
@@ -16,8 +13,8 @@ class SerializerTest extends AppTestCase
      * Создание объекта из json-а - ошибки
      *
      * @group simple
-     * @throws InternalException
-     * @throws UserException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
      */
     public function testCreateFromJsonException(): void
     {
@@ -37,9 +34,9 @@ class SerializerTest extends AppTestCase
      * Создание объекта из json-а
      *
      * @group simple
-     * @throws ExceptionInterface
-     * @throws InternalException
-     * @throws UserException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
      */
     public function testCreateFromJson(): void
     {
@@ -63,8 +60,8 @@ class SerializerTest extends AppTestCase
      * Создание объекта из массива - ошибки
      *
      * @group simple
-     * @throws InternalException
-     * @throws UserException
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
      */
     public function testCreateFromArrayException(): void
     {
@@ -84,9 +81,9 @@ class SerializerTest extends AppTestCase
      * Создание объекта из массива
      *
      * @group simple
-     * @throws ExceptionInterface
-     * @throws InternalException
-     * @throws UserException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
      */
     public function testCreateFromArray(): void
     {
@@ -132,11 +129,10 @@ class SerializerTest extends AppTestCase
 
     /**
      * @testdox Проверим конвертацию в массив
-     *
      * @group simple
-     * @throws ExceptionInterface
-     * @throws InternalException
-     * @throws UserException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
      */
     public function testToArray(): void
     {

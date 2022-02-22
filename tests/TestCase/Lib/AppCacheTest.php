@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\Lib;
 
+use Cake\Cache\Cache;
 use Eggheads\CakephpCommon\Lib\AppCache;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
-use Cake\Cache\Cache;
 
 class AppCacheTest extends AppTestCase
 {

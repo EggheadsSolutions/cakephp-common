@@ -12,7 +12,9 @@ use Throwable;
 
 class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddleware implements ContextExceptionInterface
 {
-    /** @var Throwable Exception */
+    /**
+     * @var \Throwable Exception
+     */
     private Throwable $_exception;
 
     /**
@@ -21,11 +23,13 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
      * По-умолчанию был плохой трейс и нельзя делать warn.
      * И исключения phpunit теперь прокидываются дальше.
      *
-     * @param RequestInterface $request
-     * @param Throwable $exception
+     * @param \Psr\Http\Message\RequestInterface $request
+     * @param \Throwable $exception
+     * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     // phpcs:ignore
-    protected function logException(RequestInterface $request, Throwable $exception)
+    protected function logException(RequestInterface $request, Throwable $exception): void
     {
         $this->_exception = $exception;
 
@@ -44,11 +48,7 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
     }
 
     /**
-     * @inheritdoc
-     * Копия родительского метода.
-     * Поднял logException наверх, чтобы он вызывался до render.
-     * Таким образом при ошибке внутри render исходная ошибка тоже будет залогирована.
-     * И исключения phpunit теперь прокидываются дальше.
+     * @inheritDoc Поднял logException наверх, чтобы он вызывался до render.
      */
     public function handleException($exception, $request): ResponseInterface
     {
@@ -56,6 +56,7 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
         $renderer = $errorHandler->getRenderer($exception, $request);
         try {
             $this->logException($request, $exception);
+
             return $renderer->render();
         } catch (Exception $e) {
             $this->_exception = $e;
@@ -74,12 +75,13 @@ class ErrorHandlerMiddleware extends \Cake\Error\Middleware\ErrorHandlerMiddlewa
 
     /**
      * @inheritDoc
-     * @return array
+     * @phpstan-ignore-next-line
      */
     public function getContext(): array
     {
         $cakeMessage = new stdClass();
         $cakeMessage->cakeMessage = $this->_exception->getMessage();
-        return ([$cakeMessage]);
+
+        return [$cakeMessage];
     }
 }

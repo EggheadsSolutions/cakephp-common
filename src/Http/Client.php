@@ -28,7 +28,6 @@ class Client extends \Cake\Http\Client
     /**
      * @inheritdoc
      * Обернул в try/catch для, дабы чтобы код не валилися
-     * @phpstan-ignore-next-line
      */
     protected function _doRequest($method, $url, $data, $options): Response
     {

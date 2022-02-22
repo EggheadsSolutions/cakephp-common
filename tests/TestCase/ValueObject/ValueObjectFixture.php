@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\ValueObject;
 
-use Eggheads\CakephpCommon\ValueObject\ValueObject;
-use Eggheads\CakephpCommon\I18n\FrozenTime;
-use Eggheads\CakephpCommon\I18n\FrozenDate;
 use Cake\Utility\Text as CakeString;
+use Eggheads\CakephpCommon\I18n\FrozenDate;
+use Eggheads\CakephpCommon\I18n\FrozenTime;
+use Eggheads\CakephpCommon\ValueObject\ValueObject;
 
 /**
  * @method $this setField1(mixed $value)
@@ -17,16 +17,16 @@ use Cake\Utility\Text as CakeString;
  */
 class ValueObjectFixture extends ValueObject
 {
-    const EXCLUDE_EXPORT_PROPS = [
+    public const EXCLUDE_EXPORT_PROPS = [
         'field2',
     ];
 
-    const TIME_FIELDS = [
+    public const TIME_FIELDS = [
         'timeField',
     ];
 
-    const DATE_FIELDS = [
-        'dateField'
+    public const DATE_FIELDS = [
+        'dateField',
     ];
 
     /**
@@ -37,18 +37,28 @@ class ValueObjectFixture extends ValueObject
      */
     public string $field1 = 'asd';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public string $field2 = 'qwe';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public string $field3;
 
-    /** @var ?CakeString */
+    /**
+     * @var ?CakeString
+     */
     public ?CakeString $field4 = null;
 
-    /** @var ?FrozenTime */
+    /**
+     * @var ?FrozenTime
+     */
     public ?FrozenTime $timeField = null;
 
-    /** @var ?FrozenDate */
+    /**
+     * @var ?FrozenDate
+     */
     public ?FrozenDate $dateField = null;
 }

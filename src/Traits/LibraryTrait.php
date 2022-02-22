@@ -2,7 +2,7 @@
 
 namespace Eggheads\CakephpCommon\Traits;
 
-trait Library
+trait LibraryTrait
 {
     /**
      * Защищаем от создания через new
@@ -13,6 +13,8 @@ trait Library
 
     /**
      * Защищаем от создания через клонирование
+     *
+     * @return void
      */
     private function __clone()
     {
@@ -20,6 +22,8 @@ trait Library
 
     /**
      * Защищаем от создания через unserialize
+     *
+     * @return void
      */
     public function __wakeup()
     {
