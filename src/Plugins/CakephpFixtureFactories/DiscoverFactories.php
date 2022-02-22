@@ -5,6 +5,9 @@ namespace Eggheads\CakephpCommon\Plugins\CakephpFixtureFactories;
 
 use DirectoryIterator;
 
+/**
+ * @SuppressWarnings(PHPMD.MethodMix)
+ */
 class DiscoverFactories
 {
     /** Путь на диске к папке с фабриками фикстур */

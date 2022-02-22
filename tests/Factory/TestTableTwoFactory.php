@@ -25,13 +25,12 @@ class TestTableTwoFactory extends AbstractFixtureFactory
     /**
      * Создадим зависимую запись
      *
-     * @param callable|int|array|EntityInterface|null $parameter
-     * @param int $n
+     * @param callable|int|array<string, mixed>|EntityInterface|null $parameter
+     * @param int $times
      * @return $this
-     * @phpstan-ignore-next-line
      */
-    public function withTestTableOne(callable|int|array|null|EntityInterface $parameter = null, int $n = 1): self
+    public function withTestTableOne(callable|int|array|null|EntityInterface $parameter = null, int $times = 1): self
     {
-        return $this->with('TestTableOne', TestTableOneFactory::make($parameter, $n));
+        return $this->with('TestTableOne', TestTableOneFactory::make($parameter, $times));
     }
 }

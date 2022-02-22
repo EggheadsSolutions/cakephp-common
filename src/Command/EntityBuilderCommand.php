@@ -24,6 +24,7 @@ class EntityBuilderCommand extends Command
      * @return int|null
      * @throws InternalException
      * @throws ReflectionException
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
