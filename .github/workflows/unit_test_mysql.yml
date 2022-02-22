@@ -17,4 +17,4 @@ jobs:
                     use-repository-config: yes
                     app-local-php: no
                     post-install-cmd: yes
-                    migrate-command: 'vendor/bin/phinx'
+                    migrate-command: 'test'
