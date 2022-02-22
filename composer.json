@@ -26,17 +26,18 @@
   "require": {
     "php": ">=8.0",
     "ext-pcntl": "*",
+    "ext-pdo": "*",
+    "ext-simplexml": "*",
     "cakephp/cakephp": "^4.3",
     "cakephp/migrations": "^3.2",
+    "connehito/cake-sentry": "^4.0",
+    "eggheads/mocks": "^1.0.0",
+    "jan-swiecki/simple-annotations": "^0.3.1",
+    "phpdocumentor/reflection-docblock": "^5.3",
     "symfony/http-client": "^6.0",
     "symfony/property-access": "^6.0",
     "symfony/property-info": "^6.0",
-    "symfony/serializer": "^6.0",
-    "eggheads/mocks": "^1.0.0",
-    "ext-simplexml": "*",
-    "connehito/cake-sentry": "^4.0",
-    "phpdocumentor/reflection-docblock": "^5.3",
-    "jan-swiecki/simple-annotations": "^0.3.1"
+    "symfony/serializer": "^6.0"
   },
   "require-dev": {
     "cakephp/bake": "^2.6",
@@ -46,8 +47,7 @@
     "eggheads/eggheads-code-style": "^2.1",
     "cakephp/debug_kit": "^4.7",
     "mheap/phpunit-github-actions-printer": "^1.5",
-    "vierge-noire/cakephp-fixture-factories": "^2.5",
-    "ext-pdo": "*"
+    "vierge-noire/cakephp-fixture-factories": "^2.5"
   },
   "scripts": {
     "check": [
@@ -63,6 +63,7 @@
     "test": "phpunit --colors=always"
   },
   "config": {
+    "sort-packages": true,
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
