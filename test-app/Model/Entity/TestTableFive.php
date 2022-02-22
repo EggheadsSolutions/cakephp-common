@@ -9,8 +9,8 @@ use Eggheads\CakephpCommon\ORM\Entity;
  * description 5
  *
  * @property int $id
- * @property int $col_json Описание JSON
  * @tableComment description 5
+ * @property ?array $col_json = NULL Описание JSON
  */
 class TestTableFive extends Entity
 {

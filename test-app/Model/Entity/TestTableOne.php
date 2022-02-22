@@ -9,13 +9,13 @@ use Eggheads\CakephpCommon\Lib\Arrays;
 /**
  * some comments blabla
  *
- * @property int $id
- * @property int $col_enum Колонка с enum
- * @property string $col_text = NULL Описание
- * @property \Cake\I18n\Time $col_time = 'CURRENT_TIMESTAMP' Дата создания
+ * @property int $id comment1
+ * @property int $col_enum
+ * @property \Cake\I18n\Time $col_time = 'CURRENT_TIMESTAMP' asdasd
  * @property string $oldField
  * @property string $notExists
- * @tableComment description blabla
+ * @tableComment description govno
+ * more comments blabla
  */
 class TestTableOne extends Entity
 {
