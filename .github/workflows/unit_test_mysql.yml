@@ -18,3 +18,4 @@ jobs:
                     app-local-php: no
                     post-install-cmd: yes
                     migrate-command: 'test'
+                    config-dir: 'test-app-conf'
