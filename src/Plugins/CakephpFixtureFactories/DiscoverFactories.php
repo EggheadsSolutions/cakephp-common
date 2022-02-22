@@ -15,7 +15,7 @@ class DiscoverFactories
      *
      * @var array
      */
-    public static array $_tableNames = [];
+    private static array $_tableNames = [];
 
     /**
      * Найдем список названий всех используемых таблиц в фабриках фикстур

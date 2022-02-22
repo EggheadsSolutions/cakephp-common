@@ -12,6 +12,7 @@ abstract class AbstractFixtureFactory extends BaseFactory
      * @inerhitDoc
      * @throws InternalException
      */
+    // phpcs:ignore
     protected function getRootTableRegistryName(): string
     {
         return self::parseTableName(static::class);

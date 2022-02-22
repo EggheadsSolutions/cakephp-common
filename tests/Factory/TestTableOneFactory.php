@@ -8,6 +8,8 @@ use Faker\Generator;
 
 class TestTableOneFactory extends AbstractFixtureFactory
 {
+    /** @inerhitDoc */
+    // phpcs:ignore
     protected function setDefaultTemplate(): void
     {
         $this->setDefaultData(function (Generator $faker) {

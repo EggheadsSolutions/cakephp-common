@@ -1,5 +1,6 @@
 <?php
-// phpcs:ignore
+declare(strict_types=1);
+
 namespace Eggheads\CakephpCommon\Test\TestCase\Database\Type;
 
 use Eggheads\CakephpCommon\Database\Type\Utf8StringType;
@@ -8,16 +9,19 @@ use Eggheads\CakephpCommon\TestSuite\AppTestCase;
 use Cake\Database\Type;
 use TestApp\Model\Entity\TestTableOne;
 
-// phpcs:ignore
-Type::map('text', Utf8StringType::class);
-// phpcs:ignore
-Type::map('string', Utf8StringType::class);
-
 /**
  * @property Table $TestTableOne
  */
 class Utf8StringTypeTest extends AppTestCase
 {
+    /** @inerhitDoc */
+    public function setUp(): void
+    {
+        parent::setUp();
+        Type::map('text', Utf8StringType::class);
+        Type::map('string', Utf8StringType::class);
+    }
+
     /** @inheritdoc */
     public function tearDown(): void
     {

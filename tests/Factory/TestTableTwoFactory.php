@@ -8,6 +8,8 @@ use Faker\Generator;
 
 class TestTableTwoFactory extends AbstractFixtureFactory
 {
+    /** @inerhitDoc */
+    // phpcs:ignore
     protected function setDefaultTemplate(): void
     {
         $this
@@ -19,6 +21,13 @@ class TestTableTwoFactory extends AbstractFixtureFactory
             ->withTestTableOne();
     }
 
+    /**
+     * Создадим зависимую запись
+     *
+     * @param $parameter
+     * @param int $n
+     * @return $this
+     */
     public function withTestTableOne($parameter = null, int $n = 1): self
     {
         return $this->with('TestTableOne', TestTableOneFactory::make($parameter, $n));

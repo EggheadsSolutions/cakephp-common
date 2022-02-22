@@ -76,7 +76,7 @@ abstract class AppTestCase extends TestCase
     /**
      * loadModel на все таблицы фикстур
      */
-    protected function setupFixtures(): void
+    public function setupFixtures(): void
     {
         if (!empty($this->fixtures)) {
             throw new InvalidArgumentException('Fixtures в этом проекте не используются, удалите "$this->fixtures"');
