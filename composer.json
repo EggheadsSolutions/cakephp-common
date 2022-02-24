@@ -1,6 +1,6 @@
 {
   "name": "eggheads.solutions/cakephp-common",
-  "type": "library",
+  "type": "cakephp-plugin",
   "license": "MIT",
   "autoload": {
     "psr-4": {
