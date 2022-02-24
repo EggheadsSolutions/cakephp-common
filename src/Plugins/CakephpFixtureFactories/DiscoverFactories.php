@@ -6,6 +6,8 @@ namespace Eggheads\CakephpCommon\Plugins\CakephpFixtureFactories;
 use DirectoryIterator;
 
 /**
+ * Получение списка используемых таблиц в тестах из списка файлов с генераторами фикстур
+ *
  * @SuppressWarnings(PHPMD.MethodMix)
  */
 class DiscoverFactories

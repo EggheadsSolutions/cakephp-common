@@ -6,6 +6,9 @@ namespace Eggheads\CakephpCommon\Plugins\CakephpFixtureFactories;
 use CakephpFixtureFactories\Factory\BaseFactory;
 use Eggheads\CakephpCommon\Error\InternalException;
 
+/**
+ * Абстрактный клас для генератора фикстур, объявляет имя таблицы на основе названия файла
+ */
 abstract class AbstractFixtureFactory extends BaseFactory
 {
     /**

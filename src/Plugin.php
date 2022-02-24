@@ -10,7 +10,9 @@ use Cake\Routing\RouteBuilder;
 use Cake\Console\CommandCollection;
 
 /**
- * Plugin for DatabaseExt
+ * Основной файл, который указывает CakePHP, что это плагин
+ *
+ * @see https://book.cakephp.org/4/en/plugins.html#plugin-objects
  */
 class Plugin extends BasePlugin
 {
