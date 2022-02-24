@@ -1,21 +1,6 @@
 <?php
 declare(strict_types=1);
 
-if (!defined('AS_COMMON')) {
-    /**
-     * Путь к текущему коду
-     */
-    define('AS_COMMON', ROOT . DS . 'src' . DS);
-}
-
-if (!defined('CAKE_BIN')) {
-    /**
-     * Путь до исполняемого файла кейка
-     */
-    define('CAKE_BIN', ROOT . DS . 'bin' . DS . 'cake');
-}
-
-
 $tableAliasesDir = APP . 'Model' . DS . 'table_names.php';
 if (file_exists($tableAliasesDir)) {
     require_once $tableAliasesDir;

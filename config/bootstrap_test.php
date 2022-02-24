@@ -4,7 +4,7 @@ ini_set('soap.wsdl_cache_ttl', '1');
 if (!defined('TEST_MODE')) {
     define('TEST_MODE', 1);
 }
-require_once __DIR__ . '/../test-app-conf/paths.php';
+
 require_once __DIR__ . '/bootstrap.php';
 
 use Eggheads\CakephpCommon\Lib\AppCache;

@@ -114,7 +114,7 @@ class Env
      */
     public static function isUnitTest(): bool
     {
-        return defined('TEST_MODE') && TEST_MODE;
+        return defined('TEST_MODE') && TEST_MODE; // @phpstan-ignore-line
     }
 
     /**
