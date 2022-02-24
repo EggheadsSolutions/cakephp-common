@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../test-app-conf/paths.php';
 
 if (!defined('AS_COMMON')) {
     /**
