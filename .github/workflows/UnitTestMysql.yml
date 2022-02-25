@@ -19,4 +19,3 @@ jobs:
           post-install-cmd: yes
           migrate-command: no
           config-dir: 'test-app-conf'
-          
