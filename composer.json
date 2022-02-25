@@ -41,12 +41,12 @@
   },
   "require-dev": {
     "cakephp/bake": "^2.6",
-    "cakephp/repl": "^0.1",
     "cakephp/cakephp-codesniffer": "^4.5",
-    "phpunit/phpunit": "^9.5",
-    "eggheads/eggheads-code-style": "^2.1",
     "cakephp/debug_kit": "^4.7",
+    "cakephp/repl": "^0.1",
+    "eggheads/eggheads-code-style": "^2.1",
     "mheap/phpunit-github-actions-printer": "^1.5",
+    "phpunit/phpunit": "^9.5",
     "vierge-noire/cakephp-fixture-factories": "^2.5"
   },
   "scripts": {
