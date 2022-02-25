@@ -1,0 +1,21 @@
+name: Unit Test
+
+# Controls when the action will run.
+on: [ pull_request ]
+
+jobs:
+  test:
+    name: Simple unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: EggheadsSolutions/php-unit-test@v1
+        with:
+          php-version: '8.0'
+          mysql: yes
+          redis: yes
+          clickhouse: no
+          use-repository-config: yes
+          app-local-php: no
+          post-install-cmd: yes
+          migrate-command: 'bin/cake migrations'
+          config-dir: 'test-app-conf'
