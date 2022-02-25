@@ -15,7 +15,6 @@ jobs:
           redis: yes
           clickhouse: no
           use-repository-config: yes
-          app-local-php: no
           post-install-cmd: yes
           migrate-command: no
           config-dir: 'test-app-conf'
