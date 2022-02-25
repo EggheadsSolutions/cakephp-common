@@ -1,9 +1,39 @@
 <?php
+declare(strict_types=1);
+
+use Cake\Database\Connection;
+use Cake\Database\Driver\Mysql;
+
 return [
-    'Datasources' => ['test' => ['username' => 'root', 'password' => 'root', 'host' => '127.0.0.1', 'port' => '3306', 'database' => 'cakephp_test', 'persistent' => false, 'encoding' => 'utf8'], 'default' => ['username' => 'root', 'password' => 'root', 'host' => '127.0.0.1', 'port' => '3306', 'database' => 'cakephp', 'persistent' => false, 'encoding' => 'utf8']],
-    'EmailTransport' => ['test' => ['className' => 'ArtSkills.TestEmail']],
-    'debug' => true,
-    'Security' => ['salt' => '7c47f1e793a39c7f518efc6b909b920ed5ba7a7470efc0501f2960973b7954dd'],
-    'Sentry' => ['dsn' => ''],
-    'testServerName' => 'eggheads.solutions',
+    'Datasources' => [
+        'default' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'host' => '127.0.0.1',
+            'port' => '3306',
+            'username' => 'root',
+            'password' => 'root',
+            'database' => 'cakephp',
+            'encoding' => 'utf8',
+            'timezone' => 'SYSTEM',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => true,
+        ],
+        'test' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'host' => '127.0.0.1',
+            'port' => '3306',
+            'username' => 'root',
+            'password' => 'root',
+            'database' => 'cakephp_test',
+            'encoding' => 'utf8',
+            'timezone' => 'SYSTEM',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => true,
+            'init' => ['SET FOREIGN_KEY_CHECKS=0'],
+        ],
+    ],
 ];
