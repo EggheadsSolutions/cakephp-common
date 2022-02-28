@@ -4,4 +4,5 @@ parameters:
         - src
         - tests
     bootstrapFiles:
-        - config/bootstrap.php
+        - test-app-conf/paths.php
+        - config/bootstrap_test.php

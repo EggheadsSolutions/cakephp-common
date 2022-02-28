@@ -18,7 +18,7 @@ use ReflectionClass;
 use ReflectionProperty;
 
 /**
- * Основной класс [объекта-значения](https://github.com/ArtSkills/common/src/ValueObject/README.md).
+ * Основной класс [объекта-значения](https://github.com/Eggheads/CakephpCommon/src/ValueObject/README.md).
  *
  * @phpstan-ignore-next-line
  */

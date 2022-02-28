@@ -1,11 +1,18 @@
 <?php
-use Cake\Core\Plugin;
+
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
 
 Router::defaultRouteClass(DashedRoute::class);
 Router::extensions(['json']);
-Router::scope('/', function (\Cake\Routing\RouteBuilder $routes) {
-    $routes->connect('/css/**', ['controller' => 'Scss', 'action' => 'view']);
-    $routes->fallbacks(DashedRoute::class);
-});
+
+return static function (RouteBuilder $routes) {
+    $routes->setRouteClass(DashedRoute::class);
+
+    $routes->scope('/', function (RouteBuilder $builder) {
+        $builder->connect('/css/**', ['controller' => 'Scss', 'action' => 'view']);
+        $builder->fallbacks(DashedRoute::class);
+    });
+
+};

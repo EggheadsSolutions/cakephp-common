@@ -10,7 +10,7 @@ namespace App\Test\Suite\Mock;
 
 use App\Lib\CrmApi;
 use Eggheads\Mocks\MethodMocker;
-use ArtSkills\TestSuite\ClassMockEntity;
+use Eggheads\CakephpCommon\TestSuite\ClassMockEntity;
 use Cake\Error\Debugger;
 
 class MockSendSms extends ClassMockEntity

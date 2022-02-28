@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-        colors="true"
-        processIsolation="false"
-        stopOnFailure="false"
-        bootstrap="tests/bootstrap.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         colors="true" processIsolation="false"
+         stopOnFailure="false"
+         bootstrap="tests/bootstrap.php"
 >
     <php>
         <ini name="memory_limit" value="-1"/>
         <ini name="apc.enable_cli" value="1"/>
     </php>
-
     <!-- Add any additional test suites you want to run here -->
     <testsuites>
         <testsuite name="app">
@@ -24,13 +23,13 @@
     </extensions>
 
     <!-- Ignore vendor tests in code coverage reports -->
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory suffix=".php">src/</directory>
             <directory suffix=".php">plugins/*/src/</directory>
-            <exclude>
-                <file>src/Console/Installer.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <file>src/Console/Installer.php</file>
+        </exclude>
+    </coverage>
 </phpunit>

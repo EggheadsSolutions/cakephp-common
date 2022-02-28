@@ -1,34 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * Configure paths required to find CakePHP + general filepath
- * constants
- */
-require_once __DIR__ . '/../test-app-conf/paths.php';
-
-if (!defined('TEST_FIXTURE')) {
-    /**
-     * Папка с файлами фикстур БД
-     */
-    define('TEST_FIXTURE', TESTS . 'Fixture' . DS . 'Data' . DS); // @phpstan-ignore-line
-}
-
-if (!defined('AS_COMMON')) {
-    /**
-     * Путь к текущему коду
-     */
-    define('AS_COMMON', ROOT . DS . 'src' . DS);
-}
-
-if (!defined('CAKE_BIN')) {
-    /**
-     * Путь до исполняемого файла кейка
-     */
-    define('CAKE_BIN', ROOT . DS . 'bin' . DS . 'cake');
-}
-
-
 $tableAliasesDir = APP . 'Model' . DS . 'table_names.php';
 if (file_exists($tableAliasesDir)) {
     require_once $tableAliasesDir;

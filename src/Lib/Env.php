@@ -16,7 +16,6 @@ use Throwable;
  * @method static string getDebugEmail()
  * @method static string getTestServerName()
  * @method static string getBaseFixtureClass()
- * @method static string getFixtureFolder()
  * @method static string getMockFolder()
  * @method static string getMockNamespace()
  * @method static string getDownloadPath()
@@ -28,7 +27,6 @@ use Throwable;
  * @method static bool hasMockNamespace()
  * @method static bool setHttpClientAdapter(string $className)
  * @method static bool setBaseFixtureClass(string $className)
- * @method static bool setFixtureFolder(string $path)
  * @method static bool setMockFolder(string $path)
  * @method static bool setMockNamespace(string $namespace)
  * @method static int getThreadsLimit()
@@ -116,7 +114,7 @@ class Env
      */
     public static function isUnitTest(): bool
     {
-        return defined('TEST_MODE') && TEST_MODE;
+        return defined('TEST_MODE') && TEST_MODE; // @phpstan-ignore-line
     }
 
     /**
