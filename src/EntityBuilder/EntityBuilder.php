@@ -52,6 +52,7 @@ class EntityBuilder
         'timestamp' => self::TIME_CLASS,
         'uuid' => 'string',
         'string' => 'string',
+        'char' => 'string',
         'text' => 'string',
         'binary' => 'string',
         'json' => 'array',
