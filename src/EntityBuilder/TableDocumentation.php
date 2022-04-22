@@ -94,13 +94,14 @@ class TableDocumentation
 
         $result = [];
         foreach ($files as $tblFile) {
+            include_once $folder->pwd() . DS . $tblFile; // дабы файл может создаться раньше, а autoload не вкурсе
+
             $entityName = str_replace('.php', '', $tblFile);
             $refClass = new ReflectionClass(static::$_config->modelNamespace . '\Entity\\' . $entityName);
             if ($refClass->isAbstract()) {
                 continue;
             }
 
-            include_once $folder->pwd() . DS . $tblFile; // дабы файл может создаться раньше, а autoload не вкурсе
             $result[] = str_replace('.php', '', $tblFile);
         }
         return $result;

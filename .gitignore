@@ -9,3 +9,5 @@ tmp/
 .phpunit.result.cache
 /phpunit.xml
 .phpcs-cache
+/test-app-conf/app_local.php
+/.bash_history
