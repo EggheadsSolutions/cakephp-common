@@ -20,6 +20,7 @@ abstract class AbstractQueueCommand extends Command
     /** @var int Сколько секунд ждать между запросами */
     protected const SLEEP_SECONDS = 1;
 
+    /** @var int Максимальный размер памяти команды по-умолчанию */
     private const MAX_MEMORY_LIMIT_BYTES = 4294967296;
 
     /** @var int Время запуска по-умолчанию */
