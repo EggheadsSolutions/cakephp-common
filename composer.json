@@ -1,5 +1,5 @@
 {
-  "name": "eggheads.solutions/cakephp-common",
+  "name": "eggheads/cakephp-common",
   "type": "cakephp-plugin",
   "license": "MIT",
   "autoload": {
