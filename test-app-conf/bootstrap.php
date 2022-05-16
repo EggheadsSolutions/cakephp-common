@@ -55,7 +55,7 @@ try {
 try {
     Configure::load('app_local', 'default');
 } catch (\Exception $e) {
-    die($e->getMessage() . "\n");
+
 }
 
 

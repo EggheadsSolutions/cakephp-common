@@ -1,6 +1,8 @@
 <?php
 
 use Cake\Cache\Engine\FileEngine;
+use Cake\Database\Connection;
+use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
 
 return [
@@ -30,6 +32,38 @@ return [
 
     'Security' => [
         'salt' => 'test_security_salt',
+    ],
+
+    'Datasources' => [
+        'default' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'host' => 'mysql',
+            'port' => '3306',
+            'username' => 'root',
+            'password' => 'root',
+            'database' => 'cakephp',
+            'encoding' => 'utf8',
+            'timezone' => 'SYSTEM',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => true,
+        ],
+        'test' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'host' => 'mysql',
+            'port' => '3306',
+            'username' => 'root',
+            'password' => 'root',
+            'database' => 'cakephp_test',
+            'encoding' => 'utf8',
+            'timezone' => 'SYSTEM',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => true,
+            'init' => ['SET FOREIGN_KEY_CHECKS=0'],
+        ],
     ],
 
     'Cache' => [
