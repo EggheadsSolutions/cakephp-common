@@ -12,7 +12,11 @@ class ProxyList
 {
     use SingletonTrait;
 
-    public const DEFAULT_TABLE_NAME = 'proxy_config';
+    /** @var string Конфиг для подключения к базе данных по-умолчанию */
+    private const DEFAULT_DB_CONFIG = 'default';
+
+    /** @var string Таблица с прокси по-умолчанию */
+    private const DEFAULT_TABLE_NAME = 'proxy_config';
 
     /**
      * Список текущих прокси
@@ -54,8 +58,9 @@ class ProxyList
      */
     private function _loadProxy(): void
     {
+        $configName = Configure::read('proxyDBConfig', self::DEFAULT_DB_CONFIG);
         $tableName = Configure::read('proxyTableName', self::DEFAULT_TABLE_NAME);
-        $rows = ConnectionManager::get('default')
+        $rows = ConnectionManager::get($configName)
             ->execute("SELECT proxy, username, password FROM $tableName WHERE active = 1")
             ->fetchAll('assoc');
         if ($rows !== false) {
