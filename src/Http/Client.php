@@ -10,8 +10,16 @@ use Psr\Http\Message\RequestInterface;
 
 class Client extends \Cake\Http\Client
 {
-    /** @var int Таймаут перед повторным подключением по-умолчанию */
+    /** @var int Таймаут перед повторным подключением по-умолчанию (сек) */
     private const DEFAULT_REPEAT_REQUEST_TIMEOUT = 10;
+
+    /** @var int Таймаут запроса по-умолчанию (сек) */
+    private const DEFAULT_TIMEOUT = 30;
+
+    /** @var string[] Заголовки по-умолчанию */
+    public const DEFAULT_HEADERS = [
+        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+    ];
 
     /** @var int Кол-в редиректов при запросе по-умолчанию */
     private const DEFAULT_REDIRECT_COUNT = 2;
@@ -23,7 +31,7 @@ class Client extends \Cake\Http\Client
     private int $_repeatRequestTimeout = self::DEFAULT_REPEAT_REQUEST_TIMEOUT;
 
     /** @var bool Повторять ли запрос при неудаче */
-    private bool $_repeatRequest = true;
+    private bool $_isRepeatRequest = true;
 
     /**
      * Client constructor.
@@ -38,6 +46,10 @@ class Client extends \Cake\Http\Client
             $config['redirect'] = self::DEFAULT_REDIRECT_COUNT;
         }
 
+        if (!array_key_exists('timeout', $config)) {
+            $config['timeout'] = self::DEFAULT_TIMEOUT;
+        }
+
         // Возможность глобального переопределения адаптера отправки запросов
         if (Env::hasHttpClientAdapter()) {
             $config['adapter'] = Env::getHttpClientAdapter();
@@ -46,18 +58,26 @@ class Client extends \Cake\Http\Client
         parent::__construct($config);
     }
 
+    /** @inheritDoc */
+    protected function _doRequest(string $method, string $url, $data, $options): Response
+    {
+        // Добавляем заголовков по-умолчанию
+        $options['headers'] = ($options['headers'] ?? []) + self::DEFAULT_HEADERS;
+
+        return parent::_doRequest($method, $url, $data, $options);
+    }
+
     /**
      * Дважды отправляем запрос при таймауте
      *
      * @inheritDoc
-     * @phpstan-ignore-next-line
      */
     protected function _sendRequest(RequestInterface $request, $options): Response
     {
         try {
             $result = parent::_sendRequest($request, $options);
         } catch (HttpException $exception) {
-            if ($this->_repeatRequest && in_array($this->_getCurlErrorCode($exception->getMessage()), self::REPEAT_REQUEST_CURL_ERROR)) {
+            if ($this->_isRepeatRequest && in_array($this->_getCurlErrorCode($exception->getMessage()), self::REPEAT_REQUEST_CURL_ERROR)) {
                 sleep($this->_repeatRequestTimeout);
                 $result = parent::_sendRequest($request, $options);
             } else {
@@ -86,7 +106,7 @@ class Client extends \Cake\Http\Client
      */
     public function doNotRepeatRequest(): self
     {
-        $this->_repeatRequest = false;
+        $this->_isRepeatRequest = false;
         return $this;
     }
 
