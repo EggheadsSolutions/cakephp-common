@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\Http;
 
 use Cake\Core\Configure;
+use Psr\Http\Message\RequestInterface;
+use Cake\Http\Client\Response;
 
 /**
  * Класс для работы с прокси
@@ -12,6 +14,9 @@ use Cake\Core\Configure;
  */
 class ProxyClient extends Client
 {
+    /** @var bool Менять ли прокси после ошибки curl */
+    private bool $_isChangeProxyAfterError = true;
+
     /**
      * @inheritDoc
      * @phpstan-ignore-next-line
@@ -20,6 +25,21 @@ class ProxyClient extends Client
     {
         $this->changeProxy();
         parent::__construct($config);
+    }
+
+    /**
+     * Меняем прокси при ошибке запроса
+     *
+     * @inheritDoc
+     */
+    protected function _sendRequest(RequestInterface $request, $options, callable $errorCallback = null): Response
+    {
+        if ($this->_isChangeProxyAfterError) {
+            return parent::_sendRequest($request, $options, function () {
+                $this->changeProxy();
+            });
+        }
+        return parent::_sendRequest($request, $options);
     }
 
     /**
@@ -35,6 +55,17 @@ class ProxyClient extends Client
                 $this->setConfig('proxy', $proxy->toArray());
             }
         }
+        return $this;
+    }
+
+    /**
+     * Отключить смену прокси после ошибки
+     *
+     * @return $this
+     */
+    public function doNotChangeProxyAfterError(): self
+    {
+        $this->_isChangeProxyAfterError = false;
         return $this;
     }
 }

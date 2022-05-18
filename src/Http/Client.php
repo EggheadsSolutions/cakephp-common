@@ -11,10 +11,10 @@ use Psr\Http\Message\RequestInterface;
 class Client extends \Cake\Http\Client
 {
     /** @var int Таймаут перед повторным подключением по-умолчанию (сек) */
-    private const DEFAULT_REPEAT_REQUEST_TIMEOUT = 10;
+    public const DEFAULT_REPEAT_REQUEST_TIMEOUT = 10;
 
     /** @var int Таймаут запроса по-умолчанию (сек) */
-    private const DEFAULT_TIMEOUT = 30;
+    public const DEFAULT_TIMEOUT = 30;
 
     /** @var string[] Заголовки по-умолчанию */
     public const DEFAULT_HEADERS = [
@@ -22,7 +22,7 @@ class Client extends \Cake\Http\Client
     ];
 
     /** @var int Кол-в редиректов при запросе по-умолчанию */
-    private const DEFAULT_REDIRECT_COUNT = 2;
+    public const DEFAULT_REDIRECT_COUNT = 2;
 
     /** @var int[] Перечень ошибок CURL при, которых делается попытка повторного запроса */
     private const REPEAT_REQUEST_CURL_ERROR = [6, 7, 18, 28, 35, 55, 56];
@@ -37,10 +37,11 @@ class Client extends \Cake\Http\Client
      * Client constructor.
      *
      * @param array $config
+     * @param callable|null $errorCallback
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
-    public function __construct(array $config = [])
+    public function __construct(array $config = [], callable $errorCallback = null)
     {
         if (!array_key_exists('redirect', $config)) {
             $config['redirect'] = self::DEFAULT_REDIRECT_COUNT;
@@ -72,12 +73,15 @@ class Client extends \Cake\Http\Client
      *
      * @inheritDoc
      */
-    protected function _sendRequest(RequestInterface $request, $options): Response
+    protected function _sendRequest(RequestInterface $request, $options, callable $errorCallback = null): Response
     {
         try {
             $result = parent::_sendRequest($request, $options);
         } catch (HttpException $exception) {
             if ($this->_isRepeatRequest && in_array($this->_getCurlErrorCode($exception->getMessage()), self::REPEAT_REQUEST_CURL_ERROR)) {
+                if (is_callable($errorCallback)) {
+                    $errorCallback($exception);
+                }
                 sleep($this->_repeatRequestTimeout);
                 $result = parent::_sendRequest($request, $options);
             } else {

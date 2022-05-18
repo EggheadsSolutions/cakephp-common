@@ -44,7 +44,7 @@ class ProxyList
 
         // Специально, дабы статический счётчик в другом процессе не работает, rand возвращает общее значение
         $maxIndex = count($this->_proxyList);
-        $index = (int)ConnectionManager::get('default')
+        $index = (int)ConnectionManager::get(Configure::read('proxyDBConfig', self::DEFAULT_DB_CONFIG))
                           ->query("SELECT FLOOR(RAND() * $maxIndex) AS random_value")
                           ->fetch('assoc')['random_value'];
 
