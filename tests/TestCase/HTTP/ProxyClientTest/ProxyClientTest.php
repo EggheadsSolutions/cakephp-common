@@ -71,8 +71,9 @@ class ProxyClientTest extends AppTestCase
         $count = 0;
         // Проверяем, что changeProxy вызывается 2 раза
         MethodMocker::sniff(ProxyClient::class, 'changeProxy', static function ($args, $originalResult) use (&$count) {
+            self::assertCount(0, $args);
             if ($count === 1) {
-                self::assertEquals('proxy2' ,$originalResult->getConfig('proxy')['proxy']); // Проверяем, что при втором вызове, прокси сменился
+                self::assertEquals('proxy2', $originalResult->getConfig('proxy')['proxy']); // Проверяем, что при втором вызове, прокси сменился
             }
             ++$count;
         })

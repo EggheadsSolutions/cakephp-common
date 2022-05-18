@@ -46,11 +46,10 @@ class Client extends \Cake\Http\Client
      * Client constructor.
      *
      * @param array $config
-     * @param callable|null $errorCallback
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
-    public function __construct(array $config = [], callable $errorCallback = null)
+    public function __construct(array $config = [])
     {
         if (!array_key_exists('redirect', $config)) {
             $config['redirect'] = self::DEFAULT_REDIRECT_COUNT;
