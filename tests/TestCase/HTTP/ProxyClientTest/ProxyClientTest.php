@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\Test\TestCase\HTTP\ProxyClientTest;
 
 use Cake\Http\Exception\HttpException;
+use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Http\Client;
 use Eggheads\CakephpCommon\Http\Items\ProxyItem;
 use Eggheads\CakephpCommon\Http\ProxyClient;
@@ -36,6 +37,12 @@ class ProxyClientTest extends AppTestCase
         ], $proxyClient->getConfig('proxy'));
     }
 
+    /**
+     * Тестируем, что при ошибке запроса меняется прокси
+     *
+     * @return void
+     * @throws InternalException
+     */
     public function testChangeProxy(): void
     {
         // Убираем паузу между запросами

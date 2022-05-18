@@ -5,6 +5,7 @@ namespace Eggheads\CakephpCommon\Http;
 
 use Cake\Http\Client\Response;
 use Cake\Http\Exception\HttpException;
+use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\Lib\Env;
 use Psr\Http\Message\RequestInterface;
 
@@ -19,6 +20,14 @@ class Client extends \Cake\Http\Client
     /** @var string[] Заголовки по-умолчанию */
     public const DEFAULT_HEADERS = [
         'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+    ];
+
+    /** @var string Тип контента - json */
+    public const CONTENT_TYPE_JSON = 'application/json';
+
+    /** @var string[] Заголовки по-умолчанию только для POST запросов */
+    public const DEFAULT_POST_HEADERS = [
+        'Content-Type' => self::CONTENT_TYPE_JSON,
     ];
 
     /** @var int Кол-в редиректов при запросе по-умолчанию */
@@ -66,6 +75,19 @@ class Client extends \Cake\Http\Client
         $options['headers'] = ($options['headers'] ?? []) + self::DEFAULT_HEADERS;
 
         return parent::_doRequest($method, $url, $data, $options);
+    }
+
+    /** @inheritDoc */
+    public function post(string $url, $data = [], array $options = []): Response
+    {
+        // Добавляем заголовков по-умолчанию для post запросов
+        $options['headers'] = ($options['headers'] ?? []) + self::DEFAULT_POST_HEADERS;
+
+        // Если 'Content-Type' => 'application/json', то $data должен быть json-строкой
+        if ($options['headers']['Content-Type'] === self::CONTENT_TYPE_JSON && is_array($data)) {
+            $data = Arrays::encode($data);
+        }
+        return parent::post($url, $data, $options);
     }
 
     /**
