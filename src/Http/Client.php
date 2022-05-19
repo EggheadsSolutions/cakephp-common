@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Http;
 
+use Cake\Http\Client\Exception\RequestException;
 use Cake\Http\Client\Response;
-use Cake\Http\Exception\HttpException;
 use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\Lib\Env;
 use Psr\Http\Message\RequestInterface;
@@ -98,7 +98,7 @@ class Client extends \Cake\Http\Client
     {
         try {
             $result = parent::_sendRequest($request, $options);
-        } catch (HttpException $exception) {
+        } catch (RequestException $exception) {
             if ($this->_isRepeatRequest && in_array($this->_getCurlErrorCode($exception->getMessage()), self::REPEAT_REQUEST_CURL_ERROR)) {
                 if (is_callable($errorCallback)) {
                     $errorCallback($exception);
