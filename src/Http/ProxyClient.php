@@ -9,8 +9,26 @@ use Cake\Http\Client\Response;
 
 /**
  * Класс для работы с прокси
+ *
+ * Настройка:
+ * - Прокси берутся из базы данных
+ * - Имя подключения можно указать в конфигурации с ключом proxyDBConfig (по-умолчанию default)
+ * - Имя таблицы с прокси можно указать в конфигурации с ключом proxyTableName (по-умолчанию proxy_config)
+ *
+ * Метод получения конфига прокси находится в классе
+ * @see ProxyList
+ *
+ * Использование:
  * Можно отключить использование прокси, добавив параметр конфигурации 'isProxyEnabled' => false
  * В этом случае будет работать как обычный \Eggheads\CakephpCommon\Http\Client
+ *
+ * При ошибке запроса Curl перечисленной в \Eggheads\CakephpCommon\Http\Client::REPEAT_REQUEST_CURL_ERROR,
+ * происходит автоматическая смена прокси.
+ * Данное поведение можно отключить вызвав метод
+ * @see ProxyClient::doNotChangeProxyAfterError()
+ *
+ * Для смены прокси между запросами, можно вызвать метод
+ * @see ProxyClient::changeProxy()
  */
 class ProxyClient extends Client
 {
