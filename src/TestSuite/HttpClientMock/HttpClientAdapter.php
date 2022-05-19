@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\TestSuite\HttpClientMock;
 
-use Eggheads\CakephpCommon\TestSuite\PermanentMocksCollection;
 use Cake\Http\Client\Adapter\Stream;
-use Cake\Http\Client\Request;
-use Cake\Http\Client\Response;
-use Psr\Http\Client\NetworkExceptionInterface;
+use Eggheads\CakephpCommon\TestSuite\PermanentMocksCollection;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -36,13 +33,13 @@ class HttpClientAdapter extends Stream
     /**
      * Все запросы проверяются на подмену, а также логируются
      *
-     * @param Request|RequestInterface $request
+     * @param RequestInterface $request
+     * @param array $options
      * @return array
-     * @throws NetworkExceptionInterface
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    protected function _send(Request|RequestInterface $request): array
+    public function send(RequestInterface $request, array $options): array
     {
         $this->_currentRequestData = [
             'request' => $request,
@@ -56,7 +53,7 @@ class HttpClientAdapter extends Stream
                 'Server: nginx/1.2.1',
             ], $mockData['response']);
         } else {
-            $result = parent::_send($request);
+            $result = parent::send($request, $options);
 
             if (self::$_debugRequests) {
                 PermanentMocksCollection::setHasWarning(true);
