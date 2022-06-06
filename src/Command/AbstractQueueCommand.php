@@ -4,8 +4,8 @@ declare(ticks=1);
 
 namespace Eggheads\CakephpCommon\Command;
 
-use Cake\Command\Command;
 use Cake\Console\Arguments;
+use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Eggheads\CakephpCommon\I18n\FrozenTime;
 use Eggheads\CakephpCommon\Lib\Env;
@@ -21,7 +21,7 @@ abstract class AbstractQueueCommand extends Command
     protected const SLEEP_SECONDS = 1;
 
     /** @var int Максимальный размер памяти команды по-умолчанию */
-    private const MAX_MEMORY_LIMIT_BYTES = 4294967296;
+    protected const MAX_MEMORY_LIMIT_BYTES = 4294967296;
 
     /** @var int Время запуска по-умолчанию */
     protected const DEFAULT_QUEUE_RUN_SECONDS = 300;
@@ -47,7 +47,7 @@ abstract class AbstractQueueCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
-        $this->_memoryLimit = (int)ini_get('memory_limit');
+        $this->_memoryLimit = $this->_getBytes((string)ini_get('memory_limit'));
         if (!$this->_memoryLimit || $this->_memoryLimit < 0) {
             $this->_memoryLimit = self::MAX_MEMORY_LIMIT_BYTES;
         } else {
@@ -76,6 +76,14 @@ abstract class AbstractQueueCommand extends Command
     abstract protected function _runTask(ConsoleIo $io): ?int;
 
     /**
+     * Завершение скрипта
+     *
+     * @param ConsoleIo $io
+     * @return void
+     */
+    abstract protected function _tearDown(ConsoleIo $io): void;
+
+    /**
      * Обработчик событий от системы
      *
      * @return void
@@ -95,22 +103,77 @@ abstract class AbstractQueueCommand extends Command
     {
         do {
             $taskCode = $this->_runTask($io);
+            if (Env::isUnitTest()) {
+                $io->info('Unit test mode, exit');
+                $this->_tearDown($io);
+                return $taskCode;
+            }
             if ($taskCode > 0) {
+                $this->_tearDown($io);
                 return $taskCode;
             }
 
             $usedMemory = memory_get_usage(true);
             if ($this->_suspend) {
                 $io->info('Received exit command');
+                $this->_tearDown($io);
                 return null;
             } elseif ((int)FrozenTime::now()->toUnixString() > $this->_endMeTime) {
                 $io->info('Script run timeout');
+                $this->_tearDown($io);
                 return null;
             } elseif ($usedMemory > $this->_memoryLimit) {
                 $io->info('Script memory limit reached (' . $this->_memoryLimit . ')');
+                $this->_tearDown($io);
                 return null;
             }
             sleep(static::SLEEP_SECONDS);
         } while (true);
+    }
+
+    /**
+     * Получаем размер в байтах из строки
+     *
+     * @see https://www.php.net/manual/ru/function.ini-get.php#126324
+     *
+     * @param string $size
+     * @return int
+     */
+    private function _getBytes(string $size): int
+    {
+        $size = trim($size);
+
+        #
+        # Separate the value from the metric(i.e MB, GB, KB)
+        #
+        preg_match('/([0-9]+)[\s]*([a-zA-Z]+)/', $size, $matches);
+
+        $value = (isset($matches[1])) ? $matches[1] : 0;
+        $metric = (isset($matches[2])) ? strtolower($matches[2]) : 'b';
+
+        #
+        # Result of $value multiplied by the matched case
+        # Note: (1024 ** 2) is same as (1024 * 1024) or pow(1024, 2)
+        #
+        switch ($metric) {
+            case 'k':
+            case 'kb':
+                $value *= 1024;
+                break;
+
+            case 'm':
+            case 'mb':
+                $value *= (1024 ** 2);
+                break;
+            case  'g':
+            case 'gb':
+                $value *= (1024 ** 3);
+                break;
+            case 't':
+            case 'tb':
+                $value *= (1024 ** 4);
+                break;
+        }
+        return (int)$value;
     }
 }
