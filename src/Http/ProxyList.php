@@ -61,10 +61,20 @@ class ProxyList
         $configName = Configure::read('proxyDBConfig', self::DEFAULT_DB_CONFIG);
         $tableName = Configure::read('proxyTableName', self::DEFAULT_TABLE_NAME);
         $rows = ConnectionManager::get($configName)
-            ->execute("SELECT proxy, username, password FROM $tableName WHERE active = 1")
+            ->execute("SELECT proxy, username, password FROM $tableName WHERE active = 1 ORDER BY proxy")
             ->fetchAll('assoc');
         if ($rows !== false) {
             $this->_proxyList = array_map([ProxyItem::class, 'create'], $rows);
         }
+    }
+
+    /**
+     * Вернуть весь список прокси
+     *
+     * @return ProxyItem[]
+     */
+    public function getProxyList(): array
+    {
+        return $this->_proxyList;
     }
 }
