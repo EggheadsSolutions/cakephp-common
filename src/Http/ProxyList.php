@@ -21,14 +21,16 @@ class ProxyList
     /**
      * Список текущих прокси
      *
-     * @var ProxyItem[]|null
+     * @var ProxyItem[]
      */
-    private ?array $_proxyList;
+    private array $_proxyList = [];
 
     /** @inheritDoc */
     private function __construct()
     {
-        $this->_loadProxy();
+        if (Configure::read('isProxyEnabled', true)) {
+            $this->_loadProxy();
+        }
     }
 
     /**
