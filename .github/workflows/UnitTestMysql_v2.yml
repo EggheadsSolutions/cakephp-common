@@ -5,17 +5,28 @@ on: [ pull_request ]
 
 jobs:
   test:
-    name: Simple unit-test
-    runs-on: ubuntu-latest
+    Unit-Test-Mysql:
+    name: Unit Test Mysql
+    runs-on: [self-hosted, unit]
     steps:
-      - uses: EggheadsSolutions/php-unit-test@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-          php-version: '8.0'
-          mysql: yes
-          redis: yes
-          clickhouse: no
-          use-repository-config: yes
-          post-install-cmd: yes
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACDMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo "::set-output name=php::$(git diff --name-only --diff-filter=ACDMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .php$ | xargs)"
+
+      
+      - if: ${{steps.changes.outputs.php}}
+        uses: EggheadsSolutions/ci-php-unit-mysql@v2
+        with:
           migrate-command: no
+          compose-dir-path: './docker'
+          name-compose-file: 'docker-compose-test.yml'
           config-dir: 'test-app-conf'
 
