@@ -4,8 +4,7 @@ name: Unit Test
 on: [ pull_request ]
 
 jobs:
-  test:
-    Unit-Test-Mysql:
+  Unit-Test-Mysql:
     name: Unit Test Mysql
     runs-on: [self-hosted, unit]
     steps:
