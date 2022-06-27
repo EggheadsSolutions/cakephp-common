@@ -3,6 +3,9 @@ name: Unit Test
 # Controls when the action will run.
 on: [ pull_request ]
 
+env:
+    MYSQL_VERSION: '8'
+
 jobs:
   Unit-Test-Mysql:
     name: Unit Test Mysql
