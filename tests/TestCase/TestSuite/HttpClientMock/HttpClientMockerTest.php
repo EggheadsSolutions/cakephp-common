@@ -22,7 +22,7 @@ class HttpClientMockerTest extends AppTestCase
     /** Мок запроса */
     public function testMock(): void
     {
-        $url = 'http://www.artskills.ru';
+        $url = 'https://www.artskills.ru';
         $method = Message::METHOD_POST;
         $post = ['foo' => 'bar'];
         $returnArray = [
