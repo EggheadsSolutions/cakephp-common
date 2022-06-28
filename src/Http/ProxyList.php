@@ -21,14 +21,16 @@ class ProxyList
     /**
      * Список текущих прокси
      *
-     * @var ProxyItem[]|null
+     * @var ProxyItem[]
      */
-    private ?array $_proxyList;
+    private array $_proxyList = [];
 
     /** @inheritDoc */
     private function __construct()
     {
-        $this->_loadProxy();
+        if (Configure::read('isProxyEnabled', true)) {
+            $this->_loadProxy();
+        }
     }
 
     /**
@@ -61,10 +63,20 @@ class ProxyList
         $configName = Configure::read('proxyDBConfig', self::DEFAULT_DB_CONFIG);
         $tableName = Configure::read('proxyTableName', self::DEFAULT_TABLE_NAME);
         $rows = ConnectionManager::get($configName)
-            ->execute("SELECT proxy, username, password FROM $tableName WHERE active = 1")
+            ->execute("SELECT proxy, username, password FROM $tableName WHERE active = 1 ORDER BY proxy")
             ->fetchAll('assoc');
         if ($rows !== false) {
             $this->_proxyList = array_map([ProxyItem::class, 'create'], $rows);
         }
+    }
+
+    /**
+     * Вернуть весь список прокси
+     *
+     * @return ProxyItem[]
+     */
+    public function getProxyList(): array
+    {
+        return $this->_proxyList;
     }
 }
