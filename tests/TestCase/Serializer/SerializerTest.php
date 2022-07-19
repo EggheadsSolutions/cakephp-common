@@ -92,7 +92,10 @@ class SerializerTest extends AppTestCase
             'fieldObject' => [
                 'fieldInt' => 9,
                 'objects' => [
-                    ['fieldString' => 'exampleString'],
+                    ['fieldInt' => 7],
+                    ['fieldInt' => 6, 'objects' => [
+                        ['fieldString'],
+                    ]],
                 ],
             ],
         ];
