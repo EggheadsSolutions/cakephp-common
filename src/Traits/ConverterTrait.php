@@ -14,8 +14,6 @@ use TypeError;
 
 trait ConverterTrait
 {
-    private Validator $validator;
-
     /**
      * Создание объекта из json
      *

@@ -38,22 +38,17 @@ class RequestTest
      */
     public function addValidation(Validator|array $validator): Validator
     {
-        $this->validator = $validator;
         $validator->requirePresence('fieldInt', true, 'Не указан fieldInt');
         if (!empty($this->fieldObject)) {
             $validator->addNested('fieldObject', $this->fieldObject->addValidation(new Validator()));
         }
 
         if (!empty($this->objects)) {
-            foreach ($this->objects as $subObject) {
-                $subObject->addValidation(new Validator());
-            }
-
             $validator->add('objects', 'custom', [
                 'rule' => function ($value) {
                     $errors = [];
                     foreach ($value as $index => $subObject) {
-                        $check = $this->objects[$index]->validator->validate($subObject);
+                        $check = $this->objects[$index]->addValidation(new Validator())->validate($subObject);
                         if (!empty($check)) {
                             $errors[$index] = $check;
                         }
