@@ -14,6 +14,8 @@ use TypeError;
 
 trait ConverterTrait
 {
+    private Validator $validator;
+
     /**
      * Создание объекта из json
      *
@@ -131,7 +133,8 @@ trait ConverterTrait
     protected function _validate(): void
     {
         if (method_exists(self::class, 'addValidation')) {
-            $errors = $this->addValidation(new Validator())->validate($this->toArray()); // @phpstan-ignore-line
+            $validator = $this->addValidation(new Validator());
+            $errors = $validator->validate($this->toArray()); // @phpstan-ignore-line
         }
 
         if (isset($errors) && $errors) {

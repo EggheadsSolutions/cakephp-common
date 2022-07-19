@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\Test\TestCase\Serializer;
 
+use Eggheads\CakephpCommon\Error\InternalException;
+use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Lib\Arrays;
 use Eggheads\CakephpCommon\TestSuite\AppTestCase;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 class SerializerTest extends AppTestCase
@@ -13,8 +16,8 @@ class SerializerTest extends AppTestCase
      * Создание объекта из json-а - ошибки
      *
      * @group simple
-     * @throws \Eggheads\CakephpCommon\Error\InternalException
-     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws InternalException
+     * @throws UserException
      */
     public function testCreateFromJsonException(): void
     {
@@ -34,9 +37,9 @@ class SerializerTest extends AppTestCase
      * Создание объекта из json-а
      *
      * @group simple
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     * @throws \Eggheads\CakephpCommon\Error\InternalException
-     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws ExceptionInterface
+     * @throws InternalException
+     * @throws UserException
      */
     public function testCreateFromJson(): void
     {
@@ -60,8 +63,8 @@ class SerializerTest extends AppTestCase
      * Создание объекта из массива - ошибки
      *
      * @group simple
-     * @throws \Eggheads\CakephpCommon\Error\InternalException
-     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws InternalException
+     * @throws UserException
      */
     public function testCreateFromArrayException(): void
     {
@@ -78,21 +81,38 @@ class SerializerTest extends AppTestCase
     }
 
     /**
-     * Создание объекта из массива c рекурсивной проверкой на ошибки
+     * Создание объекта/массива объектов самого себя из массива c рекурсивной проверкой на ошибки
      *
      * @group simple
-     * @throws \Eggheads\CakephpCommon\Error\InternalException
-     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws InternalException
+     * @throws UserException
      */
-    public function testCreateFromArrayWithRecursiveException(): void
+    public function testCreateFromArrayWithRecursiveSameObjectException(): void
     {
         $this->expectExceptionMessage('Не указан fieldInt');
         $data = [
             'fieldInt' => 8,
             'fieldObject' => [
                 'fieldInt' => 9,
+                'fieldObject' => ['fieldInt' => 19],
                 'objects' => [
-                    ['fieldString' => 'exampleString'],
+                    ['fieldInt' => 10],
+                    [
+                        'fieldInt' => 11,
+                        'objects' => [
+                            ['fieldInt' => 12],
+                            [
+                                'fieldInt' => 13,
+                                'fieldObject' => [
+                                    'fieldInt' => 14,
+                                    'objects' => [
+                                        ['fieldInt' => 15],
+                                        ['fieldString' => 'exampleString4'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -103,9 +123,9 @@ class SerializerTest extends AppTestCase
      * Создание объекта из массива
      *
      * @group simple
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     * @throws \Eggheads\CakephpCommon\Error\InternalException
-     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws ExceptionInterface
+     * @throws InternalException
+     * @throws UserException
      */
     public function testCreateFromArray(): void
     {
@@ -152,9 +172,9 @@ class SerializerTest extends AppTestCase
     /**
      * @testdox Проверим конвертацию в массив
      * @group simple
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     * @throws \Eggheads\CakephpCommon\Error\InternalException
-     * @throws \Eggheads\CakephpCommon\Error\UserException
+     * @throws ExceptionInterface
+     * @throws InternalException
+     * @throws UserException
      */
     public function testToArray(): void
     {
