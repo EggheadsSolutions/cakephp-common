@@ -43,9 +43,7 @@ class RequestTest
             $validator->addNested('fieldObject', $this->fieldObject->addValidation(new Validator()));
         }
 
-        if (!empty($this->objects)) {
-            $validator->addNestedMany('objects', $this->objects[0]->addValidation(new Validator()));
-        }
+        $validator->addNestedMany('objects', $validator);
 
         return $validator;
     }
