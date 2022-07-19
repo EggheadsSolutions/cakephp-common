@@ -78,6 +78,28 @@ class SerializerTest extends AppTestCase
     }
 
     /**
+     * Создание объекта из массива c рекурсивной проверкой на ошибки
+     *
+     * @group simple
+     * @throws \Eggheads\CakephpCommon\Error\InternalException
+     * @throws \Eggheads\CakephpCommon\Error\UserException
+     */
+    public function testCreateFromArrayWithRecursiveException(): void
+    {
+        $this->expectExceptionMessage('Не указан fieldInt');
+        $data = [
+            'fieldInt' => 8,
+            'fieldObject' => [
+                'fieldInt' => 9,
+                'objects' => [
+                    ['fieldString' => 'exampleString'],
+                ],
+            ],
+        ];
+        RequestTest::createFromArray($data);
+    }
+
+    /**
      * Создание объекта из массива
      *
      * @group simple

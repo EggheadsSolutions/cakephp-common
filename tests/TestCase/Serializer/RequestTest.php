@@ -39,6 +39,13 @@ class RequestTest
     public function addValidation(Validator|array $validator): Validator
     {
         $validator->requirePresence('fieldInt', true, 'Не указан fieldInt');
+        if (!empty($this->fieldObject)) {
+            $validator->addNested('fieldObject', $this->fieldObject->addValidation(new Validator()));
+        }
+
+        if (!empty($this->objects)) {
+            $validator->addNestedMany('objects', $this->objects[0]->addValidation(new Validator()));
+        }
 
         return $validator;
     }
