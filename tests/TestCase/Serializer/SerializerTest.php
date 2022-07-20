@@ -81,7 +81,7 @@ class SerializerTest extends AppTestCase
     }
 
     /**
-     * Создание объекта/массива объектов самого себя из массива c рекурсивной проверкой на ошибки
+     * Создание объекта из массива с рекурсивной проверкой на ошибки
      *
      * @group simple
      * @throws InternalException
