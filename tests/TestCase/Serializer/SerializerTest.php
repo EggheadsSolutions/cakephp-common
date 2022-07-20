@@ -273,20 +273,20 @@ class SerializerTest extends AppTestCase
      */
     public function testCreateManyDeepValidation(): void
     {
-        $this->expectExceptionMessage('Не указан fieldInt, Не указан fieldInt');
+        $this->expectExceptionMessage('Отрицательный fieldInt, Короткий fieldString, Не указан fieldInt, Длинный fieldString, Не указан fieldInt, Отрицательный fieldInt');
 
         $data = [
             [
                 'fieldInt' => 8,
                 'fieldObject' => [
-                    'fieldInt' => 9,
+                    'fieldInt' => -777,
                     'fieldObject' => ['fieldInt' => 19],
                     'objects' => [
                         ['fieldInt' => 10],
                         [
                             'fieldInt' => 11,
                             'objects' => [
-                                ['fieldInt' => 12],
+                                ['fieldInt' => 12, 'fieldString' => ''],
                                 [
                                     'fieldInt' => 13,
                                     'fieldObject' => [
@@ -294,6 +294,7 @@ class SerializerTest extends AppTestCase
                                         'objects' => [
                                             ['fieldInt' => 15],
                                             ['fieldString' => 'exampleString4'],
+                                            ['fieldInt' => 22, 'fieldString' => 'exampleToooooLongString'],
                                         ],
                                     ],
                                 ],
@@ -305,6 +306,9 @@ class SerializerTest extends AppTestCase
             [
                 'fieldInt' => 8,
                 'fieldObject' => [
+                ],
+                'objects' => [
+                    ['fieldInt' => -999],
                 ],
             ],
         ];

@@ -40,6 +40,11 @@ class RequestTest implements ValidatingInterface
     public function addValidation(Validator $validator): Validator
     {
         $validator->requirePresence('fieldInt', true, 'Не указан fieldInt');
+        $validator->nonNegativeInteger('fieldInt', 'Отрицательный fieldInt');
+
+        $validator->allowEmptyFor('fieldString');
+        $validator->minLength('fieldString', 3, 'Короткий fieldString');
+        $validator->maxLength('fieldString', 20, 'Длинный fieldString');
 
         $validator->allowEmptyFor('fieldObject');
         $validator->add('fieldObject', Validator::NESTED, new DynamicChildRule($this));
