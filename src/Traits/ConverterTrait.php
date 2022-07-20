@@ -7,6 +7,8 @@ use Cake\Validation\Validator;
 use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Serializer\SerializerFactory;
+use Eggheads\CakephpCommon\Serializer\ValidatingCollection;
+use Eggheads\CakephpCommon\Validation\Util;
 use Eggheads\CakephpCommon\Validation\ValidatingInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
@@ -81,6 +83,66 @@ trait ConverterTrait
     }
 
     /**
+     * @param array $data
+     * @param array $context
+     * @param bool $convertToSnakeCase
+     * @return static[]
+     * @throws InternalException
+     * @throws UserException
+     */
+    public static function createManyFromArray(
+        array $data,
+        array $context = [],
+        bool $convertToSnakeCase = false,
+    ): array {
+        try {
+            /** @var static[] $objects */
+            $objects = SerializerFactory::create($convertToSnakeCase)->denormalize(
+                $data,
+                static::class . '[]',
+                'array',
+                $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
+            );
+
+            static::_validateManyIfNeeded($objects, $context, $convertToSnakeCase);
+        } catch (NotNormalizableValueException | ExceptionInterface | TypeError $e) {
+            throw new InternalException($e->getMessage());
+        }
+
+        return $objects;
+    }
+
+    /**
+     * @param string $data
+     * @param array $context
+     * @param bool $convertToSnakeCase
+     * @return static[]
+     * @throws InternalException
+     * @throws UserException
+     */
+    public static function createManyFromJson(
+        string $data,
+        array $context = [],
+        bool $convertToSnakeCase = false,
+    ): array {
+        try {
+            /** @var static[] $objects */
+            $objects = SerializerFactory::create($convertToSnakeCase)->deserialize(
+                $data,
+                static::class . '[]',
+                'json',
+                $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
+            );
+
+            static::_validateManyIfNeeded($objects, $context, $convertToSnakeCase);
+        } catch (NotNormalizableValueException | ExceptionInterface | TypeError $e) {
+            throw new InternalException($e->getMessage());
+        }
+
+        return $objects;
+    }
+
+    /**
      * Конвертация объекта в массив
      *
      * @SuppressWarnings(PHPMD.MethodArgs)
@@ -143,6 +205,41 @@ trait ConverterTrait
         if (isset($errors) && $errors) {
             $messages = [];
             self::_getErrorsMessage($messages, $errors);
+            throw new UserException(implode(', ', $messages));
+        }
+    }
+
+    /**
+     * Выполняет валидацию массива объектов текущего класса, если текущий класс реализует `ValidatingInterface`. При
+     * наличии невалидных свойств - выбрасывает исключение.
+     *
+     * @param static[] $objects
+     * @param array $context
+     * @param bool $convertToSnakeCase
+     * @return void
+     * @throws ExceptionInterface
+     * @throws UserException
+     */
+    protected static function _validateManyIfNeeded(
+        array $objects,
+        array $context = [],
+        bool $convertToSnakeCase = false,
+    ): void {
+        if (!is_a(static::class, ValidatingInterface::class, true)) {
+            return;
+        }
+
+        /** @var array<static & ValidatingInterface> $objects */
+
+        $collection = ValidatingCollection::createWithItems($objects);
+        $errors = Util::performValidation(
+            $collection,
+            $collection->toArray($convertToSnakeCase, $context),
+        );
+
+        if (!empty($errors['items'])) {
+            $messages = [];
+            self::_getErrorsMessage($messages, $errors['items']);
             throw new UserException(implode(', ', $messages));
         }
     }
