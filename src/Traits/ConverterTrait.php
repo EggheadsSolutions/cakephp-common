@@ -39,9 +39,7 @@ trait ConverterTrait
                 'json',
                 $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
             );
-            if ($dto instanceof ValidatingInterface || method_exists(self::class, 'addValidation')) {
-                $dto->_validate();
-            }
+            $dto->_validate();
         } catch (NotNormalizableValueException | ExceptionInterface $e) {
             throw new InternalException($e->getMessage());
         }
@@ -74,9 +72,7 @@ trait ConverterTrait
                 'array',
                 $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
             );
-            if ($dto instanceof ValidatingInterface || method_exists(self::class, 'addValidation')) {
-                $dto->_validate();
-            }
+            $dto->_validate();
         } catch (NotNormalizableValueException | ExceptionInterface | TypeError $e) {
             throw new InternalException($e->getMessage());
         }
