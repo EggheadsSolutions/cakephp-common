@@ -5,8 +5,11 @@ namespace Eggheads\CakephpCommon\Test\TestCase\Serializer;
 
 use Cake\Validation\Validator;
 use Eggheads\CakephpCommon\Traits\ConverterTrait;
+use Eggheads\CakephpCommon\Validation\DynamicChildrenRule;
+use Eggheads\CakephpCommon\Validation\DynamicChildRule;
+use Eggheads\CakephpCommon\Validation\ValidatingInterface;
 
-class RequestTest
+class RequestTest implements ValidatingInterface
 {
     use ConverterTrait;
 
@@ -31,34 +34,17 @@ class RequestTest
     public array $objects = [];
 
     /**
-     * @param Validator|array $validator Валидатор
+     * @param Validator $validator Валидатор
      * @return Validator
-     * @SuppressWarnings(PHPMD.MethodArgs)
-     * @phpstan-ignore-next-line
      */
-    public function addValidation(Validator|array $validator): Validator
+    public function addValidation(Validator $validator): Validator
     {
         $validator->requirePresence('fieldInt', true, 'Не указан fieldInt');
-        if (!empty($this->fieldObject)) {
-            $validator->addNested('fieldObject', $this->fieldObject->addValidation(new Validator()));
-        }
 
-        $validator->add('objects', 'custom', [
-            'rule' => function ($value) {
-                $errors = [];
-                foreach ($value as $index => $subObject) {
-                    $check = $this->objects[$index]->addValidation(new Validator())->validate($subObject);
-                    if (!empty($check)) {
-                        $errors[$index] = $check;
-                    }
-                }
+        $validator->allowEmptyFor('fieldObject');
+        $validator->add('fieldObject', Validator::NESTED, new DynamicChildRule($this));
 
-                $messages = [];
-                $this->_getErrorsMessage($messages, $errors);
-
-                return empty($messages) ? true : implode(', ', $messages);
-            },
-        ]);
+        $validator->add('objects', Validator::NESTED, new DynamicChildrenRule($this));
 
         return $validator;
     }
