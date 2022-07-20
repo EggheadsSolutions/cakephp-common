@@ -43,24 +43,22 @@ class RequestTest
             $validator->addNested('fieldObject', $this->fieldObject->addValidation(new Validator()));
         }
 
-        if (!empty($this->objects)) {
-            $validator->add('objects', 'custom', [
-                'rule' => function ($value) {
-                    $errors = [];
-                    foreach ($value as $index => $subObject) {
-                        $check = $this->objects[$index]->addValidation(new Validator())->validate($subObject);
-                        if (!empty($check)) {
-                            $errors[$index] = $check;
-                        }
+        $validator->add('objects', 'custom', [
+            'rule' => function ($value) {
+                $errors = [];
+                foreach ($value as $index => $subObject) {
+                    $check = $this->objects[$index]->addValidation(new Validator())->validate($subObject);
+                    if (!empty($check)) {
+                        $errors[$index] = $check;
                     }
+                }
 
-                    $messages = [];
-                    $this->_getErrorsMessage($messages, $errors);
+                $messages = [];
+                $this->_getErrorsMessage($messages, $errors);
 
-                    return empty($messages) ? true : implode(', ', $messages);
-                },
-            ]);
-        }
+                return empty($messages) ? true : implode(', ', $messages);
+            },
+        ]);
 
         return $validator;
     }
