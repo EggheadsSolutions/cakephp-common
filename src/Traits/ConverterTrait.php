@@ -142,7 +142,7 @@ trait ConverterTrait
 
         if (isset($errors) && $errors) {
             $messages = [];
-            $this->_getErrorsMessage($messages, $errors);
+            self::_getErrorsMessage($messages, $errors);
             throw new UserException(implode(', ', $messages));
         }
     }
@@ -157,11 +157,11 @@ trait ConverterTrait
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
-    private function _getErrorsMessage(array &$messages, array $errors): void
+    private static function _getErrorsMessage(array &$messages, array $errors): void
     {
         foreach ($errors as $error) {
             if (is_array($error)) {
-                $this->_getErrorsMessage($messages, $error);
+                self::_getErrorsMessage($messages, $error);
             } else {
                 $messages[] = $error;
             }
