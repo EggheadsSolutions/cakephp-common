@@ -128,6 +128,14 @@ trait ConverterTrait
     protected function _validate(): void
     {
         if ($this instanceof ValidatingInterface || method_exists(self::class, 'addValidation')) {
+            if (!($this instanceof ValidatingInterface)) {
+                deprecationWarning(sprintf(
+                    'Класс `%s` реализует метод `addValidation`, но не реализует интерфейс `%s`',
+                    static::class,
+                    ValidatingInterface::class,
+                ));
+            }
+
             $validator = $this->addValidation(new Validator());
             $errors = $validator->validate($this->toArray()); // @phpstan-ignore-line
         }
