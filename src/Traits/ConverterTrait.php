@@ -7,6 +7,7 @@ use Cake\Validation\Validator;
 use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\Error\UserException;
 use Eggheads\CakephpCommon\Serializer\SerializerFactory;
+use Eggheads\CakephpCommon\Validation\ValidatingInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -38,7 +39,7 @@ trait ConverterTrait
                 'json',
                 $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
             );
-            if (method_exists(self::class, 'addValidation')) {
+            if ($dto instanceof ValidatingInterface || method_exists(self::class, 'addValidation')) {
                 $dto->_validate();
             }
         } catch (NotNormalizableValueException | ExceptionInterface $e) {
@@ -73,7 +74,7 @@ trait ConverterTrait
                 'array',
                 $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
             );
-            if (method_exists(self::class, 'addValidation')) {
+            if ($dto instanceof ValidatingInterface || method_exists(self::class, 'addValidation')) {
                 $dto->_validate();
             }
         } catch (NotNormalizableValueException | ExceptionInterface | TypeError $e) {
@@ -130,7 +131,7 @@ trait ConverterTrait
      */
     protected function _validate(): void
     {
-        if (method_exists(self::class, 'addValidation')) {
+        if ($this instanceof ValidatingInterface || method_exists(self::class, 'addValidation')) {
             $validator = $this->addValidation(new Validator());
             $errors = $validator->validate($this->toArray()); // @phpstan-ignore-line
         }
