@@ -10,6 +10,7 @@
     <arg name="parallel" value="75"/>
 
     <rule ref="vendor/eggheads/eggheads-code-style/rules/phpcs-rules.xml"/>
+    <exclude-pattern>tests/TestCase/EntityBuilder/ExpectedResults/*</exclude-pattern>
 
     <file>src/</file>
     <file>tests/</file>

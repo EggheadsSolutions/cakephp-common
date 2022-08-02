@@ -30,7 +30,7 @@ use Throwable;
  * @method static bool setMockFolder(string $path)
  * @method static bool setMockNamespace(string $namespace)
  * @method static int getThreadsLimit()
- * @method static setThreadsLimit(int $limit)
+ * @method static bool setThreadsLimit(int $limit)
  * @method static array|null getApiInfo()
  * @method static setDebug(bool $enableDebug)
  * @method static int getMaxQueueRunSeconds()
