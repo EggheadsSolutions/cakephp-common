@@ -22,7 +22,7 @@ class HttpClientMockerTest extends AppTestCase
     /** Мок запроса */
     public function testMock(): void
     {
-        $url = 'https://www.artskills.ru';
+        $url = 'https://eggheads.solutions';
         $method = Message::METHOD_POST;
         $post = ['foo' => 'bar'];
         $returnArray = [
@@ -60,7 +60,7 @@ class HttpClientMockerTest extends AppTestCase
     public function testRealSniff(): void
     {
         HttpClientAdapter::disableDebug();
-        $url = 'https://www.artskills.ru';
+        $url = 'https://eggheads.solutions';
         $client = new Client();
         $clientResponse = $client->get($url);
 
