@@ -17,8 +17,8 @@ use Eggheads\CakephpCommon\Lib\Env;
  */
 abstract class AbstractQueueCommand extends Command
 {
-    /** @var int Сколько секунд ждать между запросами */
-    protected const SLEEP_SECONDS = 1;
+    /** @var int Сколько микросекунд ждать между запросами */
+    protected const SLEEP_MICRO_SECONDS = 1000000;
 
     /** @var int Максимальный размер памяти команды по-умолчанию */
     protected const MAX_MEMORY_LIMIT_BYTES = 4294967296;
@@ -127,7 +127,7 @@ abstract class AbstractQueueCommand extends Command
                 $this->_tearDown($io);
                 return null;
             }
-            sleep(static::SLEEP_SECONDS);
+            usleep(static::SLEEP_MICRO_SECONDS);
         } while (true);
     }
 
