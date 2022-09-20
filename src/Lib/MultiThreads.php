@@ -62,11 +62,31 @@ class MultiThreads
     private int $_childCounter = 0;
 
     /**
+     * Имя конфигурации подключения к базе данных
+     *
+     * @var string
+     */
+    private string $_connectionName;
+
+    /**
      * MultiThreads constructor.
      */
     private function __construct()
     {
         pcntl_signal(SIGCHLD, [$this, "childSignalHandler"]);
+        $this->_connectionName = DB::CONNECTION_DEFAULT;
+    }
+
+    /**
+     * Установить имя конфигурации подключения используемой базы данных
+     *
+     * @param string $connectionName
+     * @return self
+     */
+    public function setDatabaseConnectionName(string $connectionName): self
+    {
+        $this->_connectionName = $connectionName;
+        return $this;
     }
 
     /**
@@ -134,7 +154,7 @@ class MultiThreads
             sleep(1);
         }
 
-        DB::restoreConnection();
+        DB::restoreConnection($this->_connectionName);
     }
 
     /**
@@ -215,8 +235,8 @@ class MultiThreads
      */
     private function _launchJob(callable $runFunction, int $softRunSleep)
     {
-        if (DB::getConnection()->isConnected()) {
-            DB::getConnection()->disconnect();
+        if (DB::getConnection($this->_connectionName)->isConnected()) {
+            DB::getConnection($this->_connectionName)->disconnect();
         }
 
         $pid = pcntl_fork();
@@ -238,7 +258,7 @@ class MultiThreads
         } else {
             //Forked child, do your deeds....
             $this->_isChild = true;
-            DB::getConnection()->connect();
+            DB::getConnection($this->_connectionName)->connect();
             Cache::disable();
 
             // плавный запуск множества потоков, чтобы не грузить БД/API
@@ -247,8 +267,8 @@ class MultiThreads
             }
 
             $runFunction();
-            if (DB::getConnection()->isConnected()) {
-                DB::getConnection()->disconnect();
+            if (DB::getConnection($this->_connectionName)->isConnected()) {
+                DB::getConnection($this->_connectionName)->disconnect();
             }
             exit(0);
         }
