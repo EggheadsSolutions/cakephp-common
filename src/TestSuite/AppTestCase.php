@@ -242,7 +242,7 @@ abstract class AppTestCase extends TestCase
         self::assertEquals(get_class($expected), get_class($actual));
         foreach ($actual->toArray() as $property => $value) {
             $delta = is_numeric($value) ? ($value * $errorRatePercent * 0.01) : 0.0;
-            self::assertEquals($expected->{$property}, $value, '', $delta);
+            self::assertEqualsWithDelta($expected->{$property}, $value, $delta);
         }
     }
 }
