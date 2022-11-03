@@ -13,6 +13,7 @@ use Eggheads\CakephpCommon\ORM\Entity;
 use Eggheads\CakephpCommon\Plugins\CakephpFixtureFactories\DiscoverFactories;
 use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientAdapter;
 use Eggheads\CakephpCommon\TestSuite\HttpClientMock\HttpClientMocker;
+use Eggheads\CakephpCommon\ValueObject\ValueObject;
 use Eggheads\Mocks\ConstantMocker;
 use Eggheads\Mocks\MethodMocker;
 use Eggheads\Mocks\PropertyAccess;
@@ -226,5 +227,22 @@ abstract class AppTestCase extends TestCase
     ): void {
         self::assertFileExists($actualFile, $message);
         self::assertEquals($expectedString, file_get_contents($actualFile), $message);
+    }
+
+    /**
+     * Метод для сравнения двух ValueObject с указанием допустимой погрешности в процентах
+     *
+     * @param ValueObject $expected
+     * @param ValueObject $actual
+     * @param float $errorRatePercent допустимая погрешность в процентах
+     * @return void
+     */
+    public static function assertEqualsValueObjects(ValueObject $expected, ValueObject $actual, float $errorRatePercent = 0): void
+    {
+        self::assertEquals(get_class($expected), get_class($actual));
+        foreach ($actual->toArray() as $property => $value) {
+            $delta = is_numeric($value) ? ($value * $errorRatePercent * 0.01) : 0.0;
+            self::assertEqualsWithDelta($expected->{$property}, $value, $delta);
+        }
     }
 }
