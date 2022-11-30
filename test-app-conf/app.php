@@ -3,6 +3,7 @@
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
+use Cake\Database\Driver\Postgres;
 use Cake\Log\Engine\FileLog;
 
 return [
@@ -63,6 +64,30 @@ return [
             'cacheMetadata' => true,
             'quoteIdentifiers' => true,
             'init' => ['SET FOREIGN_KEY_CHECKS=0'],
+        ],
+        'postgres' => [
+            'className' => Connection::class,
+            'driver' => Postgres::class,
+            'persistent' => false,
+            'host' => 'postgres',
+            'port' => '5432',
+            'username' => 'postgres',
+            'password' => 'secret',
+            'database' => 'postgres',
+            'encoding' => 'utf8',
+            'cacheMetadata' => true,
+        ],
+        'test_postgres' => [
+            'className' => Connection::class,
+            'driver' => Postgres::class,
+            'persistent' => false,
+            'host' => 'postgres',
+            'port' => '5432',
+            'username' => 'postgres',
+            'password' => 'secret',
+            'database' => 'postgres_test',
+            'encoding' => 'utf8',
+            'cacheMetadata' => true,
         ],
     ],
 

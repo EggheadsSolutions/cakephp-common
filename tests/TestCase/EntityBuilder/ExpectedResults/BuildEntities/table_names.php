@@ -5,4 +5,5 @@ declare(strict_types=1);
 const PROXY_CONFIG = "ProxyConfig";
 const TEST_TABLE_FIVE = "TestTableFive";
 const TEST_TABLE_ONE = "TestTableOne";
+const TEST_TABLE_SIX = "TestTableSix";
 const TEST_TABLE_TWO = "TestTableTwo";
