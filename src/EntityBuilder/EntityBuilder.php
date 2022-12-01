@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Eggheads\CakephpCommon\EntityBuilder;
 
+use Eggheads\CakephpCommon\EntityBuilder\NativeQueryStore\AbstractNativeQueryStore;
 use Eggheads\CakephpCommon\Error\InternalException;
 use Eggheads\CakephpCommon\I18n\FrozenDate;
 use Eggheads\CakephpCommon\I18n\FrozenTime;
@@ -50,6 +51,7 @@ class EntityBuilder
         'time' => self::TIME_CLASS,
         'datetime' => self::TIME_CLASS,
         'timestamp' => self::TIME_CLASS,
+        'timestampfractional' => self::TIME_CLASS,
         'uuid' => 'string',
         'string' => 'string',
         'char' => 'string',
@@ -166,7 +168,7 @@ class EntityBuilder
     {
         self::_checkConfig();
         $tableName = Inflector::underscore($tableName);
-        if (!self::_checkTableExists($tableName)) {
+        if (!AbstractNativeQueryStore::factory(self::_getTable($tableName))->isTableExist()) {
             throw new InternalException('Table "' . $tableName . '" does not exist in DB!');
         }
 
@@ -202,21 +204,6 @@ class EntityBuilder
             throw new InternalException('Не задан конфиг');
         }
         static::$_config->checkValid();
-    }
-
-    /**
-     * Проверка на существование таблицы
-     *
-     * @param string $tableName
-     * @return bool
-     */
-    private static function _checkTableExists(string $tableName): bool
-    {
-        $connection = DB::getConnection(static::$_config->connectionName);
-        $existingTables = $connection->query(
-            "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='" . $connection->config()['database'] . "' AND TABLE_NAME='" . $tableName . "';"
-        )->fetchAll();
-        return (bool)$existingTables[0][0];
     }
 
     /**
@@ -329,7 +316,7 @@ class EntityBuilder
      *
      * @param string $tblName
      * @return bool
-     * @throws ReflectionException
+     * @throws ReflectionException|InternalException
      */
     private static function _buildTableDeps(string $tblName): bool
     {
@@ -523,7 +510,7 @@ class EntityBuilder
      *
      * @param string $entityName
      * @return bool
-     * @throws ReflectionException
+     * @throws ReflectionException|InternalException
      */
     private static function _createEntityClass(string $entityName): bool
     {
@@ -536,9 +523,9 @@ class EntityBuilder
             $curTblFields[$fieldName] = ' * @property ' . $fieldType . ' $' . $fieldName;
         }
 
-        $tableComment = self::_getTableComment($entityName);
+        $tableComment = AbstractNativeQueryStore::factory(self::_getTable($entityName))->getTableComment();
         if (!empty($tableComment)) {
-            $curTblFields[] = $tableComment;
+            $curTblFields[] = ' * @tableComment ' . $tableComment;
         }
 
         $file = self::_getFile($entityName, self::FILE_TYPE_ENTITY);
@@ -671,28 +658,6 @@ class EntityBuilder
         }
 
         return $virtualFields;
-    }
-
-    /**
-     * PHPDoc комментарий к таблице
-     *
-     * @param string $entityName
-     * @return ?string
-     */
-    private static function _getTableComment(string $entityName): ?string
-    {
-        $table = self::_getTable($entityName);
-
-        $connection = DB::getConnection(static::$_config->connectionName);
-        $tableName = $table->getTable();
-        $tableComment = $connection->query(
-            "SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='" . $connection->config()['database'] . "' AND TABLE_NAME='" . $tableName . "';"
-        )->fetchAll();
-        if (!empty($tableComment) && !empty($tableComment[0][0])) {
-            return ' * @tableComment ' . $tableComment[0][0];
-        } else {
-            return null;
-        }
     }
 
     /**

@@ -12,7 +12,6 @@ use Eggheads\CakephpCommon\Lib\DB;
 use Eggheads\CakephpCommon\ValueObject\ValueObject;
 
 /**
- * @method $this setConnectionName(string $name)
  * @method $this setModelNamespace(string $namespace)
  * @method $this setModelFolder(string $path)
  * @method $this setTableNamesFile(string $name)
@@ -28,12 +27,6 @@ use Eggheads\CakephpCommon\ValueObject\ValueObject;
  */
 class EntityBuilderConfig extends ValueObject
 {
-    /**
-     * Соединение, из которого тащим таблицы
-     *
-     * @var string
-     */
-    public string $connectionName = DB::CONNECTION_DEFAULT;
     /**
      * Неймспейс создаваемых классов
      *

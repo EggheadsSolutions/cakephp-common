@@ -14,6 +14,12 @@
  */
 
 /**
+ * @typedef {Object} TestTableSixEntity Table description 6
+ * @property {string} created = 'CURRENT_TIMESTAMP' Создано
+ * @property {int} id
+ */
+
+/**
  * @typedef {Object} TestTableTwoEntity description qweqwe
  * @property {string} col_text = NULL
  * @property {int} id

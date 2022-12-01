@@ -20,3 +20,12 @@ services:
             echo 'CREATE DATABASE IF NOT EXISTS cakephp; CREATE DATABASE IF NOT EXISTS cakephp_test;' > /docker-entrypoint-initdb.d/init.sql;
             /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
             "
+    postgres:
+        image: postgres:14.5
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=secret
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./dev/postgres/init:/docker-entrypoint-initdb.d

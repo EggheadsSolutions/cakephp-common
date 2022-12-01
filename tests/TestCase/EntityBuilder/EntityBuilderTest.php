@@ -96,6 +96,7 @@ class EntityBuilderTest extends AppTestCase
          * table_two - всё существовало, ничего не изменилось
          * table_three - следующий тест - был только пустой класс таблицы, всё создалось
          * table_four - не был и не создался
+         * table_fix - всё существовало, ничего не изменилось(используется postgresql)
          */
         $hasChanges = EntityBuilder::build();
         $expectedFolder = new Folder(__DIR__ . '/ExpectedResults/BuildEntities');
