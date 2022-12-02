@@ -12,6 +12,7 @@ jobs:
         with:
           php-version: '8.0'
           mysql: yes
+          postgres: yes
           redis: yes
           clickhouse: no
           use-repository-config: yes
