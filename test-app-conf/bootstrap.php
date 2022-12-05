@@ -29,11 +29,10 @@ use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Datasource\ConnectionManager;
+use Cake\Error\ExceptionTrap;
 use Cake\Log\Log;
 use Cake\Mailer\TransportFactory;
 use Cake\Utility\Security;
-use Cake\Error\ConsoleErrorHandler;
-use Cake\Error\ErrorHandler;
 
 /**
  * Read configuration file and inject configuration into various
@@ -89,16 +88,10 @@ ini_set('intl.default_locale', 'ru_RU');
 /**
  * Register application error and exception handlers.
  */
-$isCli = php_sapi_name() === 'cli';
-if ($isCli) {
-    (new ConsoleErrorHandler(Configure::read('Error')))->register();
-} else {
-    (new ErrorHandler(Configure::read('Error')))->register();
-}
-
+(new ExceptionTrap(Configure::read('Error')))->register();
 // Include the CLI bootstrap overrides.
-if ($isCli) {
-    require __DIR__ . '/bootstrap_cli.php';
+if (PHP_SAPI === 'cli') {
+    include __DIR__ . '/bootstrap_cli.php';
 }
 
 /**

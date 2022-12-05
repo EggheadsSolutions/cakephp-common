@@ -15,6 +15,12 @@ description govno
 * string `notExists`
 * string `oldField`
 
+## TestTableSix
+Table description 6
+### Поля:
+* \Eggheads\CakephpCommon\I18n\FrozenTime `created` = 'CURRENT_TIMESTAMP' Создано
+* int `id`
+
 ## TestTableTwo
 description qweqwe
 ### Поля:

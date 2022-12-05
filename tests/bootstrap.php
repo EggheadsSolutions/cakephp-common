@@ -12,3 +12,8 @@ use Migrations\TestSuite\Migrator;
 
 $migrator = new Migrator();
 $migrator->run();
+
+//Выполнение миграций для PostgreSql
+(new Migrator())->run(
+    ['connection' => 'test_postgres', 'source' => './Migrations/Postgres']
+);
