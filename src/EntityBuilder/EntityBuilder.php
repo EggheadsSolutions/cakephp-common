@@ -515,17 +515,17 @@ class EntityBuilder
     private static function _createEntityClass(string $entityName): bool
     {
         // реальные поля
-        $curTblFields = self::_getTableFieldsComments($entityName);
+        $fieldComments = self::_getTableFieldsComments($entityName);
 
         // виртуальные поля (повешены кейковские геттеры)
-        $virtualFields = self::_getVirtualFields($entityName, $curTblFields);
+        $virtualFields = self::_getVirtualFields($entityName, $fieldComments);
         foreach ($virtualFields as $fieldName => $fieldType) {
-            $curTblFields[$fieldName] = ' * @property ' . $fieldType . ' $' . $fieldName;
+            $fieldComments[$fieldName] = ' * @property ' . $fieldType . ' $' . $fieldName;
         }
 
         $tableComment = AbstractNativeQueryStore::factory(self::_getTable($entityName))->getTableComment();
         if (!empty($tableComment)) {
-            $curTblFields[] = ' * @tableComment ' . $tableComment;
+            $fieldComments[] = ' * @tableComment ' . $tableComment;
         }
 
         $file = self::_getFile($entityName, self::FILE_TYPE_ENTITY);
@@ -535,16 +535,16 @@ class EntityBuilder
 
             $classComments = $refClass->getDocComment();
             if ($classComments === false) {
-                $newComments = implode("\n", array_merge(["/**"], $curTblFields, [" */"]));
+                $newComments = implode("\n", array_merge(["/**"], $fieldComments, [" */"]));
                 self::_writeNewClassComment($refClass, $newComments);
                 return true;
             } else {
                 $commentsArr = explode("\n", $classComments);
-                $toAddComments = array_diff($curTblFields, $commentsArr);
+                $toAddComments = array_diff($fieldComments, $commentsArr);
                 $hasChanges = false;
                 foreach ($commentsArr as $key => $comm) { // удаляем ненужные свойства
                     if ((stristr($comm, '@property') || stristr($comm, '@tableComment'))
-                        && !in_array($comm, $curTblFields)
+                        && !in_array($comm, $fieldComments)
                     ) {
                         unset($commentsArr[$key]);
                         $hasChanges = true;
@@ -567,7 +567,7 @@ class EntityBuilder
             $file->create();
             $template = self::_processFileTemplate($entityName, static::FILE_TYPE_ENTITY);
             $search = ['{PROPERTIES}'];
-            $replace = [implode("\n", $curTblFields)];
+            $replace = [implode("\n", $fieldComments)];
             $file->write(str_replace($search, $replace, $template));
             $file->close();
             return true;
