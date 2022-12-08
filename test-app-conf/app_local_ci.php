@@ -61,4 +61,10 @@ return [
             'cacheMetadata' => true,
         ],
     ],
+
+    'proxyConfig' => [
+        'proxy' => 'my_proxy',
+        'username' => 'username',
+        'password' => 'password',
+    ]
 ];
