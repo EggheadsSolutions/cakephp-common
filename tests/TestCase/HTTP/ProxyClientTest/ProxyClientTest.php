@@ -17,7 +17,8 @@ class ProxyClientTest extends AppTestCase
      */
     public function testProxyClient(): void
     {
-        self::assertEquals(Configure::read(ProxyClient::CONFIG_FIELD_NAME), (new ProxyClient())->getConfig('proxy'));
+        $proxyClient = new ProxyClient();
+        self::assertEquals(Configure::read(ProxyClient::CONFIG_FIELD_NAME), $proxyClient->getConfig('proxy'));
     }
 
     /**
@@ -28,10 +29,11 @@ class ProxyClientTest extends AppTestCase
      */
     public function testProxyUsed(): void
     {
-        $proxyName = Configure::read(ProxyClient::CONFIG_FIELD_NAME)['proxy'];
+        $proxyClient = new ProxyClient();
 
+        $proxyAddress = Configure::read(ProxyClient::CONFIG_FIELD_NAME)['proxy'];
         $this->expectException(RequestException::class);
-        $this->expectExceptionMessageMatches("/$proxyName/");
-        (new ProxyClient())->get('https://eggheads.solutions');
+        $this->expectExceptionMessageMatches("/$proxyAddress/");
+        $proxyClient->get('https://eggheads.solutions');
     }
 }

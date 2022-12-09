@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Eggheads\CakephpCommon\Http;
 
 use Cake\Core\Configure;
+use Eggheads\CakephpCommon\Error\InternalException;
 
 /**
  * Класс для работы с прокси
@@ -20,13 +21,38 @@ class ProxyClient extends Client
     /**
      * @inheritDoc
      * @phpstan-ignore-next-line
+     * @throws InternalException
      */
     public function __construct(array $config = [])
     {
         if (Configure::read('isProxyEnabled', true)) {
-            $this->setConfig('proxy', Configure::read(self::CONFIG_FIELD_NAME));
+            $this->setConfig('proxy', $this->_getConfig());
         }
 
         parent::__construct($config);
+    }
+
+    /**
+     * Получение и проверка конфигурации
+     *
+     * @return array<string, string> ['proxy' => 'string','username' => 'string','password' => 'string']
+     * @throws InternalException
+     */
+    private function _getConfig(): array
+    {
+        $proxyConfig = Configure::read(self::CONFIG_FIELD_NAME);
+        if (empty($proxyConfig)) {
+            throw new InternalException(self::CONFIG_FIELD_NAME .' отсутствует в конфигурации');
+        }
+
+        if (!is_array($proxyConfig) ||
+            empty($proxyConfig['proxy']) || !is_string($proxyConfig['proxy']) ||
+            empty($proxyConfig['username']) || !is_string($proxyConfig['username']) ||
+            empty($proxyConfig['password']) || !is_string($proxyConfig['password'])
+        ) {
+            throw new InternalException('Невалидная конфигурация '. self::CONFIG_FIELD_NAME);
+        }
+
+        return $proxyConfig;
     }
 }
