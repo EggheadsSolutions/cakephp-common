@@ -22,19 +22,19 @@ class DropProxyTable extends AbstractMigration
         $this->table('proxy_config', ['comment' => 'Таблица с прокси'])
             ->addColumn('proxy', AdapterInterface::PHINX_TYPE_CHAR, [
                 'null' => false,
-                'default' => null,
+                'length' => 255,
                 'noDefault' => true,
                 'comment' => 'Прокси',
             ])
             ->addColumn('username', AdapterInterface::PHINX_TYPE_CHAR, [
                 'null' => false,
-                'default' => null,
+                'length' => 255,
                 'noDefault' => true,
                 'comment' => 'Имя пользователя',
             ])
             ->addColumn('password', AdapterInterface::PHINX_TYPE_CHAR, [
                 'null' => false,
-                'default' => null,
+                'length' => 255,
                 'noDefault' => true,
                 'comment' => 'Пароль',
             ])

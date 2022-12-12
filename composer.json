@@ -29,7 +29,7 @@
     "ext-pdo": "*",
     "ext-simplexml": "*",
     "cakephp/cakephp": "^4.3",
-    "cakephp/migrations": "^3.2",
+    "cakephp/migrations": "3.6.1",
     "connehito/cake-sentry": "^4.0",
     "eggheads/mocks": "^1.0.0",
     "jan-swiecki/simple-annotations": "^0.3.1",
