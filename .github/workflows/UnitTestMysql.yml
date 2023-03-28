@@ -19,3 +19,4 @@ jobs:
           post-install-cmd: yes
           migrate-command: no
           config-dir: 'test-app-conf'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

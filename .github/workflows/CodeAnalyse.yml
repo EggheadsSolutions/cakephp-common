@@ -11,3 +11,4 @@ jobs:
       - uses: EggheadsSolutions/php-standart-check@v1
         with:
           php-version: '8.0'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
