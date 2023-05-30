@@ -14,6 +14,7 @@ use Eggheads\CakephpCommon\Lib\Env;
  * Абстрактный класс обработчика очереди. Выполняет задание определённое кол-во времени config['maxQueueRunSeconds'], либо
  * завершает выполнение при превышении 90% лимита отведённой памяти.
  * Также корректно отрабатывает сигналы остановки процесса.
+ * @phpstan-ignore-next-line
  */
 abstract class AbstractQueueCommand extends Command
 {
