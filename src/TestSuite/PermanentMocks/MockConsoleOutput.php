@@ -24,7 +24,7 @@ class MockConsoleOutput extends ClassMockEntity
      */
     public static function init()
     {
-        static::$_mockOut = MethodMocker::mock(ConsoleOutput::class, 'write', 'return ' . self::class . '::out(...func_get_args());')
+        self::$_mockOut = MethodMocker::mock(ConsoleOutput::class, 'write', 'return ' . self::class . '::out(...func_get_args());')
             ->expectCall(0);
     }
 

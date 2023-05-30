@@ -238,7 +238,6 @@ abstract class ValueObject implements JsonSerializable, ArrayAccess
 
     /**
      * @inheritDoc
-     * @phpstan-ignore-next-line
      */
     public function offsetUnset($offset)
     {

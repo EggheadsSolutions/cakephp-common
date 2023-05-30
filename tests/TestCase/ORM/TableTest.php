@@ -85,7 +85,7 @@ class TableTest extends AppTestCase
         $saveResult = $this->TestTableOne->saveArr([
             'col_text' => $newText,
             'col_time' => $saveData['col_time'],
-        ], $newRecord->id, ['dirtyFields' => 'col_time']);
+        ], $newRecord->id, ['dirtyFields' => 'col_time']); /* @phpstan-ignore-line */
         self::assertInstanceOf(TestTableOne::class, $saveResult, 'Неправильный результат сохранения при редактировании по id');
 
         $expectedData['col_text'] = $newText;
