@@ -227,7 +227,6 @@ class Table extends \Cake\ORM\Table
     /**
      * @inheritdoc
      * Добавил возможность более коротких опций
-     * @phpstan-ignore-next-line
      */
     public function findList(\Cake\ORM\Query $query, array $options): \Cake\ORM\Query
     {
@@ -262,7 +261,6 @@ class Table extends \Cake\ORM\Table
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function query(): Query
     {

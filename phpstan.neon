@@ -6,3 +6,5 @@ parameters:
     bootstrapFiles:
         - test-app-conf/paths.php
         - config/bootstrap_test.php
+        - vendor/cakephp/cakephp/src/Database/Type.php
+        - vendor/cakephp/cakephp/src/Command/Command.php

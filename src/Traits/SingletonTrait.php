@@ -50,14 +50,14 @@ trait SingletonTrait
      */
     public static function getInstance(): static
     {
-        if (empty(static::$_instance)) {
+        if (empty(static::$_instance)) { // @phpstan-ignore-line
             static::$_instance = new static(); // @phpstan-ignore-line
         }
 
         if (Env::isUnitTest()) {
             SingletonCollection::append(static::class);
         }
-
+        /** @phpstan-ignore-next-line */
         return static::$_instance;
     }
 

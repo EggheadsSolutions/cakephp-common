@@ -95,7 +95,7 @@ class EntityBuilder
      */
     public static function setConfig(?EntityBuilderConfig $config): void
     {
-        static::$_config = $config;
+        self::$_config = $config;
         if ($config === null) {
             return;
         }
@@ -105,7 +105,7 @@ class EntityBuilder
 
         $entityClassName = self::_getClassTemplate(self::FILE_TYPE_ENTITY);
         $queryClassName = self::_getClassTemplate(self::FILE_TYPE_QUERY);
-        static::$_tableMethods = [
+        self::$_tableMethods = [
             'newEntity' => '@method ' . $entityClassName . ' newEntity(array | null $data = null, array $options = [])',
             'newEntities' => '@method ' . $entityClassName . '[] newEntities(array $data, array $options = [])',
             'patchEntity' => '@method ' . $entityClassName . ' patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])',
@@ -117,15 +117,15 @@ class EntityBuilder
             'getEntity' => '@method ' . $entityClassName . '|false getEntity(' . $entityClassName . ' | int $entity, array | \ArrayAccess $options = null)',
             'updateWithLock' => '@method ' . $entityClassName . '|null updateWithLock(' . $queryClassName . ' | array $queryData, array $updateData)',
         ];
-        static::$_fileTemplates = [
-            static::FILE_TYPE_TABLE => file_get_contents($config->tableTemplateFile),
-            static::FILE_TYPE_QUERY => file_get_contents($config->queryTemplateFile),
-            static::FILE_TYPE_ENTITY => file_get_contents($config->entityTemplateFile),
+        self::$_fileTemplates = [
+            self::FILE_TYPE_TABLE => file_get_contents($config->tableTemplateFile),
+            self::FILE_TYPE_QUERY => file_get_contents($config->queryTemplateFile),
+            self::FILE_TYPE_ENTITY => file_get_contents($config->entityTemplateFile),
         ];
-        static::$_baseClasses = [
-            static::FILE_TYPE_TABLE => $config->baseTableClass,
-            static::FILE_TYPE_QUERY => $config->baseQueryClass,
-            static::FILE_TYPE_ENTITY => $config->baseEntityClass,
+        self::$_baseClasses = [
+            self::FILE_TYPE_TABLE => $config->baseTableClass,
+            self::FILE_TYPE_QUERY => $config->baseQueryClass,
+            self::FILE_TYPE_ENTITY => $config->baseEntityClass,
         ];
     }
 
@@ -137,9 +137,9 @@ class EntityBuilder
      */
     private static function _getClassTemplate(string $type): string
     {
-        return '\\' . static::$_config->modelNamespace . '\\' . $type . '\\' .
+        return '\\' . self::$_config->modelNamespace . '\\' . $type . '\\' .
             self::_getShortClassName(
-                static::ENTITY_TEMPLATE_STRING,
+                self::ENTITY_TEMPLATE_STRING,
                 $type
             );
     }
@@ -200,10 +200,10 @@ class EntityBuilder
      */
     private static function _checkConfig(): void
     {
-        if (empty(static::$_config)) {
+        if (empty(self::$_config)) {
             throw new InternalException('Не задан конфиг');
         }
-        static::$_config->checkValid();
+        self::$_config->checkValid();
     }
 
     /**
@@ -216,7 +216,7 @@ class EntityBuilder
     private static function _getFile(string $entityName, string $type): File
     {
         return new File(
-            static::$_config->modelFolder . $type . '/' . self::_getShortClassName($entityName, $type) . '.php'
+            self::$_config->modelFolder . $type . '/' . self::_getShortClassName($entityName, $type) . '.php'
         );
     }
 
@@ -230,14 +230,14 @@ class EntityBuilder
     private static function _processFileTemplate(string $entityName, string $type): string
     {
         $search = [
-            static::ENTITY_TEMPLATE_STRING,
+            self::ENTITY_TEMPLATE_STRING,
             '{MODEL_NAMESPACE}',
             '{BASE}',
             '{USE_BASE}',
         ];
-        $baseClass = static::$_baseClasses[$type];
+        $baseClass = self::$_baseClasses[$type];
         [$baseClassNamespace, $baseClassShort] = Misc::namespaceSplit($baseClass);
-        if ($baseClassNamespace === (static::$_config->modelNamespace . '\\' . $type)) {
+        if ($baseClassNamespace === (self::$_config->modelNamespace . '\\' . $type)) {
             $useBaseClass = '';
         } else {
             $useBaseClass = "\nuse $baseClass;\n";
@@ -245,12 +245,12 @@ class EntityBuilder
 
         $replace = [
             $entityName,
-            static::$_config->modelNamespace,
+            self::$_config->modelNamespace,
             $baseClassShort,
             $useBaseClass,
         ];
 
-        return str_replace($search, $replace, static::$_fileTemplates[$type]);
+        return str_replace($search, $replace, self::$_fileTemplates[$type]);
     }
 
     /**
@@ -290,7 +290,7 @@ class EntityBuilder
         $folder = self::_getFolder(self::FILE_TYPE_TABLE);
         $files = $folder->find('.*Table\.php', true);
 
-        $baseClassFile = Misc::namespaceSplit(static::$_config->baseTableClass, true) . '.php';
+        $baseClassFile = Misc::namespaceSplit(self::$_config->baseTableClass, true) . '.php';
         $result = [];
         foreach ($files as $tblFile) {
             if ($tblFile !== $baseClassFile) {
@@ -308,7 +308,7 @@ class EntityBuilder
      */
     private static function _getFolder(string $type): Folder
     {
-        return new Folder(static::$_config->modelFolder . $type);
+        return new Folder(self::$_config->modelFolder . $type);
     }
 
     /**
@@ -320,7 +320,7 @@ class EntityBuilder
      */
     private static function _buildTableDeps(string $tblName): bool
     {
-        $refClass = new ReflectionClass(static::$_config->modelNamespace . '\Table\\' . $tblName);
+        $refClass = new ReflectionClass(self::$_config->modelNamespace . '\Table\\' . $tblName);
         if ($refClass->isAbstract() || $refClass->hasProperty('useTable')) {
             return false;
         }
@@ -369,14 +369,14 @@ class EntityBuilder
             $commArr = ['/**', ' */'];
         }
         $addLines = [];
-        foreach (static::_getRedefineMethods($entityName) as $tplMethod => $template) {
+        foreach (self::_getRedefineMethods($entityName) as $tplMethod => $template) {
             if (in_array($tplMethod, $ownMethods)) {
                 continue;
             }
 
             $hasMethod = false;
 
-            $template = str_replace(static::ENTITY_TEMPLATE_STRING, $entityName, $template);
+            $template = str_replace(self::ENTITY_TEMPLATE_STRING, $entityName, $template);
             foreach ($commArr as $commIndex => $commLine) {
                 if (stristr($commLine, $template)) {
                     $hasMethod = true;
@@ -412,7 +412,7 @@ class EntityBuilder
      */
     protected static function _getRedefineMethods(string $tableAlias): array
     {
-        $methods = static::$_tableMethods;
+        $methods = self::$_tableMethods;
         $table = self::_getTable($tableAlias);
         if ($table->hasBehavior('Timestamp')) {
             $entityClassName = self::_getClassTemplate(self::FILE_TYPE_ENTITY);
@@ -497,7 +497,7 @@ class EntityBuilder
         $file = self::_getFile($entityName, self::FILE_TYPE_QUERY);
         if (!$file->exists()) {
             $file->create();
-            $file->write(self::_processFileTemplate($entityName, static::FILE_TYPE_QUERY));
+            $file->write(self::_processFileTemplate($entityName, self::FILE_TYPE_QUERY));
             $file->close();
             return true;
         } else {
@@ -530,7 +530,7 @@ class EntityBuilder
 
         $file = self::_getFile($entityName, self::FILE_TYPE_ENTITY);
         if ($file->exists()) {
-            $className = static::$_config->modelNamespace . '\Entity\\' . $entityName;
+            $className = self::$_config->modelNamespace . '\Entity\\' . $entityName;
             $refClass = new ReflectionClass($className);
 
             $classComments = $refClass->getDocComment();
@@ -565,7 +565,7 @@ class EntityBuilder
             }
         } else {
             $file->create();
-            $template = self::_processFileTemplate($entityName, static::FILE_TYPE_ENTITY);
+            $template = self::_processFileTemplate($entityName, self::FILE_TYPE_ENTITY);
             $search = ['{PROPERTIES}'];
             $replace = [implode("\n", $fieldComments)];
             $file->write(str_replace($search, $replace, $template));
@@ -591,7 +591,7 @@ class EntityBuilder
         $result = [];
         foreach ($columnList as $column) {
             $columnInfo = $tableSchema->getColumn($column);
-            $result[$column] = ' * @property ' . ($columnInfo['null'] === true ? '?' : '') . static::SCHEMA_TYPE_MAP[$columnInfo['type']] . ' $' . $column .
+            $result[$column] = ' * @property ' . ($columnInfo['null'] === true ? '?' : '') . self::SCHEMA_TYPE_MAP[$columnInfo['type']] . ' $' . $column .
                 (array_key_exists($column, $defaultValues) ? ' = ' . var_export($defaultValues[$column], true) : '') .
                 (!empty($columnInfo['comment']) ? ' ' . $columnInfo['comment'] : '');
         }
@@ -631,7 +631,7 @@ class EntityBuilder
     private static function _getVirtualFields(string $entityName, array $fields): array
     {
         $virtualFields = [];
-        $className = static::$_config->modelNamespace . '\Entity\\' . $entityName;
+        $className = self::$_config->modelNamespace . '\Entity\\' . $entityName;
         if (class_exists($className)) {
             // field => field
             $fields = Arrays::keysFromValues(array_keys($fields));
@@ -683,7 +683,7 @@ class EntityBuilder
 
         $newContent = "<?php\ndeclare(strict_types=1);\n\n// This file is autogenerated\n" . implode("\n", $constList) . "\n";
 
-        $namesFl = new File(static::$_config->modelFolder . '/' . static::$_config->tableNamesFile);
+        $namesFl = new File(self::$_config->modelFolder . '/' . self::$_config->tableNamesFile);
         if ($namesFl->exists()) {
             $curContent = $namesFl->read();
         } else {
@@ -709,7 +709,7 @@ class EntityBuilder
      */
     private static function _isAbstractTable(string $tableName): bool
     {
-        $refClass = new ReflectionClass(static::$_config->modelNamespace . '\Table\\' . $tableName);
+        $refClass = new ReflectionClass(self::$_config->modelNamespace . '\Table\\' . $tableName);
         if ($refClass->isAbstract() || $refClass->hasProperty('useTable')) {
             return true;
         } else {

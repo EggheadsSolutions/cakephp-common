@@ -30,7 +30,7 @@ class Misc
     /**
      * Соединить путь через DS
      *
-     * @param string[] ...$parts
+     * @param string ...$parts
      * @return string
      */
     public static function implodeDs(...$parts): string
